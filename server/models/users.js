@@ -1,6 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
+<<<<<<< HEAD
     firstName: {
+=======
+    ffirstName: {
+>>>>>>> [chore #164797136]Setup migration for database
       type: DataTypes.STRING,
       allowNull: false,
     },
