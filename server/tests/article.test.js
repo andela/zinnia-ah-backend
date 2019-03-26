@@ -17,5 +17,5 @@ describe('Articles', () => {
             expect(response.body.errors.body).to.not.be.empty();
             expect(response.body.errors.body).to.be.an('array');
         });
-    })
+    });
 });
