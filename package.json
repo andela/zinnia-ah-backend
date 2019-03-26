@@ -4,8 +4,8 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha server/tests/**.spec.js --require @babel/register --exit",
-    "test:watch": "NODE_ENV=test mocha server/tests/**.spec.js --watch"
+    "test": "NODE_ENV=test mocha src/tests/**.test.js --require @babel/register --exit",
+    "test:watch": "NODE_ENV=test mocha src/tests/**.test.js --watch"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
