@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {});
-  User.associate = () => {
+  Users.associate = function(models) {
     // associations can be defined here
   };
-  return User;
+  return Users;
 };

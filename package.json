@@ -17,14 +17,20 @@
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.3.0",
-    "morgan": "^1.9.1"
+    "method-override": "^2.3.10",
+    "methods": "^1.1.2",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.9.0",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.87.0",
+    "sequelize": "^5.1.1",
+    "sequelize-cli": "^5.4.0",
+    "slug": "^0.9.1",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.3",
-    "nyc": "^13.3.0",
-    "eslint": "^5.15.3",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
     "@babel/core": "^7.4.0",
     "@babel/plugin-transform-regenerator": "^7.4.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
@@ -33,6 +39,11 @@
     "@babel/runtime": "^7.4.2",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
-    "mocha": "^6.0.2"
+    "coveralls": "^3.0.3",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0"
   }
 }
