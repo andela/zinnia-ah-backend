@@ -3,6 +3,7 @@ Authors Haven - A Social platform for the creative at heart.
 
 ## Badges
 [![Coverage Status](https://coveralls.io/repos/github/andela/zinnia-ah-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/zinnia-ah-backend?branch=develop)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ---
 
