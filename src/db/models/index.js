@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
+import configuration from '../../config/config';
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = path.resolve(__dirname, '/../config/config.js')[env];
 const db = {};
+const config = configuration[env];
 
 let sequelize;
 if (config.use_env_variable) {
