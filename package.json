@@ -3,12 +3,24 @@
   "version": "1.0.0",
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  },
   "scripts": {
     "start": "node build/server.js",
     "start:dev": "nodemon --exec babel-node src/server.js",
-    "test": "NODE_ENV=test mocha src/tests/**/**.test.js --require @babel/register --exit",
+    "test": "NODE_ENV=test nyc mocha src/tests/**/**.test.js --require @babel/register --exit",
     "test:watch": "NODE_ENV=test mocha src/tests/**/**.test.js --watch",
-    "build": "rm -rf build && babel src -d build"
+    "build": "rm -rf build && babel src -d build",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
