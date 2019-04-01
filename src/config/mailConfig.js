@@ -19,13 +19,16 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = (req, res, body) => {
-  const allRecipientEmail = body.receiver.join(', ');
+  const {
+    receivers, subject, text, html
+  } = body;
+  const allRecipientEmail = receivers.join(', ');
   const mailOptions = {
     from: email,
     to: allRecipientEmail,
-    subject: body.subject,
-    text: body.text,
-    html: body.html
+    subject,
+    text,
+    html,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
