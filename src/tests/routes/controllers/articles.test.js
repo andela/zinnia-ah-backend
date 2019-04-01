@@ -10,8 +10,8 @@ const { expect } = chai;
 const endPoint = '/api/v1/articles';
 
 const userRequestObject = {
-  username: 'boxunivers',
-  email: 'lilly@gmail.com',
+  username: 'rdxtcfygvubh',
+  email: 'lilfgcvhly@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
 const articleRequestObject = {
@@ -38,7 +38,7 @@ describe('Articles', () => {
         .send(userRequestObject)
         .end((err, res) => {
           expect(res.status).to.equal(201);
-          xAccessToken = res.body.data.token;
+          xAccessToken = res.body.data;
           done();
         });
     });

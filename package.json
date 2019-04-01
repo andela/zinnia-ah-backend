@@ -7,12 +7,19 @@
     "require": [
       "@babel/register"
     ],
+    "exclude": [
+      "doc",
+      "coverage",
+      "src/db/migrations",
+      "src/db/seeders"
+    ],
     "reporter": [
       "lcov",
       "text"
     ],
     "sourceMap": false,
-    "instrument": false
+    "instrument": true,
+    "all": true
   },
   "husky": {
     "hooks": {
@@ -30,15 +37,16 @@
     "start:dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
-    "pretest": "NODE_ENV=test npm run lint && npm run prettier && npm run db:migrate:testdb && npm run seedall",
-    "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
-    "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch --no-timeouts",
+    "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit",
+    "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
-    "seedall": "NODE_ENV=test sequelize db:seed:all"
+    "seedall": "NODE_ENV=test sequelize db:seed:all",
+    "coveralls": "cat coverage/lcov.info | coveralls",
+    "pretest": "npm run lint && npm run prettier"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -73,6 +81,7 @@
     "@babel/register": "^7.4.0",
     "@babel/runtime": "^7.4.2",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "coveralls": "^3.0.3",
