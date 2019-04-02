@@ -2,7 +2,7 @@
   "name": "express-authorshaven",
   "version": "1.0.0",
   "description": "A Social platform for the creative at heart",
-  "main": "index.js",
+  "main": "src/server.js",
   "nyc": {
     "require": [
       "@babel/register"
