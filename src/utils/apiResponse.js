@@ -7,10 +7,11 @@
  * @param {Object} errorMessage any message for the user
  * @returns {Object} failed API response
  */
-const errorResponse = (response, statusCode, errorMessage) => response.status(statusCode).json({
-  status: statusCode,
-  errors: [errorMessage],
-});
+export const errorResponse = (response, statusCode, errorMessage) => response
+  .status(statusCode).json({
+    status: statusCode,
+    errors: [errorMessage],
+  });
 
 /**
  * Global helper for a successful API request
@@ -22,14 +23,10 @@ const errorResponse = (response, statusCode, errorMessage) => response.status(st
  * @param {Object} data any data response for the user
  * @returns {Object} success API response
  */
-const successResponse = (response, statusCode, successMessage, data) => response.status(statusCode)
+export const successResponse = (response, statusCode, successMessage, data) => response
+  .status(statusCode)
   .json({
     status: statusCode,
     message: successMessage,
     data,
   });
-
-export {
-  errorResponse,
-  successResponse,
-};
