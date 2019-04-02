@@ -1,7 +1,11 @@
 import crypto from 'crypto';
 import slug from 'slug';
 import models from '../../db/models';
-import { successResponse, errorResponse, verifyToken } from '../utils/helpers';
+import {
+  successResponse,
+  errorResponse,
+  verifyToken,
+} from '../../utils/helpers.utils';
 
 const { Article } = models;
 
@@ -39,7 +43,7 @@ export default async function create(req, res) {
       imageList: images,
       tagList: tags,
       readTime: '30 min',
-      subcriptionType: 'free',
+      subscriptionType: 'free',
       status: 'draft',
     });
     return successResponse(

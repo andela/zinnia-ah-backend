@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { errorResponse } from '../utils/helpers';
-import { newUserSchema } from '../../utils/validationSchema';
+import { errorResponse } from '../../utils/helpers.utils';
+import { newUserSchema } from '../../utils/validation-schema.utils';
 
 /**
  * Input validator for a new user account

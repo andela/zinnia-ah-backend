@@ -77,3 +77,19 @@ export const userMissingPasswordConfirmation = {
   fullName: 'Igbomina Developer',
   passwordConfirmation: '',
 };
+
+export const loginCredentials = {
+  email: 'giant@gmail.com',
+  password: 'smiley007',
+};
+
+export const nonExistentUser = {
+  email: 'humpty@dumpty.com',
+  password: 'not12database',
+};
+
+export const signupCredentials = {
+  email: 'roses@gmail.com',
+  password: '16goingOn17',
+  username: 'flowergarden',
+};

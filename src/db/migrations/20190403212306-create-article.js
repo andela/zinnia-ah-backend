@@ -33,9 +33,9 @@ export default {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      subcriptionType: {
+      subscriptionType: {
         type: Sequelize.ENUM('free', 'premium'),
-        field: 'subcription_type',
+        field: 'subscription_type',
         defaultValue: 'free',
       },
       status: {
