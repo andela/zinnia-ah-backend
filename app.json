@@ -6,6 +6,7 @@
 
   ],
   "env": {
+    "NPM_CONFIG_PRODUCTION": false
   },
   "formation": {
   },
