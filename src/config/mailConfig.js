@@ -14,27 +14,26 @@ const transporter = nodemailer.createTransport({
   port,
   auth: {
     user: username,
-    pass
-  }
+    pass,
+  },
 });
 
 const sendMailer = async (body) => {
+  const {
+    receivers, subject, text, html,
+  } = body;
+  const allRecipientEmail = receivers.join(', ');
+  const mailOptions = {
+    from: email,
+    to: allRecipientEmail,
+    subject,
+    text,
+    html,
+  };
   try {
-    const {
-      receivers, subject, text, html
-    } = body;
-    const allRecipientEmail = receivers.join(', ');
-    const mailOptions = {
-      from: email,
-      to: allRecipientEmail,
-      subject,
-      text,
-      html,
-    };
-    const info = await transporter.sendMail(mailOptions);
-    return info;
+    return await transporter.sendMail(mailOptions);
   } catch (err) {
-    return err;
+    throw err;
   }
 };
 export default sendMailer;
