@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import welcome from './controllers';
+import Users from './controllers/users';
+
+const { createUser } = Users;
 
 const router = Router();
 
@@ -15,9 +17,9 @@ const router = Router();
 /**
  * @swagger
  *
- * /api/v1/welcome:
- *   get:
- *     description: Default Welcome Message
+ * /api/v1/users:
+ *   post:
+ *     description: User Registration Endpoint
  *     produces:
  *       - application/json
  *     request:
@@ -26,10 +28,10 @@ const router = Router();
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/default'
+ *         $ref: '#/definitions/users'
  *     responses:
- *       200:
- *         description: welcome message
+ *       201:
+ *         description: User created
  *       400:
  *         description: Bad request.
  *       401:
@@ -39,6 +41,6 @@ const router = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-router.get('/welcome', welcome);
+router.post('/users', createUser);
 
 export default router;

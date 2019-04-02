@@ -2,5 +2,15 @@ language: node_js
 node_js:
   - "stable"
 
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database ah_zinnia;' -U postgres
+  - npm run db:migrate
+
+script:
+  - nyc --reporter=lcov npm run test
+
 after_success:
   - npm run coverage
