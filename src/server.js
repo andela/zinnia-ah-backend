@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'path';
 import morgan from 'morgan';
+
 import router from './routes';
 
 // Create global app object

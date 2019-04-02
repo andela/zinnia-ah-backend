@@ -38,6 +38,36 @@ const authRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
+authRouter.post('/users', validateNewUser, signup);
+authRouter.get('/users/confirmation/:token', confirmUser);
+
+/**
+ * @swagger
+ *
+ * /api/v1/users:
+ *   post:
+ *     description: User Registration Endpoint
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: User created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
 authRouter.post('/signup', validateNewUser, signup);
 authRouter.get('/users/confirmation/:token', confirmUser);
 

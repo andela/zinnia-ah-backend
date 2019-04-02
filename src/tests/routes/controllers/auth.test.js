@@ -11,6 +11,7 @@ import {
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
+const { User } = models;
 
 const { email, password } = loginCredentials;
 
