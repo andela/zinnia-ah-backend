@@ -18,25 +18,23 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendMail = (req, res, body) => {
-  const {
-    receivers, subject, text, html
-  } = body;
-  const allRecipientEmail = receivers.join(', ');
-  const mailOptions = {
-    from: email,
-    to: allRecipientEmail,
-    subject,
-    text,
-    html,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.json({ error });
-    }
-    return res.json({ info });
-  });
+const sendMailer = async (body) => {
+  try {
+    const {
+      receivers, subject, text, html
+    } = body;
+    const allRecipientEmail = receivers.join(', ');
+    const mailOptions = {
+      from: email,
+      to: allRecipientEmail,
+      subject,
+      text,
+      html,
+    };
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+  } catch (err) {
+    return err;
+  }
 };
-
-export default sendMail;
+export default sendMailer;
