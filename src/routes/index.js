@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import createUser from './controllers/users';
 
+import Users from './controllers/users';
+
+const { createUser } = Users;
+
 const router = Router();
+const { newUserAccount } = validator;
 
 /**
  * @swagger

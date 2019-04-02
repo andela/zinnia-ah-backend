@@ -49,7 +49,11 @@ app.use('/api/v1', router);
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
+<<<<<<< HEAD
   console.log(`Listening on port ${server.address().port}`);
+=======
+  console.log(`Listening on port ${server.address().port} in ${process.env.NODE_ENV} environment`);
+>>>>>>> [feature] add validation for email existence
 });
 
 export default app;
