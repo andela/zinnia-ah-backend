@@ -45,4 +45,36 @@ const router = Router();
 router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
+
+
+/**
+ * @swagger
+ *
+ * /api/v1/users:
+ *   post:
+ *     description: User Registration Endpoint
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: User created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+router.post('/forgot-password', forgotPassword);
+router.patch('/reset-password/:token', resetPassword);
+
 export default router;
