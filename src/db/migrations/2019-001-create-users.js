@@ -37,7 +37,7 @@ export default {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    isActive: {
+    confirmed: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       default: false,
