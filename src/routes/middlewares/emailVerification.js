@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import models from '../../db/models';
 import { errorResponse } from '../../utils/apiResponse';
 
@@ -12,15 +13,18 @@ const { User } = models;
  * @returns {Object} Error Response if validation fails
  * @callback next pass control to the next function
  */
-export const preventEmailDuplication = async (req, res, next) => {
-  const { email } = req.body;
+export const preventAccountDuplication = async (req, res, next) => {
+  const { email, username } = req.body;
   const existingUser = await User.findOne({
     where: {
-      email
+      [Op.or]: [{ email }, { username }]
     }
   });
   if (existingUser) {
-    return errorResponse(res, 422, 'A user account with this email exists already');
+    if (existingUser.email === email) {
+      return errorResponse(res, 409, 'This email is already taken');
+    }
+    return errorResponse(res, 409, 'This username is already taken');
   }
   next();
 };

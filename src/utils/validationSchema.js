@@ -25,18 +25,7 @@ const newUserSchema = Joi.object().keys({
     .alphanum()
     .min(8)
     .required(),
-  passwordConfirmation: Joi
-    .string()
-    .required()
-    .valid(Joi.ref('password'))
-    .options({
-      language: {
-        any: {
-          allowOnly: 'Passwords do not match!!',
-        }
-      }
-    })
-});
+}).options({ stripUnknown: true });
 
 export default {
   newUserSchema,

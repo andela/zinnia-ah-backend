@@ -6,12 +6,11 @@ import {
   userWithInvalidEmail,
   userMissingEmail,
   userWithExistingEmail,
+  userWithExistingUserName,
   userWithUsernameNotAlphanum,
   userMissingUsername,
   userMissingPassword,
   userWithPasswordLessThanEightChars,
-  userMissingPasswordConfirmation,
-  userWithPasswordAndConfirmationMismatch,
 } from '../mockdata/userdata';
 
 chai.use(chaiHttp);
@@ -87,17 +86,6 @@ describe('User', () => {
       expect(response.body.errors[0]).to.match(/empty/);
     });
 
-    it('returns specific error when passwordConfirmation is missing from request', async () => {
-      const response = await chai.request(app)
-        .post(endPoint)
-        .send(userMissingPasswordConfirmation);
-
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/passwordConfirmation/);
-      expect(response.body.errors[0]).to.match(/empty/);
-    });
-
     it('returns specific error when password is less than 8 characters', async () => {
       const response = await chai.request(app)
         .post(endPoint)
@@ -108,24 +96,24 @@ describe('User', () => {
       expect(response.body.errors[0]).to.match(/password length must be at least 8 characters long/);
     });
 
-    it('returns specific error when passwordConfirmation does not match user password', async () => {
-      const response = await chai.request(app)
-        .post(endPoint)
-        .send(userWithPasswordAndConfirmationMismatch);
-
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/Passwords do not match/);
-    });
-
-    it('does not allow for email record duplication', async () => {
+    it('does not allow for choosing existing email address', async () => {
       const response = await chai.request(app)
         .post(endPoint)
         .send(userWithExistingEmail);
 
       expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/email exists already/);
+      expect(response.body.status).to.be.eql(409);
+      expect(response.body.errors[0]).to.match(/email is already taken/);
+    });
+
+    it('does not allow for username duplication', async () => {
+      const response = await chai.request(app)
+        .post(endPoint)
+        .send(userWithExistingUserName);
+
+      expect(response.body).to.have.key('errors', 'status');
+      expect(response.body.status).to.be.eql(409);
+      expect(response.body.errors[0]).to.match(/username is already taken/);
     });
   });
 });

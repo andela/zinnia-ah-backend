@@ -7,75 +7,75 @@ const emptyUser = {
 };
 
 const userWithInvalidEmail = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@',
+  username: 'janesmith',
+  email: 'jsmith@com',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
   passwordConfirmation: 'password1',
 };
 
 const userMissingEmail = {
-  username: 'igbominadeveloper',
+  username: 'janesmith',
   email: '',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
   passwordConfirmation: 'password1',
 };
 
 const userWithExistingEmail = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
+  username: 'janesmith',
+  email: 'jsmith@gmail.com',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
+  passwordConfirmation: 'password1',
+};
+
+const userWithExistingUserName = {
+  username: 'janesmith',
+  email: 'jsmith@gm.com',
+  password: 'hhrtuyhgty5t678',
+  fullName: 'Igbomina Developer',
   passwordConfirmation: 'password1',
 };
 
 const userWithUsernameNotAlphanum = {
-  username: 'igb##o&&))',
-  email: 'igbominadeveloper@ah.com',
+  username: 'janesmit=---h',
+  email: 'jsmith@gmail.com',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
   passwordConfirmation: 'password1',
 };
 
 const userMissingUsername = {
   username: '',
-  email: 'igbominadeveloper@ah.com',
+  email: 'jsmith@gmail.com',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
   passwordConfirmation: 'password1',
 };
 
 const userMissingPassword = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
+  username: 'janesmith',
+  email: 'jsmith@gmail.com',
   fullName: 'Igbomina Developer',
   password: '',
   passwordConfirmation: 'password1',
 };
 
 const userWithPasswordLessThanEightChars = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
+  username: 'janesmith',
+  email: 'jsmith@gmail.com',
   fullName: 'Igbomina Developer',
   password: 'passwor',
   passwordConfirmation: 'passwor',
 };
 
 const userMissingPasswordConfirmation = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
+  username: 'janesmith',
+  email: 'jsmith@gmail.com',
+  password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
-  password: 'password1',
   passwordConfirmation: '',
-};
-
-const userWithPasswordAndConfirmationMismatch = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
-  fullName: 'Igbomina Developer',
-  password: 'password1',
-  passwordConfirmation: 'password',
 };
 
 export {
@@ -83,10 +83,10 @@ export {
   userWithInvalidEmail,
   userMissingEmail,
   userWithExistingEmail,
+  userWithExistingUserName,
   userWithUsernameNotAlphanum,
   userMissingUsername,
   userMissingPassword,
   userWithPasswordLessThanEightChars,
   userMissingPasswordConfirmation,
-  userWithPasswordAndConfirmationMismatch,
 };
