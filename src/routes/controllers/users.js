@@ -8,6 +8,7 @@ const { User } = models;
 const secret = process.env.SECRET_KEY;
 const expires = { expiresIn: '30days' };
 const generateToken = payload => jwt.sign(payload, secret, expires);
+import path from 'path';
 const Users = {
 /**
    * Create A User
@@ -16,6 +17,7 @@ const Users = {
    * @returns {object} user object
    */
   async createUser(req, res) {
+    console.log(__dirname);
     const {
       username, email, password
     } = req.body;
