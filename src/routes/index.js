@@ -1,12 +1,11 @@
 import { Router } from 'express';
 import createUser from './controllers/users';
 
-import Users from './controllers/users';
+import validator from './middlewares/validateUser';
 
-const { createUser } = Users;
 
 const router = Router();
-const { newUserAccount } = validator;
+const { validateNewUser } = validator;
 
 /**
  * @swagger
@@ -44,6 +43,6 @@ const { newUserAccount } = validator;
  *       5XX:
  *        description: Unexpected error.
  */
-router.post('/users', createUser);
+router.post('/users', validateNewUser, createUser);
 
 export default router;

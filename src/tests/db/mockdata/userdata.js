@@ -78,14 +78,6 @@ const userWithPasswordAndConfirmationMismatch = {
   passwordConfirmation: 'password',
 };
 
-const validUser = {
-  username: 'igbominadeveloper',
-  email: 'igbominadeveloper@ah.com',
-  fullName: 'Igbomina Developer',
-  password: 'password1',
-  passwordConfirmation: 'password1',
-};
-
 export {
   emptyUser,
   userWithInvalidEmail,
@@ -97,5 +89,4 @@ export {
   userWithPasswordLessThanEightChars,
   userMissingPasswordConfirmation,
   userWithPasswordAndConfirmationMismatch,
-  validUser,
 };

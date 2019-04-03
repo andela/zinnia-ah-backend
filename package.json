@@ -20,7 +20,7 @@
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
     "test:watch": "NODE_ENV=test mocha src/tests/**/**.test.js --watch",
     "build": "rm -rf build && babel src -d build",
-    "migration:refresh": "sequelize db:migrate:undo:all && sequelize db:migrate",
+    "test-migration:refresh": "NODE_ENV=test sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate"
@@ -32,6 +32,7 @@
     "cors": "^2.8.5",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "joi": "^14.3.1",
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.1",
     "nodemailer": "^6.0.0",

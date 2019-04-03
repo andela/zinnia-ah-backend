@@ -12,7 +12,7 @@ const { newUserSchema } = schema;
  * @returns {Object} Error Response if validation fails
  * @callback next when validation passes
  */
-const newUserAccount = (request, response, next) => {
+const validateNewUser = (request, response, next) => {
   const { error } = Joi.validate(request.body, newUserSchema, {
     abortEarly: false,
     language: {
@@ -26,6 +26,4 @@ const newUserAccount = (request, response, next) => {
   next();
 };
 
-export default {
-  newUserAccount,
-};
+export default validateNewUser;

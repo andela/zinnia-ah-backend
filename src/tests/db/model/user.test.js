@@ -12,7 +12,6 @@ import {
   userWithPasswordLessThanEightChars,
   userMissingPasswordConfirmation,
   userWithPasswordAndConfirmationMismatch,
-  validUser
 } from '../mockdata/userdata';
 
 chai.use(chaiHttp);
@@ -117,15 +116,6 @@ describe('User', () => {
       expect(response.body).to.have.key('errors', 'status');
       expect(response.body.status).to.be.eql(422);
       expect(response.body.errors[0]).to.match(/Passwords do not match/);
-    });
-
-    it('passes all validation checks and creates a user', async () => {
-      const response = await chai.request(app)
-        .post(endPoint)
-        .send(validUser);
-
-      expect(response.body).to.have.keys('data', 'message', 'status');
-      expect(response.body.status).to.be.eql(201);
     });
 
     it('does not allow for email record duplication', async () => {
