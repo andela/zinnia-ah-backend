@@ -30,7 +30,7 @@ const Users = {
       const user = await User.create(data);
       const tokenPayload = { id: user.id, email: user.email };
       const token = generateToken(tokenPayload);
-      const url = process.env.NODE_ENV === 'test' ? `http://localhost:3000/api/v1/confirmation/${token}` : `https://zinnia-ah-backend-staging.herokuapp.com/api/v1/${token}`;
+      const url = process.env.NODE_ENV === 'test' ? `${process.env.LOCAL_URL}/${token}` : `${process.env.PRODUCTION_URL}/${token}`;
 
       const emailDetails = {
         receivers: [`${email}`],
@@ -60,8 +60,8 @@ const Users = {
       const responseData = {
         confirmed: response[1][0].confirmed,
       };
-      return res.status(201).json({
-        status: 201,
+      return res.status(200).json({
+        status: 200,
         message: 'Your account has been verified',
         data: responseData,
       });
