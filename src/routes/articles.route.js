@@ -8,6 +8,7 @@ import {
 import {
   getArticle,
   createArticle,
+  removeArticle,
   likeAnArticle,
   unlikeAnArticle,
 } from './controllers/articles.controller';
@@ -19,10 +20,58 @@ const articleRouter = Router();
  * @swagger
  *
  * /api/v1/article:
+ *   delete:
+ *     tags:
+ *       - article
+ *     description: users can delete an article on authors haven.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: title
+ *         description: the title of the article.
+ *         in: body
+ *         required: true
+ *       - name: description
+ *         description: the summary of the article.
+ *         in: body
+ *         required: true
+ *       - name: body
+ *         description: the content of the article.
+ *         in: body
+ *         required: true
+ *       - name: images
+ *         description: url to all images in the articles. {string} seperated with a comma.
+ *         in: body
+ *       - name: tags
+ *         description: the tag list.
+ *         in: body
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article deleted
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: ran
+ */
+articleRouter.delete('/:article_id', removeArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
  *   post:
  *     tags:
  *       - article
- *     description: users can create an article.
+ *     description: users can create an article on authors haven.
  *     produces:
  *       - application/json
  *     parameters:

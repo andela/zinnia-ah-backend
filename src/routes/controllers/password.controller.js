@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 import bcrypt from 'bcryptjs';
+
 import models from '../../db/models';
 import {
   generateToken,
