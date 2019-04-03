@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import createUser from './controllers/users';
+import { createUser, confirmUser, } from './controllers/users';
 
 const router = Router();
 
@@ -40,5 +40,6 @@ const router = Router();
  *        description: Unexpected error.
  */
 router.post('/users', createUser);
+router.get('/confirmation/:token', confirmUser);
 
 export default router;

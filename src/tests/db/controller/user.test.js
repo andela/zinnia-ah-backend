@@ -27,6 +27,7 @@ describe('CREATE USER', () => {
         done();
       });
   });
+
   it('should fail creation when email is already in use', (done) => {
     chai.request(app)
       .post(url)
@@ -36,6 +37,7 @@ describe('CREATE USER', () => {
         done();
       });
   });
+  
   it('should fail creation when username is already in use', (done) => {
     chai.request(app)
       .post(url)

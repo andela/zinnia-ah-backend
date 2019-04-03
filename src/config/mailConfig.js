@@ -20,7 +20,10 @@ const transporter = nodemailer.createTransport({
 
 const sendMailer = async (body) => {
   const {
-    receivers, subject, text, html,
+    receivers,
+    subject,
+    text,
+    html,
   } = body;
   const allRecipientEmail = receivers.join(', ');
   const mailOptions = {
@@ -30,10 +33,12 @@ const sendMailer = async (body) => {
     text,
     html,
   };
+
   try {
     return await transporter.sendMail(mailOptions);
   } catch (err) {
     throw err;
   }
 };
+
 export default sendMailer;
