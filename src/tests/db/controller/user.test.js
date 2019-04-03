@@ -7,7 +7,6 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
@@ -19,11 +18,11 @@ const userRequestObject = {
   password: 'hhrtuyhgty5t678',
 };
 
-
 describe('CREATE USER', () => {
   let userToken;
-  it('should create a user successfully when valid input are supplied', (done) => {
-    chai.request(app)
+  it('should create a user successfully when valid input are supplied', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -32,16 +31,18 @@ describe('CREATE USER', () => {
         done();
       });
   });
-  it('should confirm a user', (done) => {
-    chai.request(app)
+  it('should confirm a user', done => {
+    chai
+      .request(app)
       .get(`${confirmationUrl}/${userToken}`)
       .end((err, res) => {
         expect(res.status).to.equal(200);
         done();
       });
   });
-  it('should fail creation when email is already in use', (done) => {
-    chai.request(app)
+  it('should fail creation when email is already in use', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -49,8 +50,9 @@ describe('CREATE USER', () => {
         done();
       });
   });
-  it('should fail creation when username is already in use', (done) => {
-    chai.request(app)
+  it('should fail creation when username is already in use', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -66,8 +68,9 @@ describe('EDIT PROFILE', () => {
     bio: 'I like to skateboard',
     imageUrl: 'https://i.stack.imgur.com/xHWG8.jpg',
   };
-  it.skip('should not update a user profile successfully when invalid input are supplied', (done) => {
-    chai.request(app)
+  it.skip('should not update a user profile successfully when invalid input are supplied', done => {
+    chai
+      .request(app)
       .put(url1)
       .send(userUpdateObject)
       .end((err, res) => {
@@ -77,21 +80,19 @@ describe('EDIT PROFILE', () => {
   });
 });
 describe('Get a single User', () => {
+  it('Should not get a non-existent user', async () => {
+    const response = await chai.request(app).get('/api/v1/user/johndoe');
+    expect(response.status).to.equal(404);
+    expect(response.body.message).to.equal(
+      'The username provided does not exist',
+    );
+  });
 
-  it('Should not get a non-existent user',
-    async () => {
-      const response = await chai.request(app)
-        .get('/api/v1/user/johndoe')
-      expect(response.status).to.equal(404);
-      expect(response.body.message)
-        .to.equal('The username provided does not exist');
-    });
-
-  it('Should get a user with valid username param',
-    async () => {
-      const response = await chai.request(app)
-        .get('/api/v1/user/janesmith')
-        expect(response.status).to.equal(200);
-        expect(response.body.data).to.be.an('object').to.have.property('username');
-      });
-    })
+  it('Should get a user with valid username param', async () => {
+    const response = await chai.request(app).get('/api/v1/user/janesmith');
+    expect(response.status).to.equal(200);
+    expect(response.body.data)
+      .to.be.an('object')
+      .to.have.property('username');
+  });
+});
