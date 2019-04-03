@@ -1,12 +1,14 @@
 import chai from 'chai';
 import mockery from 'mockery';
+import dotenv from 'dotenv';
 import nodemailerMock from 'nodemailer-mock';
 import sendMailer from '../../config/mailConfig';
 
 const { expect } = chai;
+dotenv.config();
 
 let info, error;
-const receivers = ['nedyudombat@gmail.com'];
+const receivers = [`${process.env.TEST_MAIL}`];
 const body = {
   receivers,
   subject: 'Test mail',
@@ -59,6 +61,7 @@ describe('Mail Configuration', () => {
 
   it('should fail to send an email if there is no object passed to the sendMail function', async () => {
     try {
+      // eslint-disable-next-line no-undef
       info = await sendMailer(noBody);
     } catch (e) {
       error = e;

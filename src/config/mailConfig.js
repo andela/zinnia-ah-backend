@@ -19,12 +19,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMailer = async (body) => {
-
   const {
-    receivers, 
-    subject, 
-    text, 
-    html,
+    receivers, subject, text, html,
   } = body;
 
   const allRecipientEmail = receivers.join(', ');
