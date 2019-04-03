@@ -124,3 +124,27 @@ export const verifyToken = async token => {
     return data;
   });
 };
+
+export const checkUser = async (req, res, email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return res.status(404).json({
+      error: `User with this ${email} does not exist`,
+    });
+  }
+  return user;
+};
+
+/**
+ * Check User existence
+ *
+ * @param {String} id
+ * @returns {Boolean} true if user exists
+ * @returns {Boolean} false if user does not exist
+ */
+export const findUserbyId = async id => {
+  return await User.findOne({
+    where: { id },
+    attributes: ['username', 'firstName', 'lastName', 'bio', 'image'],
+  });
+};
