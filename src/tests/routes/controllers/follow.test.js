@@ -7,10 +7,6 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-before(async () => {
-  await models.sequelize.sync({ force: true });
-});
-
 const userRequestObject = {
   username: 'janahimmmm',
   email: 'nedy@gmail.com',

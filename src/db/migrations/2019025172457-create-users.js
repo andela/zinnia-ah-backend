@@ -9,12 +9,10 @@ export default {
       },
       firstName: {
         type: Sequelize.STRING,
-        allowNull: true,
         field: 'first_name',
       },
       lastName: {
         type: Sequelize.STRING,
-        allowNull: true,
         field: 'last_name',
       },
       username: {
@@ -24,39 +22,30 @@ export default {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
         unique: true,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      bio: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
+      bio: Sequelize.TEXT,
       interests: {
         type: Sequelize.ARRAY(Sequelize.TEXT),
-        allowNull: true,
       },
-      image: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
+      image: Sequelize.TEXT,
       isEmailVerified: {
         type: Sequelize.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false,
         field: 'is_email_verified',
       },
       socialProvider: {
         type: Sequelize.STRING,
-        allowNull: true,
         field: 'social_provider',
       },
       socialId: {
         type: Sequelize.STRING,
-        allowNull: true,
         field: 'social_id',
       },
       createdAt: {

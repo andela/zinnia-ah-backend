@@ -1,7 +1,9 @@
 import { Router } from 'express';
 
-import { getAllAuthors, getAuthorProfile } from './controllers/auth.controller';
-import { verifyToken } from '../utils/helpers.utils';
+import {
+  getAllAuthors,
+  getAuthorProfile,
+} from './controllers/users.controller';
 
 const userRouter = Router();
 
@@ -32,7 +34,7 @@ const userRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/', verifyToken, getAllAuthors);
+userRouter.get('/', getAllAuthors);
 
 /**
  * @swagger
@@ -61,6 +63,6 @@ userRouter.get('/', verifyToken, getAllAuthors);
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/:username', verifyToken, getAuthorProfile);
+userRouter.get('/:username', getAuthorProfile);
 
 export default userRouter;

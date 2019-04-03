@@ -1,5 +1,5 @@
 import models from '../../db/models';
-import { successResponse, errorResponse } from '../../utils/helpers';
+import { successResponse, errorResponse } from '../../utils/helpers.utils';
 
 const { User } = models;
 
@@ -13,8 +13,11 @@ const { User } = models;
  */
 export async function getAllAuthors(req, res) {
   try {
-    const results = await User.findAll();
-    return successResponse(res, 200, 'success', results);
+    const authors = await User.findAll();
+    if (!authors[0]) {
+      return errorResponse(res, 404, 'There are no existing authors yet');
+    }
+    return successResponse(res, 200, 'success', { authors });
   } catch (error) {
     return errorResponse(res, 501, error.message);
   }
@@ -31,15 +34,17 @@ export async function getAllAuthors(req, res) {
 export async function getAuthorProfile(req, res) {
   const { username } = req.params;
   try {
-    const author = await User.findOne({
+    const authorProfile = await User.findOne({
       where: {
         username,
       },
     });
-    if (!author) {
+    if (!authorProfile) {
       return errorResponse(res, 404, 'Author not found');
     }
-    return successResponse(res, 200, 'Get profile successful', author);
+    return successResponse(res, 200, 'Get profile request successful', {
+      authorProfile,
+    });
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
