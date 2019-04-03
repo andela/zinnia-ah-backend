@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import models from '../../../db/models';
 import app from '../../../server';
 
+
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -37,7 +38,6 @@ describe('CREATE USER', () => {
         done();
       });
   });
-  
   it('should fail creation when username is already in use', (done) => {
     chai.request(app)
       .post(url)

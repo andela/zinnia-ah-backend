@@ -2,7 +2,7 @@ import {
   generateToken, verifyToken, errorResponse, successResponse,
 } from '../utils/helpers';
 import models from '../../db/models';
-import sendMail from '../../config/mailConfig';
+import sendMailer from '../../config/mailConfig';
 
 const { User } = models;
 
@@ -14,18 +14,18 @@ const { User } = models;
    */
 
 export const createUser = async (req, res) => {
+  const user = await User.create(req.body);
+  const tokenPayload = { id: user.id, email: user.email };
+  const token = await generateToken(tokenPayload);
+  const url = process.env.NODE_ENV === 'test' ? `${process.env.LOCAL_URL}/${token}` : `${process.env.PRODUCTION_URL}/${token}`;
+  const emailDetails = {
+    receivers: [`${user.email}`],
+    subject: 'Verification email',
+    text: '',
+    html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
+  };
   try {
-    const user = await User.create(req.body);
-    const tokenPayload = { id: user.id, email: user.email };
-    const token = await generateToken(tokenPayload);
-    const url = process.env.NODE_ENV === 'test' ? `${process.env.LOCAL_URL}/${token}` : `${process.env.PRODUCTION_URL}/${token}`;
-    const emailDetails = {
-      receivers: [`${user.email}`],
-      subject: 'Verification email',
-      text: '',
-      html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
-    };
-    sendMail(emailDetails);
+    sendMailer(emailDetails);
     return successResponse(res, 201, 'You have successfully registered however you would need to check your mail to verify your account', [{ token }]);
   } catch (err) {
     return errorResponse(res, 500, err.message);
