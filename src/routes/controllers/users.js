@@ -29,10 +29,68 @@ export const createUser = async (req, res) => {
       text: '',
       html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
     };
+<<<<<<< HEAD
     sendMailer(emailDetails);
     return successResponse(res, 201, 'You have successfully registered however you would need to check your mail to verify your account', [{ token }]);
   } catch (err) {
     return errorResponse(res, 500, err.message);
+=======
+    try {
+      const user = await User.create(data);
+      const tokenPayload = { id: user.id, email: user.email };
+      const token = generateToken(tokenPayload);
+      return res.status(201).json({
+        status: 201,
+        username: user.username,
+        token,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: 500,
+        error: err
+      });
+    }
+  },
+  /**
+    * Update user profile.
+    * @constructor
+    * @param {object} req
+    * @param {object} res
+    * @returns {object} user object
+    */
+
+  async updateUserProfile(req, res) {
+    try {
+      const userProfile = await User.findByPk(req.decoded.id);
+      const {
+        firstName, lastName, username, bio, imageUrl
+      } = req.body;
+      const resultData = await userProfile.update({
+        firstName: firstName || userProfile.firstName,
+        lastName: lastName || userProfile.lastName,
+        username: username || userProfile.username,
+        bio: bio || userProfile.bio,
+        imageUrl: imageUrl || userProfile.imageUrl
+      });
+      const resultObject = {
+        firstName: resultData.firstName,
+        lastName: resultData.lastName,
+        username: resultData.username,
+        bio: resultData.bio,
+        imageUrl: resultData.imageUrl,
+      };
+      return res.status(204).json({
+        status: 204,
+        message: 'Your profile has been updated succesfully',
+        resultObject,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: 500,
+        error: err
+      });
+    }
+>>>>>>> [feat #164797148] start CRUD functionality on user profile
   }
 };
 

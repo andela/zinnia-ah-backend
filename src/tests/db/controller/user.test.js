@@ -8,7 +8,6 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
@@ -19,7 +18,6 @@ const userRequestObject = {
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
-
 
 describe('CREATE USER', () => {
   let userToken;
