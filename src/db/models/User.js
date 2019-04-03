@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: true,
+        field: 'first_name',
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: true,
+        field: 'last_name',
       },
       username: {
         type: DataTypes.STRING,
@@ -34,24 +36,39 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       bio: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      interests: {
+        type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: true,
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       isEmailVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+        allowNull: true,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
       },
       socialProvider: {
         type: DataTypes.STRING,
         allowNull: true,
+        field: 'social_provider',
       },
       socialId: {
         type: DataTypes.STRING,
         allowNull: true,
+        field: 'social_id',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
       },
     },
     {
@@ -61,7 +78,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   );
-  User.associate = model => {
+  User.associate = () => {
     // associations can be defined here
     User.hasMany(model.Article);
   };

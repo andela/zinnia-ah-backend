@@ -1,53 +1,74 @@
-export default (sequelize, DataTypes) => {
+export default () => {
   const Article = sequelize.define(
     'Article',
     {
-      articleId: {
+      id: {
+        allowNull: false,
+        primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-        autoIncrement: false,
-        allowNull: false,
-        field: 'id',
       },
       userId: {
         type: DataTypes.UUID,
         field: 'user_id',
+        allowNull: false,
       },
       slug: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
-      title: DataTypes.STRING,
-      description: DataTypes.STRING,
-      body: DataTypes.TEXT,
-      imageList: {
+      description: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      body: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      imageList: {
+        type: DataTypes.ARRAY(DataTypes.TEXT),
         field: 'image_list',
       },
       tagList: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.TEXT),
         field: 'tag_list',
       },
-      favoriteCount: {
-        type: DataTypes.STRING,
-        field: 'favorite_count',
-      },
-      readTime: {
-        type: DataTypes.STRING,
-        field: 'read_time',
+      favouritesCount: {
+        type: DataTypes.INTEGER,
+        field: 'favourites_count',
+        default: 0,
       },
       subcriptionType: {
         type: DataTypes.ENUM('free', 'premium'),
         field: 'subcription_type',
+        default: 'free',
       },
-      status: DataTypes.ENUM('published', 'draft', 'trash', 'banned'),
+      status: {
+        type: DataTypes.ENUM('published', 'draft', 'trash', 'banned'),
+        default: 'draft',
+      },
+      readTime: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'read_time',
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {},
   );
-  Article.associate = models => {
-    Article.belongsTo(models.User);
-  };
+  Article.associate = () => {};
   return Article;
 };
