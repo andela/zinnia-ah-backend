@@ -21,7 +21,7 @@
     "test:watch": "NODE_ENV=test mocha src/tests/**/**.test.js --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "db:migrate": "sequelize db:migrate",
+    "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate"
   },
   "author": "Andela Simulations Programme",
