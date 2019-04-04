@@ -59,6 +59,7 @@ describe('Mail Configuration', () => {
 
   it('should fail to send an email if there is no object passed to the sendMail function', async () => {
     try {
+      // eslint-disable-next-line no-undef
       info = await sendMailer(noBody);
     } catch (e) {
       error = e;

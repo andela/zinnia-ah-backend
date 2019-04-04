@@ -22,12 +22,12 @@ export default {
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: Sequelize.STRING,
@@ -43,6 +43,14 @@ export default {
       default: false,
       underscored: true,
     },
+    socialProvider: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    socialId: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -54,5 +62,5 @@ export default {
       underscored: true,
     },
   }),
-  down: queryInterface => queryInterface.dropTable('user'),
+  down: queryInterface => queryInterface.dropTable('Users'),
 };
