@@ -1,4 +1,6 @@
-import { generateToken, errorResponse, successResponse, } from '../utils/helpers';
+import {
+  generateToken, errorResponse, successResponse, checkDuplicateUser
+} from '../utils/helpers';
 import models from '../../db/models';
 
 const { User } = models;
@@ -10,6 +12,11 @@ const { User } = models;
    * @returns {object} user object
    */
 const createUser = async (req, res) => {
+  const { email, username } = req.body;
+  const isDuplicate = await checkDuplicateUser(email, username);
+  if (isDuplicate) {
+    return errorResponse(res, 409, 'validation error', 'Username/Email in use already');
+  }
   try {
     const user = await User.create(req.body);
     const tokenPayload = { id: user.id, email: user.email };

@@ -25,11 +25,9 @@ describe('User', () => {
         .post(endPoint)
         .send(emptyUser);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/username/);
-      expect(response.body.errors[0]).to.match(/email/);
-      expect(response.body.errors[0]).to.match(/password/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns an email field specific error message when email is not a valid email', async () => {
@@ -37,9 +35,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithInvalidEmail);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/valid email/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns specific error when email is missing from request', async () => {
@@ -47,10 +45,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userMissingEmail);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/email/);
-      expect(response.body.errors[0]).to.match(/empty/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns specific error when username is missing from request', async () => {
@@ -58,10 +55,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userMissingUsername);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/username/);
-      expect(response.body.errors[0]).to.match(/empty/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns specific error when username is not valid alphanumerics', async () => {
@@ -69,10 +65,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithUsernameNotAlphanum);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/username/);
-      expect(response.body.errors[0]).to.match(/alpha-numeric characters/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns specific error when password is missing from request', async () => {
@@ -80,10 +75,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userMissingPassword);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/password/);
-      expect(response.body.errors[0]).to.match(/empty/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('returns specific error when password is less than 8 characters', async () => {
@@ -91,9 +85,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithPasswordLessThanEightChars);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(422);
-      expect(response.body.errors[0]).to.match(/password length must be at least 8 characters long/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(422);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('does not allow for choosing existing email address', async () => {
@@ -101,9 +95,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithExistingEmail);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(409);
-      expect(response.body.errors[0]).to.match(/email is already taken/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(409);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
 
     it('does not allow for username duplication', async () => {
@@ -111,9 +105,9 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithExistingUserName);
 
-      expect(response.body).to.have.key('errors', 'status');
-      expect(response.body.status).to.be.eql(409);
-      expect(response.body.errors[0]).to.match(/username is already taken/);
+      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.status).to.be.eql(409);
+      expect(response.body.errors.length).to.be.greaterThan(0);
     });
   });
 });

@@ -35,13 +35,12 @@ module.exports = (sequelize, DataTypes) => {
     isActive: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-      underscored: true,
     },
   }, {
     hooks: {
       beforeCreate: user => user.password && user.hashPassword(),
       beforeUpdate: user => user.password && user.hashPassword()
-    }
+    },
   });
   User.associate = () => {
     // associations can be defined here

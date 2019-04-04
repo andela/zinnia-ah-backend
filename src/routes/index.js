@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import createUser from './controllers/users';
 
-import validator from './middlewares/validateUser';
+import validateNewUser from './middlewares/validateUser';
 
 
 const router = Router();
-const { validateNewUser } = validator;
 
 /**
  * @swagger

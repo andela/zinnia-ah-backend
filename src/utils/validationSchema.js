@@ -1,9 +1,10 @@
+/* eslint-disable import/prefer-default-export */
 import Joi from 'joi';
 /**
  * This is the schema definition
  * for a new userAccount
  */
-const newUserSchema = Joi.object().keys({
+export const newUserSchema = Joi.object().keys({
   fullName: Joi
     .string()
     .trim(),
@@ -26,7 +27,3 @@ const newUserSchema = Joi.object().keys({
     .min(8)
     .required(),
 }).options({ stripUnknown: true });
-
-export default {
-  newUserSchema,
-};

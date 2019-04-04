@@ -1,4 +1,4 @@
-const emptyUser = {
+export const emptyUser = {
   username: '',
   email: '',
   fullName: '',
@@ -6,7 +6,7 @@ const emptyUser = {
   passwordConfirmation: '',
 };
 
-const userWithInvalidEmail = {
+export const userWithInvalidEmail = {
   username: 'janesmith',
   email: 'jsmith@com',
   password: 'hhrtuyhgty5t678',
@@ -14,7 +14,7 @@ const userWithInvalidEmail = {
   passwordConfirmation: 'password1',
 };
 
-const userMissingEmail = {
+export const userMissingEmail = {
   username: 'janesmith',
   email: '',
   password: 'hhrtuyhgty5t678',
@@ -22,7 +22,7 @@ const userMissingEmail = {
   passwordConfirmation: 'password1',
 };
 
-const userWithExistingEmail = {
+export const userWithExistingEmail = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
@@ -30,7 +30,7 @@ const userWithExistingEmail = {
   passwordConfirmation: 'password1',
 };
 
-const userWithExistingUserName = {
+export const userWithExistingUserName = {
   username: 'janesmith',
   email: 'jsmith@gm.com',
   password: 'hhrtuyhgty5t678',
@@ -38,7 +38,7 @@ const userWithExistingUserName = {
   passwordConfirmation: 'password1',
 };
 
-const userWithUsernameNotAlphanum = {
+export const userWithUsernameNotAlphanum = {
   username: 'janesmit=---h',
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
@@ -46,7 +46,7 @@ const userWithUsernameNotAlphanum = {
   passwordConfirmation: 'password1',
 };
 
-const userMissingUsername = {
+export const userMissingUsername = {
   username: '',
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
@@ -54,7 +54,7 @@ const userMissingUsername = {
   passwordConfirmation: 'password1',
 };
 
-const userMissingPassword = {
+export const userMissingPassword = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
   fullName: 'Igbomina Developer',
@@ -62,7 +62,7 @@ const userMissingPassword = {
   passwordConfirmation: 'password1',
 };
 
-const userWithPasswordLessThanEightChars = {
+export const userWithPasswordLessThanEightChars = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
   fullName: 'Igbomina Developer',
@@ -70,23 +70,10 @@ const userWithPasswordLessThanEightChars = {
   passwordConfirmation: 'passwor',
 };
 
-const userMissingPasswordConfirmation = {
+export const userMissingPasswordConfirmation = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
   passwordConfirmation: '',
-};
-
-export {
-  emptyUser,
-  userWithInvalidEmail,
-  userMissingEmail,
-  userWithExistingEmail,
-  userWithExistingUserName,
-  userWithUsernameNotAlphanum,
-  userMissingUsername,
-  userMissingPassword,
-  userWithPasswordLessThanEightChars,
-  userMissingPasswordConfirmation,
 };
