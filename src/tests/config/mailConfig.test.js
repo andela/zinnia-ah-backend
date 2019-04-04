@@ -8,7 +8,7 @@ const { expect } = chai;
 dotenv.config();
 
 let info, error;
-const receivers = [`${process.env.TEST_MAIL}`];
+const receivers = ['nedyudombat@gmail.com'];
 const body = {
   receivers,
   subject: 'Test mail',

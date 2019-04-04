@@ -25,7 +25,9 @@ const sendMailer = async (body) => {
     text,
     html,
   } = body;
+
   const allRecipientEmail = receivers.join(', ');
+
   const mailOptions = {
     from: email,
     to: allRecipientEmail,

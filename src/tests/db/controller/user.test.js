@@ -8,13 +8,11 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-let userToken;
-
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
 const url = '/api/v1/users';
-const confirmationUrl = '/api/v1/confirmation';
+const confirmationUrl = '/api/v1/users/confirmation';
 const userRequestObject = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
@@ -22,13 +20,14 @@ const userRequestObject = {
 };
 
 describe('CREATE USER', () => {
+  let userToken;
   it('should create a user successfully when valid input are supplied', (done) => {
     chai.request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        userToken = res.body.token;
+        userToken = res.body.data[0].token;
         done();
       });
   });
