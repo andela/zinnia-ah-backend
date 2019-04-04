@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../../../db/models';
 import app from '../../../server';
+// import { UUID } from 'sequelize/types';
 
 // configure chai to use expect
 chai.use(chaiHttp);

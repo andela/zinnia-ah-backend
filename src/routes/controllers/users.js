@@ -53,44 +53,36 @@ export const confirmUser = async (req, res) => {
   }
 }
 
-  /**
-    * Update user profile.
-    * @constructor
-    * @param {object} req
-    * @param {object} res
-    * @returns {object} user object
-    */
-
-  export const updateUserProfile = async (req, res) => {
-    try {
-      const userProfile = await User.findByPk(req.decoded.id);
-      const {
-        firstName, lastName, username, bio, imageUrl
-      } = req.body;
-      const resultData = await userProfile.update({
-        firstName: firstName || userProfile.firstName,
-        lastName: lastName || userProfile.lastName,
-        username: username || userProfile.username,
-        bio: bio || userProfile.bio,
-        imageUrl: imageUrl || userProfile.imageUrl
-      });
-      const resultObject = {
-        firstName: resultData.firstName,
-        lastName: resultData.lastName,
-        username: resultData.username,
-        bio: resultData.bio,
-        imageUrl: resultData.imageUrl,
-      };
-      return res.status(204).json({
-        status: 204,
-        message: 'Your profile has been updated succesfully',
-        resultObject,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        status: 500,
-        error: err
-      });
-    }
+/**
+  * Update user profile.
+  * @constructor
+  * @param {object} req
+  * @param {object} res
+  * @returns {object} user object
+  */
+export const updateUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const userProfile = await User.findByPk(userId);
+  const {
+    firstName, lastName, username, bio, imageUrl
+  } = req.body;
+  try {
+    const resultData = await userProfile.update({
+      firstName: firstName || userProfile.firstName,
+      lastName: lastName || userProfile.lastName,
+      username: username || userProfile.username,
+      bio: bio || userProfile.bio,
+      imageUrl: imageUrl || userProfile.imageUrl
+    });
+    const profile = {
+      firstName: resultData.firstName,
+      lastName: resultData.lastName,
+      username: resultData.username,
+      bio: resultData.bio,
+      imageUrl: resultData.imageUrl,
+    };
+    return successResponse(res, 200, 'Your profile has been updated succesfully', [{ profile }]);
+  } catch (err) {
+    return errorResponse(res, 400, err.message);
   }
-
+}
