@@ -16,7 +16,7 @@ let message;
    * @param {object} req
    * @param {object} res
    * @sends {mail} mail
-   * @returns {object} email
+   * @returns {object} token & email
    */
 export async function forgotPassword(req, res) {
   const { email } = req.body;
@@ -53,13 +53,11 @@ export async function forgotPassword(req, res) {
 }
 
 /**
- * Collect recovery email
+ * reset password email
  * @param {object} req
  * @param {object} res
- * @sends {mail} mail
- * @returns {object} email
+ * @returns {object} message object
  */
-
 export async function resetPassword(req, res) {
   const { token } = req.params;
   const { password } = req.body;

@@ -24,7 +24,7 @@ describe('Forgot Password', () => {
         resetToken = res.body.token;
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Email has been sent successfully');
-        expect(res.body.token).to.exist;
+        expect(res.body.token).to.be.a('string');
         done();
       });
   });
@@ -66,7 +66,6 @@ describe('Reset Password', () => {
       .send()
       .end((err, res) => {
         expect(res.status).to.equal(401);
-
         done();
       });
   });
