@@ -10,7 +10,7 @@ const { User } = models;
 const secret = process.env.SECRET_KEY;
 const expires = { expiresIn: '2h' };
 const generateToken = payload => jwt.sign(payload, secret, expires);
-let message;
+
 /**
    * Collect recovery email
    * @param {object} req
@@ -22,9 +22,8 @@ export async function forgotPassword(req, res) {
   const { email } = req.body;
   const checkUser = await User.findOne({ where: { email } });
   if (!checkUser) {
-    message = `User with this ${email} does not exist`;
     return res.status(404).json({
-      error: message,
+      error: `User with this ${email} does not exist`,
     });
   }
   const token = generateToken({ id: checkUser.id, email });
@@ -39,15 +38,13 @@ export async function forgotPassword(req, res) {
 
   try {
     await sendMailer(body);
-    message = 'Email has been sent successfully';
     return res.status(200).json({
-      message,
+      message: 'Email has been sent successfully',
       token,
     });
   } catch (err) {
-    message = 'Email could not be sent, please try again';
     return res.status(500).json({
-      error: message,
+      error: 'Email could not be sent, please try again',
     });
   }
 }
@@ -74,14 +71,12 @@ export async function resetPassword(req, res) {
       { passwords: hashedPassword },
       { where: { id: req.authData.id } },
     );
-    message = 'Password successfully reset';
     return res.status(200).json({
-      success: message,
+      success: 'Password successfully reset',
     });
   } catch (err) {
-    message = 'Password could not be reset, please try again';
     return res.status(500).json({
-      error: message,
+      error: 'Password could not be reset, please try again',
     });
   }
 }
