@@ -31,7 +31,7 @@ export default {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    image: {
+    imageUrl: {
       type: Sequelize.STRING,
       allowNull: true,
     },
