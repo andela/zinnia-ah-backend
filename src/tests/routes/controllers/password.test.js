@@ -21,13 +21,15 @@ describe('Forgot Password', () => {
       .post('/api/v1/users/forgot-password')
       .send(userEmail)
       .end((err, res) => {
-        resetToken = res.body.token;
+        resetToken = res.body.data;
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Email has been sent successfully');
-        expect(res.body.token).to.be.a('string');
+        expect(res.body.data).to.be.a('string');
+        // expect(res.body.data).to.be.a(resetToken);
         done();
       });
   });
+
   it('should fail if the user email doesnt exist', (done) => {
     userEmail.email = 'nedyudobat@gmail.com';
     chai.request(app)
@@ -51,6 +53,7 @@ describe('Reset Password', () => {
         done();
       });
   });
+
   it('should fail if no token is provided in the request', (done) => {
     chai.request(app)
       .patch('/api/v1/users/reset-password/')
@@ -60,6 +63,7 @@ describe('Reset Password', () => {
         done();
       });
   });
+
   it('should fail if token is invalid in the request', (done) => {
     chai.request(app)
       .patch('/api/v1/users/reset-password/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf')

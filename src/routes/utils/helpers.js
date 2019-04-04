@@ -57,9 +57,9 @@ export const successResponse = (res, statusCode, message, data) => res.status(st
   data
 });
 
-export const generateToken = async (payload) => {
+export const generateToken = async (payload, time = '14d') => {
   const token = await jwt.sign(payload, SECRET_KEY, {
-    expiresIn: '14d',
+    expiresIn: time,
   });
   return token;
 };
@@ -67,4 +67,14 @@ export const generateToken = async (payload) => {
 export const verifyToken = async (token) => {
   const decoded = await jwt.verify(token, SECRET_KEY);
   return decoded;
+};
+
+export const checkUser = async (req, res, email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return res.status(404).json({
+      error: `User with this ${email} does not exist`,
+    });
+  }
+  return user;
 };

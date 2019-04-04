@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import createUser from './controllers/users';
-import Users from './controllers/users';
+import { verifyToken } from './utils/helpers';
 import { forgotPassword, resetPassword } from './controllers/password';
 import { createUser, confirmUser, } from './controllers/users';
 
