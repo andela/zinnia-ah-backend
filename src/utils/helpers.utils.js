@@ -102,7 +102,17 @@ export const checkUser = async (req, res, email) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return res.status(404).json({
-      error: `User with this ${email} does not exist`,
+      error: `User with this email ${email} does not exist`,
+    });
+  }
+  return user;
+};
+
+export const checkUserByUsername = async (req, res, username) => {
+  const user = await User.findOne({ where: { username } });
+  if (!user) {
+    return res.status(404).json({
+      error: `User with this username ${username} does not exist`,
     });
   }
   return user;

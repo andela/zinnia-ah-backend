@@ -10,14 +10,62 @@ const { expect } = chai;
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
+const url = '/api/v1/users';
 
-describe('FOLLOW USER', () => {
-  it('should follow a user', (done) => {
+const userRequestObject = {
+  username: 'nedy',
+  email: 'nedy@gmail.com',
+  password: 'hhrtuyhgty5t678',
+};
+
+
+describe('CREATE USER', () => {
+  it('should create a user successfully when valid input are supplied', (done) => {
     chai.request(app)
-      .post('api/v1/profiles/janesmith/follow/1')
+      .post(url)
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(500);
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should follow a user', (done) => {
+    chai.request(app)
+      .post('/api/v1/profiles/janesmith/follow/4')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should fail if a user tries to follow him/herself', (done) => {
+    chai.request(app)
+      .post('/api/v1/profiles/janesmith/follow/1')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(409);
+        done();
+      });
+  });
+
+  it('should unfollow a user', (done) => {
+    chai.request(app)
+      .delete('/api/v1/profiles/janesmith/unfollow/4')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should fail if a user tries to unfollow him/herself', (done) => {
+    chai.request(app)
+      .delete('/api/v1/profiles/janesmith/unfollow/1')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(409);
         done();
       });
   });
