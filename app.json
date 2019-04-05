@@ -6,8 +6,7 @@
 
   ],
   "env": {
-    "NPM_CONFIG_PRODUCTION": "false",
-    "DATABASE_URL": "postgres://nauqnlwp:TsIEk6q2puSnXc6dtrZQk6LznrvbrLiy@isilo.db.elephantsql.com:5432/nauqnlwp"
+    "NPM_CONFIG_PRODUCTION": "false"
   },
   "formation": {
   },
