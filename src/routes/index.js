@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createUser, confirmUser, } from './controllers/users';
-
+import { createUser, confirmUser } from './controllers/users';
 import validateNewUser from './middlewares/validateUser';
+import ArticleRouter from './Articles';
 
 
 const router = Router();
@@ -44,5 +44,6 @@ const router = Router();
  */
 router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
+router.get('/articles', ArticleRouter);
 
 export default router;
