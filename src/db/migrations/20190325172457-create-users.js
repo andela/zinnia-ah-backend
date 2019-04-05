@@ -35,7 +35,7 @@ export default {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    isActive: {
+    isEmailVerified: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       default: false
