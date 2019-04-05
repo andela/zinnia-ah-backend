@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: (queryInterface, Sequelize) => queryInterface.createTable('CommentLikes', {
     userId: {
       type: Sequelize.UUID,

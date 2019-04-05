@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const CommentLike = sequelize.define('CommentLike', {
     userId: {
       type: DataTypes.UUID,

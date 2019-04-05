@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Bookmark = sequelize.define('Bookmark', {
     userId: {
       type: DataTypes.UUID,

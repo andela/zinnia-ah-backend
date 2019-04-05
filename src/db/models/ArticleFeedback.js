@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const ArticleFeedback = sequelize.define('ArticleFeedback', {
     userId: {
       type: DataTypes.UUID,

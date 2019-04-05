@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: (queryInterface, Sequelize) => queryInterface.createTable('Articles', {
     id: {
       allowNull: false,
@@ -56,7 +56,6 @@ module.exports = {
     },
     readTime: {
       type: Sequelize.STRING,
-      allowNull: false,
       field: 'read_time',
     },
     createdAt: {
