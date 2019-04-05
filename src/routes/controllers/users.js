@@ -1,5 +1,5 @@
 import {
-  generateToken, verifyToken, errorResponse, successResponse,
+  generateToken, errorResponse, verifyToken, successResponse, checkDuplicateUser,
 } from '../utils/helpers';
 import models from '../../db/models';
 import sendMailer from '../../config/mailConfig';
@@ -12,8 +12,12 @@ const { User } = models;
    * @param {object} res
    * @returns {object} user object
    */
-
 export const createUser = async (req, res) => {
+  const { email, username } = req.body;
+  const isDuplicate = await checkDuplicateUser(email, username);
+  if (isDuplicate) {
+    return errorResponse(res, 409, 'validation error', 'Username/Email in use already');
+  }
   try {
     const user = await User.create(req.body);
     const tokenPayload = { id: user.id, email: user.email };

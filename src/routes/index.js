@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { createUser, confirmUser, } from './controllers/users';
 
+import validateNewUser from './middlewares/validateUser';
+
+
 const router = Router();
 
 /**
@@ -39,7 +42,7 @@ const router = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-router.post('/users', createUser);
+router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
 export default router;
