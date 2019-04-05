@@ -9,16 +9,14 @@ export default {
     firstName: {
       type: Sequelize.STRING,
       allowNull: true,
-      underscored: true,
     },
     lastName: {
       type: Sequelize.STRING,
       allowNull: true,
-      underscored: true,
     },
     username: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
@@ -40,8 +38,7 @@ export default {
     isEmailVerified: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
-      default: false,
-      underscored: true,
+      default: false
     },
     socialProvider: {
       type: Sequelize.STRING,
@@ -59,7 +56,7 @@ export default {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
-      underscored: true,
+      underscored: true
     },
   }),
   down: queryInterface => queryInterface.dropTable('Users'),

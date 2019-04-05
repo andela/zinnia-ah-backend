@@ -2,6 +2,9 @@ import { Router } from 'express';
 import { createUser, confirmUser, socialController } from './controllers/users';
 import passport from './services/passport-strategies';
 
+import validateNewUser from './middlewares/validateUser';
+
+
 const router = Router();
 
 /**
@@ -40,8 +43,7 @@ const router = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-
-router.post('/users', createUser);
+router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));

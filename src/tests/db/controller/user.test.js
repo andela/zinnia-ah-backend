@@ -44,7 +44,7 @@ describe('CREATE USER', () => {
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(500);
+        expect(res.status).to.equal(409);
         done();
       });
   });
@@ -53,7 +53,7 @@ describe('CREATE USER', () => {
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(500);
+        expect(res.status).to.equal(409);
         done();
       });
   });
