@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const Article = sequelize.define(
     'Article',
     {
@@ -14,6 +14,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
       slug: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
       },
