@@ -1,6 +1,4 @@
-import {
-  generateToken, errorResponse, successResponse, checkDuplicateUser
-} from '../utils/helpers';
+import { generateToken, errorResponse, successResponse, checkDuplicateUser } from '../utils/helpers';
 import models from '../../db/models';
 
 const { User } = models;
