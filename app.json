@@ -1,17 +1,7 @@
 {
-  "addons": [
-
-  ],
-  "buildpacks": [
-
-  ],
   "env": {
     "NPM_CONFIG_PRODUCTION": "false"
   },
-  "formation": {
-  },
   "name": "zinnia-ah-backend",
-  "scripts": {
-  },
   "stack": "heroku-18"
 }
