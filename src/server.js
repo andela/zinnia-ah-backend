@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'path';
+import morgan from 'morgan';
 import router from './routes';
 
 // Create global app object
@@ -34,7 +35,9 @@ const swaggerSpec = swaggerJSDoc({
 app.use(cors());
 
 // Normal express config defaults
-app.use(require('morgan')('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
