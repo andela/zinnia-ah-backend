@@ -9,6 +9,7 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
+
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
@@ -19,6 +20,7 @@ const userRequestObject = {
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
+
 
 describe('CREATE USER', () => {
   let userToken;
@@ -78,3 +80,24 @@ describe('EDIT PROFILE', () => {
       });
   });
 });
+describe('Get a single User', () => {
+
+  it('Should not get a non-existent user',
+    async () => {
+      const response = await chai.request(app)
+        .get('/api/v1/user/johndoe')
+        // .set('Authorization', firstUserToken);
+      expect(response.status).to.equal(404);
+      expect(response.body.message)
+        .to.equal('The username provided does not exist');
+    });
+
+  it('Should get a user with valid username param',
+    async () => {
+      const response = await chai.request(app)
+        .get('/api/v1/user/janesmith')
+        // .set('Authorization', firstUserToken);
+        expect(response.status).to.equal(200);
+        expect(response.body.data).to.be.an('object').to.have.property('username');
+      });
+    })
