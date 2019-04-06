@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert('Users', [
     {
       id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
@@ -12,7 +12,7 @@ export default {
   ], {});
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return queryInterface.bulkDelete('Users', null, {});
   }
 };

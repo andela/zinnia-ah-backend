@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../../server';
+import app from '../../server';
 import {
   emptyUser,
   userWithInvalidEmail,
@@ -11,7 +11,7 @@ import {
   userMissingUsername,
   userMissingPassword,
   userWithPasswordLessThanEightChars,
-} from '../mockdata/userdata';
+} from './userdata';
 
 chai.use(chaiHttp);
 

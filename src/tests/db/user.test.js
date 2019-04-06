@@ -8,10 +8,6 @@ import { transporter } from '../../../config/mailConfig';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
-
-before(async () => {
-  await models.sequelize.sync({ force: true });
-});
 const url = '/api/v1/users';
 const confirmationUrl = '/api/v1/users/confirmation';
 const userRequestObject = {
