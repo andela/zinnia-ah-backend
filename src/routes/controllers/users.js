@@ -55,7 +55,6 @@ export const confirmUser = async (req, res) => {
 
 /**
   * Update user profile.
-  * @constructor
   * @param {object} req
   * @param {object} res
   * @returns {object} user object
@@ -81,8 +80,32 @@ export const updateUserProfile = async (req, res) => {
       bio: resultData.bio,
       imageUrl: resultData.imageUrl,
     };
-    return successResponse(res, 200, 'Your profile has been updated succesfully', [{ profile }]);
+    return successResponse(res, 200, 'Your profile has been updated succesfully', profile);
   } catch (err) {
     return errorResponse(res, 400, err.message);
+  }
+}
+
+/**
+    * Get current User
+    * @constructor
+    * @param {object} req
+    * @param {object} res
+    * @param {uuid} userId - The uuid variable.
+    */
+export async function getUser(req, res) {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne(
+      {
+      where: { username},
+      attributes: ['username', 'firstName', 'lastName', 'bio', 'imageUrl'],
+      })
+      if (!user) {
+        return errorResponse(res, 404, 'The username provided does not exist');
+      }
+    return successResponse(res, 200, 'Your requested profile', user);
+  } catch (err) {
+    return errorResponse(res, 500, err.message);
   }
 }
