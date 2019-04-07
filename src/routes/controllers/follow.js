@@ -1,5 +1,5 @@
 import models from '../../db/models';
-import { errorResponse, successResponse, checkUserByUsername } from '../utils/helpers';
+import { errorResponse, successResponse, getUserbyUsername } from '../utils/helpers';
 
 const { User } = models;
 
@@ -14,7 +14,8 @@ const follow = async (req, res) => {
   const { userId } = req.params;
   const { username } = req.params;
 
-  const user = await checkUserByUsername(req, res, username);
+  const user = await getUserbyUsername(username);
+  // return console.log(user);
   const follower = await User.findByPk(userId);
   try {
     if (url.includes('unfollow')) {

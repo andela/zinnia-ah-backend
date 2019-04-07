@@ -13,13 +13,13 @@ before(async () => {
 const url = '/api/v1/users';
 
 const userRequestObject = {
-  username: 'nedy',
+  username: 'janahimmmm',
   email: 'nedy@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
 
 
-describe('CREATE USER', () => {
+describe('FOLLOW USER', () => {
   it('should create a user successfully when valid input are supplied', (done) => {
     chai.request(app)
       .post(url)
@@ -32,10 +32,11 @@ describe('CREATE USER', () => {
 
   it('should follow a user', (done) => {
     chai.request(app)
-      .post('/api/v1/profiles/janesmith/follow/4')
+      .post('/api/v1/profiles/janesmith/follow/2')
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
+        expect(res.body.message).to.equal('success');
         done();
       });
   });
@@ -46,16 +47,18 @@ describe('CREATE USER', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
+        expect(res.body.message).to.equal('You cannot follow yourself');
         done();
       });
   });
 
   it('should unfollow a user', (done) => {
     chai.request(app)
-      .delete('/api/v1/profiles/janesmith/unfollow/4')
+      .delete('/api/v1/profiles/janesmith/unfollow/2')
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
+        expect(res.body.message).to.equal('success');
         done();
       });
   });
@@ -66,6 +69,7 @@ describe('CREATE USER', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
+        expect(res.body.message).to.equal('You cannot unfollow yourself');
         done();
       });
   });

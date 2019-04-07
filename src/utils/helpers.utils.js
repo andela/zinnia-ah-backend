@@ -11,12 +11,16 @@ dotenv.config();
 /**
  * Check Email existence
  *
- * @param {String} email fhhj
+ * @param {String} email
  * @returns {Boolean} true if email exists
  * @returns {Boolean} false if email does not exist
  */
-export const checkEmailExistence = async email => {
+export const getUserbyEmail = async email => {
   return await User.findOne({ where: { email } });
+};
+
+export const getUserbyUsername = async username => {
+  return await User.findOne({ where: { username } });
 };
 
 /**
@@ -98,22 +102,3 @@ export const verifyToken = async token => {
   });
 };
 
-export const checkUser = async (req, res, email) => {
-  const user = await User.findOne({ where: { email } });
-  if (!user) {
-    return res.status(404).json({
-      error: `User with this email ${email} does not exist`,
-    });
-  }
-  return user;
-};
-
-export const checkUserByUsername = async (req, res, username) => {
-  const user = await User.findOne({ where: { username } });
-  if (!user) {
-    return res.status(404).json({
-      error: `User with this username ${username} does not exist`,
-    });
-  }
-  return user;
-};
