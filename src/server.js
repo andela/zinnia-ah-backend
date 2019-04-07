@@ -50,6 +50,11 @@ app.get('/doc', (req, res) => {
 // API routes
 app.use('/api/v1', router);
 
+// Handling unavailable routes
+app.all('*', (req, res) => {
+  return res.status(404).json({ error: 'This route does not exist'})
+});
+
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${server.address().port}`);
