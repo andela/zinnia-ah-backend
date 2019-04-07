@@ -21,11 +21,10 @@ describe('Forgot Password', () => {
       .post('/api/v1/users/forgot-password')
       .send(userEmail)
       .end((err, res) => {
-        resetToken = res.body.data;
+        resetToken = res.body.data.token;
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Email has been sent successfully');
-        expect(res.body.data).to.be.a('string');
-        // expect(res.body.data).to.be.a(resetToken);
+        expect(res.body.data.token).to.exist;
         done();
       });
   });
@@ -37,7 +36,8 @@ describe('Forgot Password', () => {
       .send(userEmail)
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal(`User with this ${userEmail.email} does not exist`);
+        expect(res.body.message).to.equal('User does not exist');
+        expect(res.body.errors).to.equal(true);
         done();
       });
   });
@@ -50,6 +50,7 @@ describe('Reset Password', () => {
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal('Password successfully reset');
         done();
       });
   });
@@ -57,7 +58,7 @@ describe('Reset Password', () => {
   it('should fail if no token is provided in the request', (done) => {
     chai.request(app)
       .patch('/api/v1/users/reset-password/')
-      .send()
+      .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(404);
         done();
@@ -67,9 +68,11 @@ describe('Reset Password', () => {
   it('should fail if token is invalid in the request', (done) => {
     chai.request(app)
       .patch('/api/v1/users/reset-password/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf')
-      .send()
+      .send('password')
       .end((err, res) => {
-        expect(res.status).to.equal(401);
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('Token Malformed');
+        expect(res.body.errors).to.equal(true);
         done();
       });
   });

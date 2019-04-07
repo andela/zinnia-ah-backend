@@ -18,17 +18,14 @@ const {
  * @returns {Boolean} false if email does not exist
  */
 export const checkEmailExistence = async (email) => {
-  const existingUser = await User.findOne({ where: { email } });
-  if (!existingUser) {
-    return false;
-  }
-  return true;
+  return await User.findOne({ where: { email } });
 };
 
 /**
  * Check Email existence to prevent duplication
  * @param {String} email email to be checked
  @ @param {String} username username to be checked
+ * @param username
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
@@ -39,10 +36,7 @@ export const checkDuplicateUser = async (email, username) => {
       [Op.or]: [{ email }, { username }]
     }
   });
-  if (existingUser === null) {
-    return false;
-  }
-  return true;
+  return existingUser !== null;
 };
 
 export const errorResponse = (res, statusCode, message, errors) => res.status(statusCode).json({
@@ -58,15 +52,18 @@ export const successResponse = (res, statusCode, message, data) => res.status(st
 });
 
 export const generateToken = async (payload, time = '14d') => {
-  const token = await jwt.sign(payload, SECRET_KEY, {
+  return await jwt.sign(payload, SECRET_KEY, {
     expiresIn: time,
   });
-  return token;
 };
 
 export const verifyToken = async (token) => {
-  const decoded = await jwt.verify(token, SECRET_KEY);
-  return decoded;
+  return await jwt.verify(token, SECRET_KEY, (err, data) => {
+    if (err) {
+      return null;
+    }
+    return data;
+  });
 };
 
 export const checkUser = async (req, res, email) => {
