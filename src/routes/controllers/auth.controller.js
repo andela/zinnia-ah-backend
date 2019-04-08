@@ -1,8 +1,8 @@
 import {
   generateToken, errorResponse, verifyToken, successResponse, checkDuplicateUser,
-} from '../utils/helpers';
+} from '../../utils/helpers.utils';
 import models from '../../db/models';
-import sendMailer from '../../config/mailConfig';
+import sendMailer from '../../config/mail-config';
 
 const { User } = models;
 /**

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import passport from './services/passport-strategies';
-import { socialController } from './controllers/users';
+import passport from './services/passport-strategies.services';
+import { socialController } from './controllers/auth.controller';
 
 const authRouter = Router();
 

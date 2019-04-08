@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import passport from './services/passport-strategies';
-import { createUser, confirmUser, socialController } from './controllers/users';
-import { forgotPassword, resetPassword } from './controllers/password';
-import validateNewUser from './middlewares/validateUser';
+import passport from './services/passport-strategies.services';
+import { createUser, confirmUser, socialController } from './controllers/auth.controller';
+import { forgotPassword, resetPassword } from './controllers/password.controller';
+import validateNewUser from './middlewares/validate-user.middleware';
 
 
 const router = Router();

@@ -2,8 +2,8 @@ import bcrypt from 'bcryptjs';
 import models from '../../db/models';
 import {
   generateToken, checkEmailExistence, errorResponse, successResponse, verifyToken,
-} from '../utils/helpers';
-import sendMailer from '../../config/mailConfig';
+} from '../../utils/helpers.utils';
+import sendMailer from '../../config/mail-config';
 
 const { User } = models;
 
