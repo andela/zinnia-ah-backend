@@ -12,17 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: DataTypes.STRING,
@@ -36,6 +36,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    socialProvider: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    socialId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   }, {
     hooks: {
       beforeCreate: user => user.password && user.hashPassword(),

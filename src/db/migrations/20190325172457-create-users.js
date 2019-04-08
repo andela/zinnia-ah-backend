@@ -20,12 +20,12 @@ export default {
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: Sequelize.STRING,
@@ -39,6 +39,14 @@ export default {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       default: false
+    },
+    socialProvider: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    socialId: {
+      type: Sequelize.STRING,
+      allowNull: true,
     },
     createdAt: {
       allowNull: false,

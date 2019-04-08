@@ -5,7 +5,6 @@ import models from '../../db/models';
 import sendMailer from '../../config/mailConfig';
 
 const { User } = models;
-
 /**
    * Create A User
    * @param {object} req
@@ -52,3 +51,26 @@ export const confirmUser = async (req, res) => {
     errorResponse(res, 500, err.message);
   }
 };
+
+/**
+ * Redirect location after social login
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response object
+ */
+export const socialController = async (req, res) => {
+  const [user, isCreated] = req.user;
+
+  try {
+    const tokenPayload = { id: user.id, email: user.email };
+    const token = await generateToken(tokenPayload);
+    if (isCreated) {
+      return successResponse(res, 201, 'You have successfully registered however you would need to check your mail to verify your account', [{ token }]);
+    }
+    return successResponse(res, 200, 'You are now logged in', [{ token }]);
+  } catch (err) {
+    return errorResponse(res, 500, err.message);
+  }
+};
+
+export default createUser;
