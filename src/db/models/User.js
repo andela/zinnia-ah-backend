@@ -1,47 +1,68 @@
 import bcrypt from 'bcryptjs';
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: true,
+export default (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    'User',
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'first_name',
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'last_name',
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      bio: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        field: 'is_email_verified',
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    bio: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    isEmailVerified: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-  }, {
-    hooks: {
-      beforeCreate: user => user.password && user.hashPassword(),
-      beforeUpdate: user => user.password && user.hashPassword()
-    },
-  });
+    {
+      hooks: {
+        beforeCreate: user => user.password && user.hashPassword(),
+        beforeUpdate: user => user.password && user.hashPassword(),
+      },
+    }
+  );
   User.associate = () => {
     // associations can be defined here
   };

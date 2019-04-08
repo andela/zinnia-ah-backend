@@ -17,12 +17,14 @@
   "scripts": {
     "start": "node build/server.js",
     "start:dev": "nodemon --exec babel-node src/server.js",
+    "pretest": "npm run db:migrate:testdb && npm run db:seed:test",
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
     "test:watch": "NODE_ENV=test mocha src/tests/**/**.test.js --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
-    "db:migrate:testdb": "NODE_ENV=test npm run db:migrate"
+    "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
+    "db:seed:test": "NODE_ENV=test sequelize db:seed:all"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
