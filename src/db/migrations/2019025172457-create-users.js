@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Users', {

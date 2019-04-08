@@ -7,6 +7,12 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const config = configuration[env];
 const db = {};
+<<<<<<< HEAD
+
+// enable logs only in development environment
+config.logging = process.env.NODE_ENV === 'development';
+=======
+>>>>>>> 164797145 Build validation to protect user creation endpoint (#16)
 
 // enable logs only in development environment
 config.logging = process.env.NODE_ENV === 'development';

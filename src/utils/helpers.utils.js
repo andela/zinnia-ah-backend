@@ -1,10 +1,14 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { Op } from 'sequelize';
+import {
+  Op
+} from 'sequelize';
 import models from '../db/models';
 
-const { User } = models;
+const {
+  User
+} = models;
 
 dotenv.config();
 
@@ -15,36 +19,41 @@ dotenv.config();
  * @returns {Boolean} true if email exists
  * @returns {Boolean} false if email does not exist
  */
-export const getUserbyEmail = async email => {
-  return await User.findOne({ where: { email } });
+export const checkEmailExistence = async email => {
+  const existingUser = await User.findOne({
+    where: {
+      email,
+    },
+  });
+  if (!existingUser) {
+    return false;
+  }
+  return true;
 };
 
 /**
- * Check User existence
- *
- * @param {String} username
- * @returns {Boolean} true if username exists
- * @returns {Boolean} false if username does not exist
- */
-export const getUserbyUsername = async username => {
-  return await User.findOne({ where: { username } });
-};
-
-/**
- * Check User duplication
- *
- * @param {String} email
- * @param {String} username
+ * Check Email existence to prevent duplication
+ * @param {String} email email to be checked
+ @ @param {String} username username to be checked
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {
-      [Op.or]: [{ email }, { username }],
+      [Op.or]: [{
+          email,
+        },
+        {
+          username,
+        },
+      ],
     },
   });
-  return existingUser !== null;
+  if (existingUser === null) {
+    return false;
+  }
+  return true;
 };
 
 export const errorResponse = (res, statusCode, message, errors) =>
@@ -95,7 +104,9 @@ export function comparePassword(hashedPassword, password) {
  * @returns {string} token
  */
 export function generateToken(payload, expiresIn = '30days') {
-  const token = jwt.sign(payload, 'SECRET_KEY', { expiresIn });
+  const token = jwt.sign(payload, 'SECRET_KEY', {
+    expiresIn,
+  });
   return token;
 }
 
@@ -106,4 +117,18 @@ export const verifyToken = async token => {
     }
     return data;
   });
+};
+
+export const checkUser = async (req, res, email) => {
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+  if (!user) {
+    return res.status(404).json({
+      error: `User with this ${email} does not exist`,
+    });
+  }
+  return user;
 };
