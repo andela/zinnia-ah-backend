@@ -1,11 +1,11 @@
 export default {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Reports', {
+    queryInterface.createTable('ArticleLikes', {
       id: {
-        allowNull: false,
-        primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
       },
       userId: {
         type: Sequelize.UUID,
@@ -27,15 +27,6 @@ export default {
         },
         onDelete: 'CASCADE',
       },
-      reportType: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        field: 'report_type',
-      },
-      content: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
       createdAt: {
         allowNull: false,
         field: 'created_at',
@@ -47,5 +38,5 @@ export default {
         type: Sequelize.DATE,
       },
     }),
-  down: queryInterface => queryInterface.dropTable('Reports'),
+  down: queryInterface => queryInterface.dropTable('ArticleLikes'),
 };

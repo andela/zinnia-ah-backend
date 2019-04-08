@@ -14,7 +14,7 @@ export default () => {
         allowNull: false,
       },
       slug: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       title: {
@@ -29,26 +29,13 @@ export default () => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      imageList: {
-        type: DataTypes.ARRAY(DataTypes.TEXT),
-        field: 'image_list',
-      },
-      tagList: {
-        type: DataTypes.ARRAY(DataTypes.TEXT),
-        field: 'tag_list',
-      },
-      favouritesCount: {
-        type: DataTypes.INTEGER,
-        field: 'favourites_count',
-        default: 0,
-      },
       subcriptionType: {
         type: DataTypes.ENUM('free', 'premium'),
         field: 'subcription_type',
         default: 'free',
       },
       status: {
-        type: DataTypes.ENUM('published', 'draft', 'trash', 'banned'),
+        type: DataTypes.ENUM('published', 'draft', 'trashed', 'banned'),
         default: 'draft',
       },
       readTime: {

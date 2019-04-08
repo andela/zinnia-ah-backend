@@ -1,41 +1,47 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Ratings', {
-    userId: {
-      type: Sequelize.UUID,
-      allowNull: false,
-      primaryKey: true,
-      field: 'user_id',
-      references: {
-        model: 'Users',
-        key: 'id',
+  up: (queryInterface, Sequelize) =>
+    queryInterface.createTable('Ratings', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
       },
-      onDelete: 'CASCADE',
-    },
-    articleId: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-      allowNull: false,
-      field: 'article_id',
-      references: {
-        model: 'Articles',
-        key: 'id',
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        defaultValue: Sequelize.UUIDV4,
+        field: 'user_id',
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
-      onDelete: 'CASCADE',
-    },
-    rating: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    createdAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      field: 'created_at',
-    },
-    updatedAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      field: 'updated_at',
-    }
-  }),
-  down: queryInterface => queryInterface.dropTable('Ratings')
+      articleId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        field: 'article_id',
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
+      rating: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        field: 'updated_at',
+      },
+    }),
+  down: queryInterface => queryInterface.dropTable('Ratings'),
 };

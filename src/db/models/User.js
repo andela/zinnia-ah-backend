@@ -22,17 +22,15 @@ export default (sequelize, DataTypes) => {
       },
       username: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         unique: true,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: true,
         unique: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
       },
       bio: {
         type: DataTypes.TEXT,
@@ -54,16 +52,6 @@ export default (sequelize, DataTypes) => {
       createdAt: {
         type: DataTypes.DATE,
         field: 'created_at',
-      },
-      socialProvider: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'social_provider',
-      },
-      socialId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'social_id',
       },
       updatedAt: {
         type: DataTypes.DATE,

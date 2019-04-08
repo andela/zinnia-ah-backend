@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const Comment = sequelize.define(
-    'Comment',
+  const Images = sequelize.define(
+    'Images',
     {
       id: {
         allowNull: false,
@@ -8,35 +8,25 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      userId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        field: 'user_id',
-      },
-      articleId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        field: 'article_id',
-      },
-      body: {
-        type: DataTypes.TEXT,
+      url: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: DataTypes.DATE,
         field: 'created_at',
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: DataTypes.DATE,
         field: 'updated_at',
+        type: DataTypes.DATE,
       },
     },
     {}
   );
-  Comment.associate = () => {
+  Images.associate = () => {
     // associations can be defined here
   };
-  return Comment;
+  return Images;
 };

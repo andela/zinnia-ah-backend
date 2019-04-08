@@ -1,7 +1,13 @@
-export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('ArticleFeedback', {
+export default (sequelize, DataTypes) => {
+  const ArticleLikes = sequelize.define('ArticleLikes', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     userId: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'user_id',
       references: {
@@ -11,7 +17,7 @@ export default {
       onDelete: 'CASCADE',
     },
     articleId: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'article_id',
       references: {
@@ -20,20 +26,19 @@ export default {
       },
       onDelete: 'CASCADE',
     },
-    feedback: {
-      type: Sequelize.ENUM('like', 'dislike'),
-      allowNull: false,
-    },
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: Sequelize.DATE
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: Sequelize.DATE
-    }
-  }),
-  down: queryInterface => queryInterface.dropTable('ArticleFeedback')
+      type: DataTypes.DATE,
+    },
+  });
+  ArticleLikes.associate = () => {
+    // associations can be defined here
+  };
+  return ArticleLikes;
 };
