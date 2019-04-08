@@ -65,7 +65,9 @@ authRouter.get('/users/confirmation/:token', confirmUser);
  */
 authRouter.get(
   '/facebook',
-  passport.authenticate('facebook', { scope: ['email'] }),
+  passport.authenticate('facebook', {
+    scope: ['email'],
+  }),
 );
 
 /**
@@ -90,7 +92,9 @@ authRouter.get(
  */
 authRouter.get(
   '/facebook/callback',
-  passport.authenticate('facebook', { session: false }),
+  passport.authenticate('facebook', {
+    session: false,
+  }),
   socialController,
 );
 

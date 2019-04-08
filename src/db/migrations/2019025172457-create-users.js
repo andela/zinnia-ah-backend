@@ -60,5 +60,6 @@ export default {
         field: 'updated_at',
       },
     }),
+
   down: queryInterface => queryInterface.dropTable('Users'),
 };

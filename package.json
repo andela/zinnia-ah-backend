@@ -20,9 +20,13 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
+    "*.js": [
+      "npm run lint:fix",
+      "git add --force"
+    ],
+    "*.json": [
       "prettier --write",
-      "git add"
+      "git add --force"
     ]
   },
   "scripts": {

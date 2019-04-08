@@ -1,6 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Article = sequelize.define(
-    'Comment', {
+    'Comment',
+    {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -22,7 +23,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'updated_at',
       },
-    }, {}
+    },
+    {}
   );
   Article.associate = () => {};
   return Article;

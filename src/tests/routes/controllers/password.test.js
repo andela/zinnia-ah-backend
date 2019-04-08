@@ -4,7 +4,9 @@ import app from '../../../server';
 
 // configure chai to use expect
 chai.use(chaiHttp);
-const { expect } = chai;
+const {
+  expect
+} = chai;
 
 let resetToken;
 const userEmail = {
@@ -71,7 +73,9 @@ describe('Reset Password', () => {
   it('should fail if token is invalid in the request', done => {
     chai
       .request(app)
-      .patch(`${resetUrl}/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf`)
+      .patch(
+        '/api/v1/users/reset-password/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf',
+      )
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(400);

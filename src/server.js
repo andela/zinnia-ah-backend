@@ -40,7 +40,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  express.urlencoded({
+    extended: false,
+  }),
+);
 app.use(express.json());
 
 // serve swagger
@@ -53,7 +57,9 @@ app.use('/api/v1', router);
 
 // Handling unavailable routes
 app.all('*', (req, res) =>
-  res.status(405).json({ error: 'Method not allowed' }),
+  res.status(405).json({
+    error: 'Method not allowed',
+  }),
 );
 
 // finally, let's start our server...

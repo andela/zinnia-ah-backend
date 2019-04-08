@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import bcrypt from 'bcryptjs';
 import models from '../../db/models';
 import {
@@ -26,7 +27,7 @@ export async function forgotPassword(req, res) {
   }
   const token = await generateToken({ id: user.id, email }, '2h');
   const url =
-    process.env.NODE_ENV === 'development' || 'test'
+    process.env.NODE_ENV === 'development'
       ? `${process.env.LOCAL_URL}/users/reset-password/${token}`
       : `${process.env.PRODUCTION_URL}/users/reset-password/${token}`;
   const body = {
@@ -64,14 +65,14 @@ export async function resetPassword(req, res) {
   try {
     await User.update(
       { passwords: hashedPassword },
-      { where: { id: user.id } },
+      { where: { id: user.id } }
     );
     return successResponse(res, 200, 'Password successfully reset');
   } catch (err) {
     return errorResponse(
       res,
       500,
-      'Password could not be reset, please try again',
+      'Password could not be reset, please try again'
     );
   }
 }
