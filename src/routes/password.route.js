@@ -1,11 +1,13 @@
 import { Router } from 'express';
-
-import {
-  forgotPassword,
-  resetPassword,
-} from './controllers/password.controller';
+import { forgotPassword, resetPassword } from './controllers/password';
 
 const passwordRouter = Router();
+
+/**
+ * @swagger
+ * definition:
+ *    follow:
+ */
 
 /**
  * @swagger

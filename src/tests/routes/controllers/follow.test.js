@@ -18,10 +18,10 @@ const userRequestObject = {
   password: 'hhrtuyhgty5t678',
 };
 
-
 describe('FOLLOW USER', () => {
-  it('should create a user successfully when valid input are supplied', (done) => {
-    chai.request(app)
+  it('should create a user successfully when valid input are supplied', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -30,8 +30,9 @@ describe('FOLLOW USER', () => {
       });
   });
 
-  it('should follow a user', (done) => {
-    chai.request(app)
+  it('should follow a user', done => {
+    chai
+      .request(app)
       .post('/api/v1/profiles/janesmith/follow/2')
       .send(userRequestObject)
       .end((err, res) => {
@@ -41,8 +42,9 @@ describe('FOLLOW USER', () => {
       });
   });
 
-  it('should fail if a user tries to follow him/herself', (done) => {
-    chai.request(app)
+  it('should fail if a user tries to follow him/herself', done => {
+    chai
+      .request(app)
       .post('/api/v1/profiles/janesmith/follow/1')
       .send(userRequestObject)
       .end((err, res) => {
@@ -52,8 +54,21 @@ describe('FOLLOW USER', () => {
       });
   });
 
-  it('should unfollow a user', (done) => {
-    chai.request(app)
+  it('should fail if a user tries to follow someone twice', done => {
+    chai
+      .request(app)
+      .post('/api/v1/profiles/janesmith/follow/2')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(409);
+        expect(res.body.data).to.equal('You are already following this person');
+        done();
+      });
+  });
+
+  it('should unfollow a user', done => {
+    chai
+      .request(app)
       .delete('/api/v1/profiles/janesmith/unfollow/2')
       .send(userRequestObject)
       .end((err, res) => {
@@ -63,13 +78,26 @@ describe('FOLLOW USER', () => {
       });
   });
 
-  it('should fail if a user tries to unfollow him/herself', (done) => {
-    chai.request(app)
+  it('should fail if a user tries to unfollow him/herself', done => {
+    chai
+      .request(app)
       .delete('/api/v1/profiles/janesmith/unfollow/1')
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
         expect(res.body.message).to.equal('You cannot unfollow yourself');
+        done();
+      });
+  });
+
+  it('should fail if a user tries to unfollow someone twice', done => {
+    chai
+      .request(app)
+      .delete('/api/v1/profiles/janesmith/unfollow/2')
+      .send(userRequestObject)
+      .end((err, res) => {
+        expect(res.status).to.equal(409);
+        expect(res.body.data).to.equal('You are not following this person');
         done();
       });
   });

@@ -1,5 +1,9 @@
 import models from '../../db/models';
-import { errorResponse, successResponse, getUserByUsername } from '../utils/helpers';
+import {
+  errorResponse,
+  successResponse,
+  getUserbyUsername,
+} from '../utils/helpers';
 
 const { User } = models;
 
@@ -14,22 +18,38 @@ const follow = async (req, res) => {
   const { userId } = req.params;
   const { username } = req.params;
 
-  const user = await getUserByUsername(username);
+  const user = await getUserbyUsername(username);
   const follower = await User.findByPk(userId);
   try {
     if (url.includes('unfollow')) {
       if (user.id === follower.id) {
         return errorResponse(res, 409, 'You cannot unfollow yourself');
       }
-      await user.removeFollowers(follower);
+      const checkFollower = await user.removeFollowers(follower);
+      if (!checkFollower) {
+        return successResponse(
+          res,
+          409,
+          'error',
+          'You are not following this person',
+        );
+      }
     } else {
       if (user.id === follower.id) {
         return errorResponse(res, 409, 'You cannot follow yourself');
       }
-      await user.addFollowers(follower);
+      const checkFollower = await user.addFollowers(follower);
+      if (!checkFollower) {
+        return successResponse(
+          res,
+          409,
+          'error',
+          'You are already following this person',
+        );
+      }
     }
     const followers = await user.getFollowers();
-    const userData = user.toJSON();
+    const userData = { user: user.id };
     userData.followers = followers.map(followee => ({
       id: followee.id,
       firstname: followee.firstname,

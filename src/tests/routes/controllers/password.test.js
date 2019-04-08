@@ -18,6 +18,7 @@ describe('Forgot Password', () => {
   it('should send the user a password reset link via email', done => {
     chai
       .request(app)
+      .post('/api/v1/auth/forgot-password')
       .post(fpUrl)
       .send(userEmail)
       .end((err, res) => {

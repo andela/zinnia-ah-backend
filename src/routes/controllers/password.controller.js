@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import models from '../../db/models';
 import {
   generateToken,
-  getUserByEmail,
+  getUserbyEmail,
   errorResponse,
   successResponse,
   verifyToken,
@@ -20,7 +20,7 @@ const { User } = models;
  */
 export async function forgotPassword(req, res) {
   const { email } = req.body;
-  const user = await getUserByEmail(email);
+  const user = await getUserbyEmail(email);
   if (!user) {
     return errorResponse(res, 404, 'User does not exist', true);
   }
