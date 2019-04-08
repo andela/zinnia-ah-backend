@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Article = sequelize.define(
     'Article',
     {
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'read_time',
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -60,6 +61,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {},
   );
-  Article.associate = () => {};
+  Article.associate = models => {
+    Article.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'author',
+    });
+  };
   return Article;
 };

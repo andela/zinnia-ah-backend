@@ -5,6 +5,8 @@ export default (sequelize, DataTypes) => {
     'User',
     {
       id: {
+        allowNull: false,
+        primaryKey: true,
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
@@ -49,11 +51,18 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'updated_at',
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {
       hooks: {
         beforeCreate: user => user.password && user.hashPassword(),
-        beforeUpdate: user => user.password && user.hashPassword(),
       },
     },
   );
