@@ -51,7 +51,7 @@ app.get('/doc', (req, res) => {
 app.use('/api/v1', router);
 
 // Handling unavailable routes
-app.all('*', (req, res) => res.status(404).json({ error: 'This route does not exist' }));
+app.all('*', (req, res) => res.status(505).json({ error: 'Method not allowed' }));
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
