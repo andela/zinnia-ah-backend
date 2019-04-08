@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../../../db/models';
 import app from '../../../server';
-// import { UUID } from 'sequelize/types';
 
 // configure chai to use expect
 chai.use(chaiHttp);
@@ -61,7 +60,6 @@ describe('CREATE USER', () => {
   });
 });
 describe('EDIT PROFILE', () => {
-  // let userToken
   const url1 = '/api/v1/user/d19a4546-b9e7-403d-b43a-debf22802514';
   const userUpdateObject = {
     username: 'jake@jake',
@@ -71,7 +69,6 @@ describe('EDIT PROFILE', () => {
   it.skip('should not update a user profile successfully when invalid input are supplied', (done) => {
     chai.request(app)
       .put(url1)
-      // .set('Authorization', userToken)
       .send(userUpdateObject)
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -85,7 +82,6 @@ describe('Get a single User', () => {
     async () => {
       const response = await chai.request(app)
         .get('/api/v1/user/johndoe')
-        // .set('Authorization', firstUserToken);
       expect(response.status).to.equal(404);
       expect(response.body.message)
         .to.equal('The username provided does not exist');
@@ -95,7 +91,6 @@ describe('Get a single User', () => {
     async () => {
       const response = await chai.request(app)
         .get('/api/v1/user/janesmith')
-        // .set('Authorization', firstUserToken);
         expect(response.status).to.equal(200);
         expect(response.body.data).to.be.an('object').to.have.property('username');
       });

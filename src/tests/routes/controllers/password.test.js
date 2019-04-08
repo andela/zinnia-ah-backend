@@ -24,21 +24,21 @@ describe('Forgot Password', () => {
         expect(res.body.data.token).to.exist;
         done();
       });
-  });
+  }, 10000);
+});
 
-  it('should fail if the user email doesnt exist', done => {
-    userEmail.email = 'nedyudobat@gmail.com';
-    chai
-      .request(app)
-      .post('/api/v1/auth/users/forgot-password')
-      .send(userEmail)
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        expect(res.body.message).to.equal('User does not exist');
-        expect(res.body.errors).to.equal(true);
-        done();
-      });
-  });
+it('should fail if the user email doesnt exist', done => {
+  userEmail.email = 'nedyudobat@gmail.com';
+  chai
+    .request(app)
+    .post(fpUrl)
+    .send(userEmail)
+    .end((err, res) => {
+      expect(res.status).to.equal(404);
+      expect(res.body.message).to.equal('User does not exist');
+      expect(res.body.errors).to.equal(true);
+      done();
+    });
 });
 
 describe('Reset Password', () => {
