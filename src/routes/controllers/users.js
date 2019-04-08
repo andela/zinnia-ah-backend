@@ -10,7 +10,7 @@ const expires = { expiresIn: '30days' };
 const generateToken = payload => jwt.sign(payload, secret, expires);
 import path from 'path';
 const Users = {
-/**
+  /**
    * Create A User
    * @param {object} req
    * @param {object} res
@@ -18,11 +18,10 @@ const Users = {
    */
   async createUser(req, res) {
     console.log(__dirname);
-    const {
-      username, email, password
-    } = req.body;
     const data = {
-      username, email, password,
+      username,
+      email,
+      password,
     };
     try {
       const user = await User.create(data);
@@ -36,9 +35,9 @@ const Users = {
     } catch (err) {
       return res.status(500).json({
         status: 500,
-        error: err
+        error: err,
       });
     }
-  }
+  },
 };
 export default Users;
