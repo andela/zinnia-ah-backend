@@ -11,7 +11,7 @@ describe('UNAVAILABLE ROUTES', () => {
     chai.request(app)
       .post('/anything')
       .end((err, res) => {
-        expect(res.status).to.equal(505);
+        expect(res.status).to.equal(405);
         expect(res.body.error).to.equal('Method not allowed');
         done();
       });
