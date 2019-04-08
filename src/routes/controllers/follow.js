@@ -15,7 +15,6 @@ const follow = async (req, res) => {
   const { username } = req.params;
 
   const user = await getUserbyUsername(username);
-  // return console.log(user);
   const follower = await User.findByPk(userId);
   try {
     if (url.includes('unfollow')) {
