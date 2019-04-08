@@ -8,6 +8,9 @@ const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const config = configuration[env];
 const db = {};
 
+// enable logs only in development environment
+config.logging = process.env.NODE_ENV === 'development';
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
