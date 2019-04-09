@@ -9,25 +9,23 @@ export default {
     firstName: {
       type: Sequelize.STRING,
       allowNull: true,
-      underscored: true,
     },
     lastName: {
       type: Sequelize.STRING,
       allowNull: true,
-      underscored: true,
     },
     username: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: Sequelize.STRING,
@@ -37,11 +35,18 @@ export default {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    isActive: {
+    isEmailVerified: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
-      default: false,
-      underscored: true,
+      default: false
+    },
+    socialProvider: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    socialId: {
+      type: Sequelize.STRING,
+      allowNull: true,
     },
     createdAt: {
       allowNull: false,
@@ -51,8 +56,8 @@ export default {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
-      underscored: true,
+      underscored: true
     },
   }),
-  down: queryInterface => queryInterface.dropTable('user'),
+  down: queryInterface => queryInterface.dropTable('Users'),
 };

@@ -4,9 +4,12 @@ import Sequelize from 'sequelize';
 import configuration from '../../config/config';
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const db = {};
+const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const config = configuration[env];
+const db = {};
+
+// enable logs only in development environment
+config.logging = process.env.NODE_ENV === 'development';
 
 let sequelize;
 if (config.use_env_variable) {

@@ -1,9 +1,11 @@
 import chai from 'chai';
 import mockery from 'mockery';
+import dotenv from 'dotenv';
 import nodemailerMock from 'nodemailer-mock';
 import sendMailer from '../../config/mailConfig';
 
 const { expect } = chai;
+dotenv.config();
 
 let info, error;
 const receivers = ['nedyudombat@gmail.com'];

@@ -5,26 +5,24 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: true,
-      underscored: true,
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: true,
-      underscored: true,
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: DataTypes.STRING,
@@ -34,16 +32,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    isActive: {
+    isEmailVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-      underscored: true,
     },
+    socialProvider: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    socialId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   }, {
     hooks: {
       beforeCreate: user => user.password && user.hashPassword(),
       beforeUpdate: user => user.password && user.hashPassword()
-    }
+    },
   });
   User.associate = () => {
     // associations can be defined here
