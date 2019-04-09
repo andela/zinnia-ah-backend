@@ -35,7 +35,7 @@ export async function allArticles(req, res) {
         res,
         200,
         'Articles successfully retrieved',
-        articles
+        articles,
       );
     }
 

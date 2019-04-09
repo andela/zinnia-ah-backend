@@ -5,8 +5,6 @@ export default (sequelize, DataTypes) => {
     'User',
     {
       id: {
-        allowNull: false,
-        primaryKey: true,
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
@@ -42,14 +40,6 @@ export default (sequelize, DataTypes) => {
         defaultValue: false,
         allowNull: false,
         field: 'is_email_verified',
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        field: 'created_at',
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        field: 'updated_at',
       },
       createdAt: {
         type: DataTypes.DATE,

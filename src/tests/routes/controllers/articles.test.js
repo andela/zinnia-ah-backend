@@ -86,6 +86,7 @@ describe('Articles', () => {
   describe('GET /api/v1/articles', () => {
     it('should return a 200 response when articles exist', async () => {
       const response = await chai.request(app).get(endPoint);
+
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -99,6 +100,7 @@ describe('Articles', () => {
         .request(app)
         .get(endPoint)
         .query({ limit });
+
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -111,6 +113,7 @@ describe('Articles', () => {
         .request(app)
         .get(endPoint)
         .query({ limit });
+
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');

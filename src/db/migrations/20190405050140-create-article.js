@@ -33,33 +33,18 @@ export default {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      imageList: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
-        field: 'image_list',
-      },
-      tagList: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
-        field: 'tag_list',
-      },
-      favouritesCount: {
-        type: Sequelize.INTEGER,
-        field: 'favourites_count',
-        defaultValue: 0,
-      },
       subcriptionType: {
         type: Sequelize.ENUM('free', 'premium'),
         field: 'subcription_type',
         defaultValue: 'free',
       },
       status: {
-        type: Sequelize.ENUM('published', 'draft', 'trash', 'banned'),
+        type: Sequelize.ENUM('published', 'draft', 'trashed', 'banned'),
         defaultValue: 'draft',
       },
       readTime: {
         type: Sequelize.STRING,
-        allowNull: true,
         field: 'read_time',
-        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

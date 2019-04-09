@@ -20,29 +20,44 @@ export default {
       username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       bio: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      interests: {
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       image: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       isEmailVerified: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: false,
+        defaultValue: false,
         field: 'is_email_verified',
+      },
+      socialProvider: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        field: 'social_provider',
+      },
+      socialId: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        field: 'social_id',
       },
       createdAt: {
         allowNull: false,

@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
       slug: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       title: {
@@ -46,7 +46,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'read_time',
-        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
