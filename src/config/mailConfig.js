@@ -9,7 +9,7 @@ const port = process.env.SMTP_PORT;
 const username = process.env.SMTP_USERNAME;
 const pass = process.env.SMTP_MAIL_PASSWORD;
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host,
   port,
   auth: {
@@ -18,13 +18,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMailer = async (body) => {
-  const {
-    receivers,
-    subject,
-    text,
-    html,
-  } = body;
+export const sendMailer = async body => {
+  const { receivers, subject, text, html } = body;
 
   const allRecipientEmail = receivers.join(', ');
 
@@ -42,5 +37,3 @@ const sendMailer = async (body) => {
     throw err;
   }
 };
-
-export default sendMailer;

@@ -14,8 +14,8 @@ const validateNewUser = (req, res, next) => {
   const { error } = Joi.validate(req.body, newUserSchema, {
     abortEarly: false,
     language: {
-      key: '{{key}} '
-    }
+      key: '{{key}} ',
+    },
   });
   if (error) {
     const validationError = error.details.map(errorItem => errorItem.message);

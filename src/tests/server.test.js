@@ -8,7 +8,8 @@ const { expect } = chai;
 
 describe('UNAVAILABLE ROUTES', () => {
   it('should respond with a status of 404 if route is not available', done => {
-    chai.request(app)
+    chai
+      .request(app)
       .post('/anything')
       .end((err, res) => {
         expect(res.status).to.equal(405);

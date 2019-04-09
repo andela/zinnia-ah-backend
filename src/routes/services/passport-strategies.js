@@ -13,7 +13,7 @@ const credentials = {
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: process.env.FACEBOOK_APP_CALLBACK,
     profileFields: ['id', 'email', 'name'],
-  }
+  },
 };
 
 const facebookAuth = async (accessToken, refreshToken, profile, done) => {
@@ -25,8 +25,8 @@ const facebookAuth = async (accessToken, refreshToken, profile, done) => {
         lastName: profile.name.familyName,
         username: profile.emails[0].value,
         email: profile.emails[0].value,
-        socialProvider: profile.provider
-      }
+        socialProvider: profile.provider,
+      },
     });
     return done(null, currentUser);
   } catch (err) {
@@ -35,6 +35,5 @@ const facebookAuth = async (accessToken, refreshToken, profile, done) => {
 };
 
 passport.use(new FacebookStrategy(credentials.facebook, facebookAuth));
-
 
 export default passport;

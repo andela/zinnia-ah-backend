@@ -2,7 +2,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../../../db/models';
 import app from '../../../server';
-
+import sinon from 'sinon';
+import { transporter } from '../../../config/mailConfig';
 
 // configure chai to use expect
 chai.use(chaiHttp);
@@ -19,10 +20,16 @@ const userRequestObject = {
   password: 'hhrtuyhgty5t678',
 };
 
+let mockSendMail;
 describe('CREATE USER', () => {
+  before(() => {
+    mockSendMail = sinon.stub(transporter, 'sendMail');
+  });
+
   let userToken;
-  it('should create a user successfully when valid input are supplied', (done) => {
-    chai.request(app)
+  it('should create a user successfully when valid input are supplied', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -31,16 +38,18 @@ describe('CREATE USER', () => {
         done();
       });
   });
-  it('should confirm a user', (done) => {
-    chai.request(app)
+  it('should confirm a user', done => {
+    chai
+      .request(app)
       .get(`${confirmationUrl}/${userToken}`)
       .end((err, res) => {
         expect(res.status).to.equal(200);
         done();
       });
   });
-  it('should fail creation when email is already in use', (done) => {
-    chai.request(app)
+  it('should fail creation when email is already in use', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
@@ -48,8 +57,9 @@ describe('CREATE USER', () => {
         done();
       });
   });
-  it('should fail creation when username is already in use', (done) => {
-    chai.request(app)
+  it('should fail creation when username is already in use', done => {
+    chai
+      .request(app)
       .post(url)
       .send(userRequestObject)
       .end((err, res) => {
