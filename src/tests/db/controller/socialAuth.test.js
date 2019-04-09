@@ -32,4 +32,14 @@ describe('Social authentication', () => {
         done();
       });
   });
+  it('Should be done via TWITTER', (done) => {
+    chai.request(app)
+      .get('/api/v1/auth/twitter')
+      .end((err, res) => {
+        expect(res.body.message).to.eql('You have successfully registered however you would need to check your mail to verify your account');
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.data[0].token).to.be.a('string');
+        done();
+      });
+  });
 });
