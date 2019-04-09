@@ -50,6 +50,9 @@ app.get('/doc', (req, res) => {
 // API routes
 app.use('/api/v1', router);
 
+// Handling unavailable routes
+app.all('*', (req, res) => res.status(405).json({ error: 'Method not allowed' }));
+
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${server.address().port}`);
