@@ -18,7 +18,7 @@
     "start": "node build/server.js",
     "start:dev": "nodemon --exec babel-node src/server.js",
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
-    "test:watch": "NODE_ENV=test mocha src/tests/**/**.test.js --watch",
+    "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch --no-timeouts",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
@@ -41,6 +41,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
+    "prettier": "^1.16.4",
     "sequelize": "^5.1.1",
     "sequelize-cli": "^5.4.0",
     "swagger-jsdoc": "^3.2.8"

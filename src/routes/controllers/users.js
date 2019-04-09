@@ -59,8 +59,7 @@ export const confirmUser = async (req, res) => {
  * @returns {object} response object
  */
 export const socialController = async (req, res) => {
-  const user = req.user[0];
-  const isCreated = req.user[1];
+  const [user, isCreated] = req.user;
 
   try {
     const tokenPayload = { id: user.id, email: user.email };
