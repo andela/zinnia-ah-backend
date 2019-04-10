@@ -24,7 +24,7 @@ export default (Sequelize, DataTypes) => {
         field: 'updated_at',
       },
     },
-    {}
+    {},
   );
   Tags.associate = () => {
     // associations can be defined here

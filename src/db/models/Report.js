@@ -28,7 +28,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    {}
+    {},
   );
   Report.associate = () => {
     // associations can be defined here

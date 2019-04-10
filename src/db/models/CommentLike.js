@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
         field: 'comment_id',
       },
     },
-    {}
+    {},
   );
   CommentLike.associate = () => {
     // associations can be defined here

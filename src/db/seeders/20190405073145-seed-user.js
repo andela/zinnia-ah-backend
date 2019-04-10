@@ -13,7 +13,7 @@ export default {
           updated_at: new Date().toLocaleString(),
         },
       ],
-      {}
+      {},
     );
   },
 

@@ -1,4 +1,4 @@
-export default () => {
+export default (sequelize, DataTypes) => {
   const Article = sequelize.define(
     'Article',
     {

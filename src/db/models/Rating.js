@@ -34,7 +34,7 @@ export default (Sequelize, DataTypes) => {
         field: 'updated_at',
       },
     },
-    {}
+    {},
   );
   Rating.associate = () => {
     // associations can be defined here

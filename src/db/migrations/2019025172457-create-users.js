@@ -3,21 +3,24 @@ export default {
     queryInterface.createTable('Users', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       firstName: {
         type: Sequelize.STRING,
         allowNull: true,
+        field: 'first_name',
       },
       lastName: {
         type: Sequelize.STRING,
         allowNull: true,
+        field: 'last_name',
       },
       username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
@@ -29,35 +32,42 @@ export default {
         allowNull: true,
       },
       bio: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      interests: {
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       image: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       isEmailVerified: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: false,
+        defaultValue: false,
+        field: 'is_email_verified',
       },
       socialProvider: {
         type: Sequelize.STRING,
         allowNull: true,
+        field: 'social_provider',
       },
       socialId: {
         type: Sequelize.STRING,
         allowNull: true,
+        field: 'social_id',
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        underscored: true,
+        field: 'created_at',
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        underscored: true,
+        field: 'updated_at',
       },
     }),
   down: queryInterface => queryInterface.dropTable('Users'),

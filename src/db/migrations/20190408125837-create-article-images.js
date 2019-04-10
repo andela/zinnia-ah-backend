@@ -24,7 +24,7 @@ export default {
           onDelete: 'CASCADE',
         },
       },
-      { timestamps: false }
+      { timestamps: false },
     );
   },
 

@@ -48,6 +48,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: true,
+        field: 'is_email_verified',
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -65,9 +66,9 @@ export default (sequelize, DataTypes) => {
       },
     },
   );
-  User.associate = () => {
+  User.associate = models => {
     // associations can be defined here
-    User.hasMany(model.Article);
+    User.hasMany(models.Article);
   };
 
   User.prototype.hashPassword = async function hashPassword() {

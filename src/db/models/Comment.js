@@ -33,7 +33,7 @@ export default (sequelize, DataTypes) => {
         field: 'updated_at',
       },
     },
-    {}
+    {},
   );
   Comment.associate = () => {
     // associations can be defined here

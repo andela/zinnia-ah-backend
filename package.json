@@ -37,7 +37,7 @@
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
-    "pretest": "npm run lint && npm run prettier"
+    "pretest": "npm run lint && npm run prettier && npm run db:migrate:testdb"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -83,6 +83,7 @@
     "mocha": "^6.1.2",
     "mockery": "^2.1.0",
     "nodemon": "^1.18.10",
-    "nyc": "^13.3.0"
+    "nyc": "^13.3.0",
+    "sinon": "^7.3.1"
   }
 }

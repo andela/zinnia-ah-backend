@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
       },
     },
-    {}
+    {},
   );
   Images.associate = () => {
     // associations can be defined here
