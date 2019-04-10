@@ -6,6 +6,8 @@ import path from 'path';
 import morgan from 'morgan';
 
 import router from './routes';
+import passport from './routes/services/passport-strategies.services';
+import session from 'express-session';
 
 // Create global app object
 const app = express();
@@ -28,12 +30,25 @@ const swaggerDefinition = {
 };
 
 // initialize swagger-jsdoc
-// const swaggerSpec = swaggerJSDoc({
-//   swaggerDefinition,
-//   apis: ['./**/routes/*.js'], // pass all in array
-//
+const swaggerSpec = swaggerJSDoc({
+  swaggerDefinition,
+  apis: ['./**/routes/*.js'], // pass all in array
+});
 
 app.use(cors());
+
+app.use(
+  session({
+    secret: 'ah',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: 'auto',
+    },
+  }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // enable morgan logs only in development environment
 if (process.env.NODE_ENV === 'development') {
