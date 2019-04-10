@@ -3,6 +3,7 @@ import passport from './services/passport-strategies';
 import { createUser, confirmUser, socialController } from './controllers/users';
 import { forgotPassword, resetPassword } from './controllers/password';
 import validateNewUser from './middlewares/validateUser';
+import authRouter from './auth';
 
 
 const router = Router();
@@ -46,8 +47,7 @@ const router = Router();
 router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), socialController);
+router.use('/auth', authRouter);
 
 /**
  * @swagger

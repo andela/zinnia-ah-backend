@@ -3,6 +3,7 @@ import {
 } from '../utils/helpers';
 import models from '../../db/models';
 import sendMailer from '../../config/mailConfig';
+import passport from '../services/passport-strategies';
 
 const { User } = models;
 /**
@@ -59,12 +60,13 @@ export const confirmUser = async (req, res) => {
  * @returns {object} response object
  */
 export const socialController = async (req, res) => {
-  const [user, isCreated] = req.user;
+  const { isNewRecord } = req.user._options;
+  const user = req.user.dataValues;
 
   try {
     const tokenPayload = { id: user.id, email: user.email };
     const token = await generateToken(tokenPayload);
-    if (isCreated) {
+    if (isNewRecord) {
       return successResponse(res, 201, 'You have successfully registered however you would need to check your mail to verify your account', [{ token }]);
     }
     return successResponse(res, 200, 'You are now logged in', [{ token }]);
