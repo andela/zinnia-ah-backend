@@ -1,23 +1,30 @@
 /* eslint-disable import/prefer-default-export */
 import Joi from 'joi';
-/**
- * This is the schema definition
- * for a new userAccount
- */
+
+export const emailSchema = Joi.string()
+  .lowercase()
+  .trim()
+  .email({ minDomainAtoms: 2 })
+  .required();
+
+export const uuidSchema = Joi.string().guid({ version: ['uuidv4', 'uuidv5'] });
+
+export const usernameSchema = Joi.string()
+  .alphanum()
+  .lowercase()
+  .trim()
+  .min(4)
+  .required();
+
+export const articleIdSchema = Joi.object({
+  articleId: uuidSchema,
+});
+
 export const newUserSchema = Joi.object()
   .keys({
     fullName: Joi.string().trim(),
-    username: Joi.string()
-      .alphanum()
-      .lowercase()
-      .trim()
-      .min(8)
-      .required(),
-    email: Joi.string()
-      .lowercase()
-      .trim()
-      .email({ minDomainAtoms: 2 })
-      .required(),
+    username: usernameSchema,
+    email: emailSchema,
     password: Joi.string()
       .alphanum()
       .min(8)

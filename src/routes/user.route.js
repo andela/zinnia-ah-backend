@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { createUser, confirmUser } from './controllers/users';
 import { resetPassword, forgotPassword } from './controllers/password';
-import validateNewUser from './middlewares/validateUser';
+import { validUser } from './middlewares/validateInput';
 const userRouter = Router();
 
 /**
@@ -32,7 +32,7 @@ const userRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.post('/', validateNewUser, createUser);
+userRouter.post('/', validUser, createUser);
 userRouter.get('/confirmation/:token', confirmUser);
 /**
  * @swagger

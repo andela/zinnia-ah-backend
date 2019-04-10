@@ -57,8 +57,10 @@ app.all('*', (req, res) =>
 );
 
 // finally, let's start our server...
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Listening on port ${server.address().port}`);
-});
+if (!module.parent) {
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`Listening on port`);
+  });
+}
 
 export default app;
