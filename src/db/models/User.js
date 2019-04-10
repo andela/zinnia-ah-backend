@@ -25,6 +25,7 @@ export default (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        allowNull: true,
         unique: true,
       },
       password: {
@@ -40,6 +41,16 @@ export default (sequelize, DataTypes) => {
         defaultValue: false,
         allowNull: false,
         field: 'is_email_verified',
+      },
+      socialProvider: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'social_provider',
+      },
+      socialId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'social_id',
       },
       createdAt: {
         type: DataTypes.DATE,
