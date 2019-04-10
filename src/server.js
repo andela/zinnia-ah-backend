@@ -43,9 +43,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // serve swagger
-// app.get('/doc', (req, res) => {
-//   res.send(swaggerSpec);
-// });
+app.get('/doc', (req, res) => {
+  res.send(swaggerSpec);
+});
 
 // API routes
 app.use('/api/v1', router);
