@@ -117,3 +117,30 @@ export async function getReadingStats(req, res) {
     return errorResponse(res, 500, error.message);
   }
 }
+
+/**
+ * Redirect location after social login
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response object
+ */
+export const socialController = async (req, res) => {
+  const { isNewRecord } = req.user._options;
+  const user = req.user.dataValues;
+
+  try {
+    const tokenPayload = { id: user.id, email: user.email };
+    const token = await generateToken(tokenPayload);
+    if (isNewRecord) {
+      return successResponse(
+        res,
+        201,
+        'You have successfully registered however you would need to check your mail to verify your account',
+        [{ token }],
+      );
+    }
+    return successResponse(res, 200, 'You are now logged in', [{ token }]);
+  } catch (err) {
+    return errorResponse(res, 500, err.message);
+  }
+};
