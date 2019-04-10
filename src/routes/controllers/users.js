@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import models from '../../db/models';
 
 dotenv.config();
+import sendMailer from '../../config/mailConfig';
 
 const { User } = models;
 const secret = process.env.SECRET_KEY;
@@ -39,6 +40,36 @@ const Users = {
         error: err,
       });
     }
+  },
+
+  /**
+   * Redirect location after social login
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} response object
+   */
+  async socialController(req, res) {
+    // passport.deserializeUser((id, done) => {
+    //   User.findById(id, (err, user) => {
+    //     // done(err, user);
+    //     console.log('=========', user)
+
+    //   });
+    // });
+
+    console.log('=========', req);
+    // const [user, isCreated] = req.user;
+
+    // try {
+    //   const tokenPayload = { id: user.id, email: user.email };
+    //   const token = await generateToken(tokenPayload);
+    //   if (isCreated) {
+    //     return successResponse(res, 201, 'You have successfully registered however you would need to check your mail to verify your account', [{ token }]);
+    //   }
+    //   return successResponse(res, 200, 'You are now logged in', [{ token }]);
+    // } catch (err) {
+    //   return errorResponse(res, 500, err.message);
+    // }
   },
 };
 export default Users;

@@ -27,6 +27,16 @@ const credentials = {
   },
 };
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
 const facebookAuth = async (accessToken, refreshToken, profile, done) => {
   try {
     const [currentUser] = await User.findOrCreate({
