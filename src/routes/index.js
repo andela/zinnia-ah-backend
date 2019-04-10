@@ -1,15 +1,12 @@
 import { Router } from 'express';
 import passport from './services/passport-strategies';
-import {
-  createUser,
-  confirmUser,
-  socialController,
-} from './controllers/users.controller';
+import { createUser, confirmUser } from './controllers/users.controller';
 import {
   forgotPassword,
   resetPassword,
 } from './controllers/password.controller';
 import validateNewUser from './middlewares/validateUser';
+import authRouter from './auth';
 
 import articleRouter from './articles.route';
 
@@ -65,15 +62,7 @@ const router = Router();
 router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
-router.get(
-  '/auth/facebook',
-  passport.authenticate('facebook', { scope: ['email'] }),
-);
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { session: false }),
-  socialController,
-);
+router.use('/auth', authRouter);
 
 /**
  * @swagger
@@ -133,14 +122,5 @@ router.post('/users/forgot-password', forgotPassword);
  */
 router.patch('/users/reset-password/:token', resetPassword);
 router.use('/article', articleRouter);
-
-router.get('/auth/facebook', passport.authenticate('facebook'));
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }),
-);
 
 export default router;

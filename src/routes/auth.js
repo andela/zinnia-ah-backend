@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import passport from './services/passport-strategies';
 import { socialController } from './controllers/users';
+import models from '../db/models';
 
+const { User } = models;
 const authRouter = Router();
 
 /**
@@ -49,5 +51,8 @@ authRouter.get('/facebook', passport.authenticate('facebook', { scope: ['email']
  *        description: Unexpected error.
  */
 authRouter.get('/facebook/callback', passport.authenticate('facebook', { session: false }), socialController);
+
+authRouter.get('/twitter', passport.authenticate('twitter'));
+authRouter.get('/twitter/callback', passport.authenticate('twitter', { session: false }), socialController);
 
 export default authRouter;

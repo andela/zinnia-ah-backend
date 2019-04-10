@@ -1,10 +1,12 @@
 import passport from 'passport';
 import dotenv from 'dotenv';
 import models from '../../db/models';
+import { socialController } from '../controllers/users';
 
 dotenv.config();
 
 const { User } = models;
+
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -19,14 +21,16 @@ const credentials = {
   twitter: {
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: 'http://localhost:3000/api/auth/twitter/callback',
+    callbackURL: process.env.TWITTER_APP_CALLBACK,
+    includeEmail: true,
+    profileFields: ['id', 'email', 'name'],
   },
 };
 
 const facebookAuth = async (accessToken, refreshToken, profile, done) => {
   try {
-    const currentUser = await User.findOrCreate({
-      where: { socialId: profile.id },
+    const [currentUser] = await User.findOrCreate({
+      where: { socialId: profile.id, socialProvider: 'facebook' },
       defaults: {
         firstName: profile.name.givenName,
         lastName: profile.name.familyName,
@@ -43,16 +47,17 @@ const facebookAuth = async (accessToken, refreshToken, profile, done) => {
 
 const twitterAuth = async (token, tokenSecret, profile, done) => {
   try {
-    const currentUser = await User.findOrCreate({
-      where: { socialId: profile.id },
+    const [user] = await User.findOrCreate({
+      where: { socialId: profile.id, socialProvider: 'twitter' },
       defaults: {
-        firstName: profile.name,
-        username: profile.username,
-        email: profile.email,
+        firstName: profile.username,
+        username: profile.emails[0].value,
+        email: profile.emails[0].value,
         socialProvider: profile.provider,
       },
     });
-    return done(null, currentUser);
+
+    return done(null, user);
   } catch (err) {
     return done(err);
   }
