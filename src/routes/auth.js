@@ -26,7 +26,10 @@ const authRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+authRouter.get(
+  '/facebook',
+  passport.authenticate('facebook', { scope: ['email'] }),
+);
 
 /**
  * @swagger
@@ -48,6 +51,10 @@ authRouter.get('/facebook', passport.authenticate('facebook', { scope: ['email']
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.get('/facebook/callback', passport.authenticate('facebook', { session: false }), socialController);
+authRouter.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', { session: false }),
+  socialController,
+);
 
 export default authRouter;

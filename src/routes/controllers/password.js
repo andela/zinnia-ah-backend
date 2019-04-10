@@ -1,9 +1,13 @@
 import bcrypt from 'bcryptjs';
 import models from '../../db/models';
 import {
-  generateToken, checkEmailExistence, errorResponse, successResponse, verifyToken,
+  generateToken,
+  checkEmailExistence,
+  errorResponse,
+  successResponse,
+  verifyToken,
 } from '../utils/helpers';
-import sendMailer from '../../config/mailConfig';
+import { sendMailer } from '../../config/mailConfig';
 
 const { User } = models;
 
@@ -17,13 +21,14 @@ const { User } = models;
 export async function forgotPassword(req, res) {
   const { email } = req.body;
   const user = await checkEmailExistence(email);
-  if(!user) {
+  if (!user) {
     return errorResponse(res, 404, 'User does not exist', true);
   }
   const token = await generateToken({ id: user.id, email }, '2h');
-  const url = process.env.NODE_ENV === 'development' || 'test'
-    ? `${process.env.LOCAL_URL}/users/reset-password/${token}`
-    : `${process.env.PRODUCTION_URL}/users/reset-password/${token}`;
+  const url =
+    process.env.NODE_ENV === 'development' || 'test'
+      ? `${process.env.LOCAL_URL}/users/reset-password/${token}`
+      : `${process.env.PRODUCTION_URL}/users/reset-password/${token}`;
   const body = {
     receivers: [`${email}`],
     subject: 'Reset Password ',
@@ -33,7 +38,9 @@ export async function forgotPassword(req, res) {
 
   try {
     await sendMailer(body);
-    return successResponse(res, 200, 'Email has been sent successfully', { token });
+    return successResponse(res, 200, 'Email has been sent successfully', {
+      token,
+    });
   } catch (err) {
     return errorResponse(res, 500, 'Email could not be sent, please try again');
   }
@@ -45,13 +52,12 @@ export async function forgotPassword(req, res) {
  * @param {object} res
  * @returns {object} message object
  */
-
 export async function resetPassword(req, res) {
   const { token } = req.params;
   const { password } = req.body;
   const hashedPassword = bcrypt.hash(password, 10);
   const user = await verifyToken(token);
-  if(user === null) {
+  if (user === null) {
     return errorResponse(res, 400, 'Token Malformed', true);
   }
 
@@ -62,6 +68,10 @@ export async function resetPassword(req, res) {
     );
     return successResponse(res, 200, 'Password successfully reset');
   } catch (err) {
-    return errorResponse(res, 500, 'Password could not be reset, please try again');
+    return errorResponse(
+      res,
+      500,
+      'Password could not be reset, please try again',
+    );
   }
 }

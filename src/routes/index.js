@@ -4,7 +4,6 @@ import { createUser, confirmUser, socialController } from './controllers/users';
 import { forgotPassword, resetPassword } from './controllers/password';
 import validateNewUser from './middlewares/validateUser';
 
-
 const router = Router();
 
 /**
@@ -46,8 +45,15 @@ const router = Router();
 router.post('/users', validateNewUser, createUser);
 router.get('/users/confirmation/:token', confirmUser);
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-router.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), socialController);
+router.get(
+  '/auth/facebook',
+  passport.authenticate('facebook', { scope: ['email'] }),
+);
+router.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', { session: false }),
+  socialController,
+);
 
 /**
  * @swagger
@@ -77,7 +83,6 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', { sessio
  *        description: Unexpected error.
  */
 router.post('/users/forgot-password', forgotPassword);
-
 
 /**
  * @swagger

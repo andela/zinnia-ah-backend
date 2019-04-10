@@ -21,7 +21,8 @@ const endPoint = '/api/v1/users';
 describe('User', () => {
   describe('POST /api/v1/users', () => {
     it('returns a 422 response code an empty request body is sent by user', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(emptyUser);
 
@@ -31,7 +32,8 @@ describe('User', () => {
     });
 
     it('returns an email field specific error message when email is not a valid email', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userWithInvalidEmail);
 
@@ -41,7 +43,8 @@ describe('User', () => {
     });
 
     it('returns specific error when email is missing from request', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userMissingEmail);
 
@@ -51,7 +54,8 @@ describe('User', () => {
     });
 
     it('returns specific error when username is missing from request', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userMissingUsername);
 
@@ -61,7 +65,8 @@ describe('User', () => {
     });
 
     it('returns specific error when username is not valid alphanumerics', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userWithUsernameNotAlphanum);
 
@@ -71,7 +76,8 @@ describe('User', () => {
     });
 
     it('returns specific error when password is missing from request', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userMissingPassword);
 
@@ -81,7 +87,8 @@ describe('User', () => {
     });
 
     it('returns specific error when password is less than 8 characters', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userWithPasswordLessThanEightChars);
 
@@ -91,7 +98,8 @@ describe('User', () => {
     });
 
     it('does not allow for choosing existing email address', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userWithExistingEmail);
 
@@ -101,7 +109,8 @@ describe('User', () => {
     });
 
     it('does not allow for username duplication', async () => {
-      const response = await chai.request(app)
+      const response = await chai
+        .request(app)
         .post(endPoint)
         .send(userWithExistingUserName);
 

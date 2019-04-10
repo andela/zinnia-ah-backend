@@ -1,11 +1,8 @@
 import chai from 'chai';
-import mockery from 'mockery';
-import dotenv from 'dotenv';
-import nodemailerMock from 'nodemailer-mock';
-import sendMailer from '../../config/mailConfig';
+import sinon from 'sinon';
+import { sendMailer, transporter } from '../../config/mailConfig';
 
 const { expect } = chai;
-dotenv.config();
 
 let info, error;
 const receivers = ['nedyudombat@gmail.com'];
@@ -16,31 +13,41 @@ const body = {
   html: '<p>Test mail to verify if email configuration is working</p>',
 };
 
+const emailSuccessResponse = {
+  rejected: [],
+  response: '250 2.0.0 Ok: queued',
+  envelope: {
+    from: 'email@gmail.com',
+    to: ['jsmith@gmail.com'],
+  },
+  messageId: '<213456789-9876-876-234-23456765434567654@gmail.com>',
+};
+
+const missingEmailErrorResponse = {
+  message: 'No recipients defined',
+};
+
+const noRequestEmailErrorResponse = {
+  message: 'noBody is not defined',
+};
+
+let mockSendMail;
 
 describe('Mail Configuration', () => {
   before(() => {
-    mockery.enable({
-      warnOnUnregistered: false,
-    });
-    mockery.registerMock('nodemailer', nodemailerMock);
-  });
-
-  afterEach(() => {
-    nodemailerMock.mock.reset();
+    mockSendMail = sinon.stub(transporter, 'sendMail');
   });
 
   after(() => {
-    mockery.deregisterAll();
-    mockery.disable();
+    mockSendMail.restore();
   });
-
   it('should send an email to the recipient mail using nodemailer-mock', async () => {
+    mockSendMail.returns(Promise.resolve(emailSuccessResponse));
     try {
       info = await sendMailer(body);
     } catch (e) {
       error = e;
     } finally {
-      expect(error).to.eql(undefined);
       expect(info.rejected).to.eql([]);
       expect(info.response).to.eql('250 2.0.0 Ok: queued');
       expect(info.envelope).to.be.a('object');
@@ -49,6 +56,7 @@ describe('Mail Configuration', () => {
   });
 
   it('should fail to send an email if there is no recipient mail', async () => {
+    mockSendMail.returns(Promise.reject(missingEmailErrorResponse));
     body.receivers = [];
     try {
       info = await sendMailer(body);
@@ -60,6 +68,7 @@ describe('Mail Configuration', () => {
   });
 
   it('should fail to send an email if there is no object passed to the sendMail function', async () => {
+    mockSendMail.returns(Promise.reject(noRequestEmailErrorResponse));
     try {
       // eslint-disable-next-line no-undef
       info = await sendMailer(noBody);
