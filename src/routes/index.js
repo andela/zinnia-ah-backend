@@ -1,8 +1,17 @@
 import { Router } from 'express';
 import passport from './services/passport-strategies';
-import { createUser, confirmUser, socialController } from './controllers/users';
-import { forgotPassword, resetPassword } from './controllers/password';
+import {
+  createUser,
+  confirmUser,
+  socialController,
+} from './controllers/users.controller';
+import {
+  forgotPassword,
+  resetPassword,
+} from './controllers/password.controller';
 import validateNewUser from './middlewares/validateUser';
+
+import articleRouter from './articles.route';
 
 const router = Router();
 
@@ -13,13 +22,24 @@ const router = Router();
  *    users:
  *    profiles:
  *    articles:
- *    tags:
+ *     type: object
+ *     required:
+ *       - title
+ *       - description
+ *     properties:
+ *       title:
+ *         type: string
+ *       description:
+ *         type: string
  */
+
 /**
  * @swagger
  *
  * /api/v1/users:
  *   post:
+ *     tags:
+ *       - users
  *     description: User Registration Endpoint
  *     produces:
  *       - application/json
@@ -112,5 +132,6 @@ router.post('/users/forgot-password', forgotPassword);
  *        description: Unexpected error.
  */
 router.patch('/users/reset-password/:token', resetPassword);
+router.use('/article', articleRouter);
 
 export default router;
