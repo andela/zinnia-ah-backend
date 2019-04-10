@@ -17,21 +17,21 @@ app.use(express.static(path.join(__dirname, '../doc')));
 dotenv.config();
 
 // swagger definition
-const swaggerDefinition = {
-  info: {
-    title: 'Authors Haven API',
-    version: '1.0.0',
-    description: 'Official API Documentation for Authors Haven',
-  },
-  host: `${process.env.HOST_URL}`,
-  basePath: '/',
-};
+// const swaggerDefinition = {
+//   info: {
+//     title: 'Authors Haven API',
+//     version: '1.0.0',
+//     description: 'Official API Documentation for Authors Haven',
+//   },
+//   host: `${process.env.HOST_URL}`,
+//   basePath: '/',
+// };
 
 // initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc({
-  swaggerDefinition,
-  apis: ['./**/routes/*.js'], // pass all in array
-});
+// const swaggerSpec = swaggerJSDoc({
+//   swaggerDefinition,
+//   apis: ['./**/routes/*.js'], // pass all in array
+// });
 
 app.use(cors());
 
