@@ -10,22 +10,21 @@ const { expect } = chai;
 before(async () => {
   await models.sequelize.sync({ force: true });
 });
-const url = '/api/v1/users';
 
 const userRequestObject = {
   username: 'janahimmmm',
   email: 'nedy@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
-
+let authToken;
 describe('FOLLOW USER', () => {
-  it('should create a user successfully when valid input are supplied', done => {
+  before(done => {
     chai
       .request(app)
-      .post(url)
+      .post('/api/v1/users')
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        authToken = res.body.data.token;
         done();
       });
   });
@@ -33,11 +32,11 @@ describe('FOLLOW USER', () => {
   it('should follow a user', done => {
     chai
       .request(app)
-      .post('/api/v1/profiles/janesmith/follow/2')
+      .post('/api/v1/profiles/janesmith/follow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('success');
         done();
       });
   });
@@ -45,7 +44,8 @@ describe('FOLLOW USER', () => {
   it('should fail if a user tries to follow him/herself', done => {
     chai
       .request(app)
-      .post('/api/v1/profiles/janesmith/follow/1')
+      .post('/api/v1/profiles/janahimmmm/follow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
@@ -57,7 +57,8 @@ describe('FOLLOW USER', () => {
   it('should fail if a user tries to follow someone twice', done => {
     chai
       .request(app)
-      .post('/api/v1/profiles/janesmith/follow/2')
+      .post('/api/v1/profiles/janesmith/follow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
@@ -69,11 +70,11 @@ describe('FOLLOW USER', () => {
   it('should unfollow a user', done => {
     chai
       .request(app)
-      .delete('/api/v1/profiles/janesmith/unfollow/2')
+      .delete('/api/v1/profiles/janesmith/unfollow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('success');
         done();
       });
   });
@@ -81,7 +82,8 @@ describe('FOLLOW USER', () => {
   it('should fail if a user tries to unfollow him/herself', done => {
     chai
       .request(app)
-      .delete('/api/v1/profiles/janesmith/unfollow/1')
+      .delete('/api/v1/profiles/janahimmmm/unfollow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
@@ -93,7 +95,8 @@ describe('FOLLOW USER', () => {
   it('should fail if a user tries to unfollow someone twice', done => {
     chai
       .request(app)
-      .delete('/api/v1/profiles/janesmith/unfollow/2')
+      .delete('/api/v1/profiles/janesmith/unfollow')
+      .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);

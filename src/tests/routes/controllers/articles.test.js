@@ -1,6 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../../server';
+import sinon from 'sinon';
+import { transporter } from '../../../config/mailConfig';
 
 // configure chai to use expect
 chai.use(chaiHttp);
@@ -22,8 +24,12 @@ const articleRequestObject = {
 
 const signupUrl = '/api/v1/auth/signup';
 let xAccessToken = '';
-
+let mockSendMail;
 describe('CREATE ARTICLE', () => {
+  before(() => {
+    mockSendMail = sinon.stub(transporter, 'sendMail');
+  });
+
   it('should create user, to enable us use jwt token', done => {
     chai
       .request(app)
@@ -31,7 +37,7 @@ describe('CREATE ARTICLE', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        xAccessToken = res.body.data;
+        xAccessToken = res.body.data.token;
         done();
       });
   });

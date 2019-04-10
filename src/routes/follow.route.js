@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import follow from './controllers/follow';
+import follow from './controllers/follow.controller';
+import checkAuthorizedUser from './middlewares/authorizedUser';
 
 const followRouter = Router();
 
@@ -36,7 +37,7 @@ const followRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-followRouter.post('/:username/follow/:userId', follow);
+followRouter.post('/:username/follow', checkAuthorizedUser, follow);
 
 /**
  * @swagger
@@ -65,6 +66,6 @@ followRouter.post('/:username/follow/:userId', follow);
  *       5XX:
  *        description: Unexpected error.
  */
-followRouter.delete('/:username/unfollow/:userId', follow);
+followRouter.delete('/:username/unfollow/', checkAuthorizedUser, follow);
 
 export default followRouter;

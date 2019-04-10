@@ -15,17 +15,17 @@ const { User } = models;
  */
 const follow = async (req, res) => {
   const { url } = req;
-  const { userId } = req.params;
+  const { user } = req;
   const { username } = req.params;
 
-  const user = await getUserbyUsername(username);
-  const follower = await User.findByPk(userId);
+  const userToBeFollowed = await getUserbyUsername(username);
+  const follower = await User.findByPk(user.id);
   try {
     if (url.includes('unfollow')) {
-      if (user.id === follower.id) {
+      if (userToBeFollowed.id === follower.id) {
         return errorResponse(res, 409, 'You cannot unfollow yourself');
       }
-      const checkFollower = await user.removeFollowers(follower);
+      const checkFollower = await userToBeFollowed.removeFollowers(follower);
       if (!checkFollower) {
         return successResponse(
           res,
@@ -35,10 +35,10 @@ const follow = async (req, res) => {
         );
       }
     } else {
-      if (user.id === follower.id) {
+      if (userToBeFollowed.id === follower.id) {
         return errorResponse(res, 409, 'You cannot follow yourself');
       }
-      const checkFollower = await user.addFollowers(follower);
+      const checkFollower = await userToBeFollowed.addFollowers(follower);
       if (!checkFollower) {
         return successResponse(
           res,
@@ -48,16 +48,16 @@ const follow = async (req, res) => {
         );
       }
     }
-    const followers = await user.getFollowers();
-    const userData = { user: user.id };
+    const followers = await userToBeFollowed.getFollowers();
+    const userData = { user: userToBeFollowed.id };
     userData.followers = followers.map(followee => ({
       id: followee.id,
       firstname: followee.firstname,
       lastname: followee.lastname,
     }));
-    return successResponse(res, 201, 'success', userData);
+    return successResponse(res, 201, userData);
   } catch (err) {
-    return errorResponse(res, 500, 'Unsuccessful');
+    return errorResponse(res, 500);
   }
 };
 

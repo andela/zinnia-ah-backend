@@ -3,12 +3,12 @@ export default {
     queryInterface.createTable('UserFollower', {
       userId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         underscored: true,
       },
       followerId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         underscored: true,
       },
     }),
