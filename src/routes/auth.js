@@ -1,9 +1,7 @@
 import { Router } from 'express';
 import passport from './services/passport-strategies';
 import { socialController } from './controllers/users';
-import models from '../db/models';
 
-const { User } = models;
 const authRouter = Router();
 
 /**

@@ -29,10 +29,10 @@ const swaggerDefinition = {
 };
 
 // initialize swagger-jsdoc
-// const swaggerSpec = swaggerJSDoc({
-//   swaggerDefinition,
-//   apis: ['./**/routes/*.js'], // pass all in array
-// });
+const swaggerSpec = swaggerJSDoc({
+  swaggerDefinition,
+  apis: ['./**/routes/*.js'], // pass all in array
+});
 
 app.use(cors());
 

@@ -1,7 +1,6 @@
 import passport from 'passport';
 import dotenv from 'dotenv';
 import models from '../../db/models';
-import { socialController } from '../controllers/users';
 
 dotenv.config();
 
@@ -23,7 +22,6 @@ const credentials = {
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: process.env.TWITTER_APP_CALLBACK,
     includeEmail: true,
-    profileFields: ['id', 'email', 'name'],
   }
 };
 
