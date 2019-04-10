@@ -18,6 +18,7 @@ const Users = {
    */
   async createUser(req, res) {
     console.log(__dirname);
+    const { username, email, password } = req.body;
     const data = {
       username,
       email,
