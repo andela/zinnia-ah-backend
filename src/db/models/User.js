@@ -4,6 +4,13 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        autoIncrement: false,
+        allowNull: false,
+      },
       firstName: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -54,8 +61,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   );
-  User.associate = () => {
+  User.associate = model => {
     // associations can be defined here
+    User.hasMany(model.Article);
   };
 
   User.prototype.hashPassword = async function hashPassword() {
