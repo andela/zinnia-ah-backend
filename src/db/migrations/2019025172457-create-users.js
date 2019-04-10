@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Users', {
@@ -60,6 +59,5 @@ export default {
         field: 'updated_at',
       },
     }),
-
   down: queryInterface => queryInterface.dropTable('Users'),
 };

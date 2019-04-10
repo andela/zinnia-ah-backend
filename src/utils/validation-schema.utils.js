@@ -5,12 +5,12 @@ export const emailSchema = Joi.string()
   .lowercase()
   .trim()
   .email({
-    minDomainAtoms: 2
+    minDomainAtoms: 2,
   })
   .required();
 
 export const uuidSchema = Joi.string().guid({
-  version: ['uuidv4', 'uuidv5']
+  version: ['uuidv4', 'uuidv5'],
 });
 
 export const usernameSchema = Joi.string()

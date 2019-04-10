@@ -29,7 +29,10 @@ export async function signup(req, res) {
   }
   try {
     const user = await User.create(req.body);
-    const tokenPayload = { id: user.id, email: user.email };
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+    };
     const token = await generateToken(tokenPayload);
     const url =
       process.env.NODE_ENV === 'test'
@@ -46,7 +49,9 @@ export async function signup(req, res) {
       res,
       201,
       'Please check your mail to verify your account',
-      { token },
+      {
+        token,
+      },
     );
   } catch (err) {
     return errorResponse(res, 500, err.message);
@@ -66,8 +71,15 @@ export async function confirmUser(req, res) {
     const decoded = await verifyToken(req.params.token);
     const { id } = decoded;
     const response = await User.update(
-      { isEmailVerified: true },
-      { returning: true, where: { id } },
+      {
+        isEmailVerified: true,
+      },
+      {
+        returning: true,
+        where: {
+          id,
+        },
+      },
     );
     const responseData = {
       confirmed: response[1][0].isEmailVerified,
@@ -93,17 +105,28 @@ export async function socialController(req, res) {
   const [user, isCreated] = req.user;
 
   try {
-    const tokenPayload = { id: user.id, email: user.email };
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+    };
     const token = await generateToken(tokenPayload);
     if (isCreated) {
       return successResponse(
         res,
         201,
         'You have successfully registered however you would need to check your mail to verify your account',
-        [{ token }],
+        [
+          {
+            token,
+          },
+        ],
       );
     }
-    return successResponse(res, 200, 'You are now logged in', [{ token }]);
+    return successResponse(res, 200, 'You are now logged in', [
+      {
+        token,
+      },
+    ]);
   } catch (err) {
     return errorResponse(res, 500, err.message);
   }
@@ -130,16 +153,15 @@ export async function login(req, res) {
       return errorResponse(res, 400, 'Incorrect Password');
     }
     const { id } = user;
-    const token = generateToken({ id, email });
+    const token = generateToken({
+      id,
+      email,
+    });
     return successResponse(res, 200, 'You have successfully logged in', {
       user,
       token,
     });
   } catch (error) {
-    return errorResponse(
-      res,
-      400,
-      'Something went wrong. Database was not reached',
-    );
+    return errorResponse(res, 500, error.message);
   }
 }

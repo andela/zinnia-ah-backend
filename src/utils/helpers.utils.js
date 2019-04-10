@@ -1,14 +1,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import {
-  Op
-} from 'sequelize';
+import { Op } from 'sequelize';
 import models from '../db/models';
 
-const {
-  User
-} = models;
+const { User } = models;
 
 dotenv.config();
 
@@ -19,29 +15,42 @@ dotenv.config();
  * @returns {Boolean} true if email exists
  * @returns {Boolean} false if email does not exist
  */
-export const checkEmailExistence = async email => {
-  const existingUser = await User.findOne({
+export const getUserbyEmail = async email => {
+  return await User.findOne({
     where: {
       email,
     },
   });
-  if (!existingUser) {
-    return false;
-  }
-  return true;
 };
 
 /**
- * Check Email existence to prevent duplication
- * @param {String} email email to be checked
- @ @param {String} username username to be checked
+ * Check User existence
+ *
+ * @param {String} username
+ * @returns {Boolean} true if username exists
+ * @returns {Boolean} false if username does not exist
+ */
+export const getUserbyUsername = async username => {
+  return await User.findOne({
+    where: {
+      username,
+    },
+  });
+};
+
+/**
+ * Check User duplication
+ *
+ * @param {String} email
+ * @param {String} username
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {
-      [Op.or]: [{
+      [Op.or]: [
+        {
           email,
         },
         {
@@ -50,10 +59,7 @@ export const checkDuplicateUser = async (email, username) => {
       ],
     },
   });
-  if (existingUser === null) {
-    return false;
-  }
-  return true;
+  return existingUser !== null;
 };
 
 export const errorResponse = (res, statusCode, message, errors) =>
@@ -117,18 +123,4 @@ export const verifyToken = async token => {
     }
     return data;
   });
-};
-
-export const checkUser = async (req, res, email) => {
-  const user = await User.findOne({
-    where: {
-      email,
-    },
-  });
-  if (!user) {
-    return res.status(404).json({
-      error: `User with this ${email} does not exist`,
-    });
-  }
-  return user;
 };

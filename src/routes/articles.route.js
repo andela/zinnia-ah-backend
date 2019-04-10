@@ -1,7 +1,12 @@
 import { Router } from 'express';
 
-import { create, getArticle } from './controllers/articles.controller';
+import { getArticle, createArticle } from './controllers/articles.controller';
 import { validateUuid } from './middlewares/validate-input.middleware';
+import {
+  createComment,
+  createThreadedComment,
+} from './controllers/comments.controller.js';
+import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
 
@@ -51,7 +56,69 @@ const articleRouter = Router();
  *       500:
  *         description: ran
  */
-articleRouter.post('/', create);
+articleRouter.post('/', createArticle);
+
+/**
+ * @swagger
+ *
+ * /:slug/comments:
+ *   post:
+ *     description: Reset Password
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: Comment created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+articleRouter.post('/:articleId/comments', checkAuthorizedUser, createComment);
+
+/**
+ * @swagger
+ *
+ * /:slug/comments/:commentId/thread:
+ *   post:
+ *     description: Reset Password
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: Comment created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+articleRouter.post(
+  '/:articleId/comments/:commentId/thread',
+  checkAuthorizedUser,
+  createThreadedComment,
+);
 
 /**
  * @swagger
