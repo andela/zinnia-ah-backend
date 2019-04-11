@@ -1,11 +1,13 @@
 import crypto from 'crypto';
 import slug from 'slug';
+
 import models from '../../db/models';
 import {
   successResponse,
   errorResponse,
   verifyToken,
 } from '../../utils/helpers.utils';
+import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 
 const { Article, User } = models;
 
@@ -31,7 +33,11 @@ export async function createArticle(req, res) {
     if (!userInfo) {
       throw Error('jwt must be provided');
     }
-
+    const timeToReadArticle = calculateTimeToReadArticle({
+      images: images.split(','),
+      videos: [],
+      words: body,
+    });
     const createdArticle = await Article.create({
       userId: userInfo.id,
       title,
@@ -42,7 +48,7 @@ export async function createArticle(req, res) {
       body,
       imageList: images,
       tagList: tags,
-      readTime: '30 min',
+      readTime: timeToReadArticle,
       subscriptionType: 'free',
       status: 'draft',
     });
