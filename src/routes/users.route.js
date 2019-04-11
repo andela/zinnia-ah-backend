@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
+import { createUser, confirmUser } from './controllers/users.controller';
 import {
-  getAllAuthors,
-  getAuthorProfile,
-} from './controllers/users.controller';
-
+  resetPassword,
+  forgotPassword,
+} from './controllers/password.controller';
+import { validUser } from './middlewares/validateInput';
 const userRouter = Router();
 
 /**
@@ -12,7 +13,7 @@ const userRouter = Router();
  *
  * /api/v1/users:
  *   post:
- *     description: Get all authors
+ *     description: User Registration Endpoint
  *     produces:
  *       - application/json
  *     request:
@@ -34,14 +35,44 @@ const userRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/', getAllAuthors);
+userRouter.post('/', validUser, createUser);
+userRouter.get('/confirmation/:token', confirmUser);
+/**
+ * @swagger
+ *
+ * /api/v1/users:
+ *   post:
+ *     description: Reset Password
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: User created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+
+userRouter.patch('/reset-password/:token', resetPassword);
 
 /**
  * @swagger
  *
- * /api/v1/profiles/:username:
+ * /api/v1/users:
  *   post:
- *     description: View user's profile
+ *     description: Forgot Password
  *     produces:
  *       - application/json
  *     request:
@@ -63,6 +94,7 @@ userRouter.get('/', getAllAuthors);
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/:username', getAuthorProfile);
+
+userRouter.post('/forgot-password', forgotPassword);
 
 export default userRouter;

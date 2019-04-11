@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import create from './controllers/articles.controller';
+
+import { create, getAll, findArticle } from './controllers/articles.controller';
+import { validUuid } from './middlewares/validateInput';
 
 const articleRouter = Router();
 
@@ -50,5 +52,7 @@ const articleRouter = Router();
  *         description: ran
  */
 articleRouter.post('/', create);
+articleRouter.get('/', getAll);
+articleRouter.get('/:articleId', validUuid, findArticle);
 
 export default articleRouter;
