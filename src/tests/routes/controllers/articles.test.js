@@ -74,16 +74,6 @@ describe('Articles', () => {
   });
 
   describe('GET /api/v1/articles', () => {
-    it('should return a 200 response when articles exist', async () => {
-      const response = await chai.request(app).get(endPoint);
-
-      expect(response.body).to.include.keys('status', 'message', 'data');
-      expect(response.status).to.eql(200);
-      expect(response.body.status).to.eql('success');
-      expect(response.body.message).to.eql('Articles successfully retrieved');
-      expect(response.body.data.rows.length).to.be.greaterThan(0);
-    });
-
     it('should return a 200 response when valid uuid articleID is set', async () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
       const response = await chai.request(app).get(`${endPoint}/${articleID}`);

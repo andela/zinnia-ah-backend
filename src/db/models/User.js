@@ -72,7 +72,9 @@ export default (sequelize, DataTypes) => {
       as: 'followings',
       timestamps: false,
     });
-    User.hasMany(models.Article);
+    User.hasMany(models.Article, {
+      foreignKey: 'id',
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {
