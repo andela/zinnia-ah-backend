@@ -6,7 +6,7 @@ import {
   resetPassword,
 } from './controllers/password.controller';
 import validateNewUser from './middlewares/validateUser';
-import authRouter from './auth';
+import authRouter from './auth.route';
 
 import articleRouter from './articles.route';
 
@@ -122,5 +122,14 @@ router.post('/users/forgot-password', forgotPassword);
  */
 router.patch('/users/reset-password/:token', resetPassword);
 router.use('/article', articleRouter);
+
+router.get('/auth/facebook', passport.authenticate('facebook'));
+router.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+  }),
+);
 
 export default router;

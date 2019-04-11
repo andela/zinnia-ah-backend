@@ -1,7 +1,6 @@
 import passport from 'passport';
 import dotenv from 'dotenv';
 import models from '../../db/models';
-import { socialController } from '../controllers/users';
 
 dotenv.config();
 
@@ -26,6 +25,16 @@ const credentials = {
     profileFields: ['id', 'email', 'name'],
   },
 };
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 const facebookAuth = async (accessToken, refreshToken, profile, done) => {
   try {

@@ -81,12 +81,13 @@ export const confirmUser = async (req, res) => {
  * @returns {object} response object
  */
 export const socialController = async (req, res) => {
-  const [user, isCreated] = req.user;
+  const { isNewRecord } = req.user._options;
+  const user = req.user.dataValues;
 
   try {
     const tokenPayload = { id: user.id, email: user.email };
     const token = await generateToken(tokenPayload);
-    if (isCreated) {
+    if (isNewRecord) {
       return successResponse(
         res,
         201,
