@@ -30,8 +30,8 @@
     "start:dev": "nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
-    "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
-    "test:watch": "NODE_ENV=test mocha --recursive src/tests --require @babel/register --watch",
+    "test": "NODE_ENV=test nyc mocha --recursive src/tests/ --require @babel/register --exit --no-timeouts",
+    "test:watch": "NODE_ENV=test mocha --recursive src/tests/ --require @babel/register --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
@@ -42,6 +42,7 @@
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^6.0.0",
