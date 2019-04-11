@@ -7,9 +7,10 @@ import models from '../db/models';
 const { User, Article } = models;
 
 dotenv.config();
+const { SECRET_KEY } = process.env;
 
 /**
- * Check User existence
+ * Check Email existence
  *
  * @param {String} email
  * @returns {Boolean} true if email exists
@@ -85,6 +86,7 @@ export const getArticlebySlug = async slug => {
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
+
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {
@@ -182,7 +184,6 @@ export const isValidUser = async (req, res, next) => {
     req.userid = decodedToken.id;
     return next();
   } catch (err) {
-    console.log(err);
     return errorResponse(res, 401, 'unauthorized users');
   }
 };

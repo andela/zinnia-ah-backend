@@ -89,6 +89,12 @@ export default (sequelize, DataTypes) => {
       as: 'likes',
       timestamps: false,
     });
+    User.belongsToMany(models.Article, {
+      foreignKey: 'user_id',
+      otherKey: 'article_id',
+      through: 'Bookmarks',
+      as: 'bookmarks',
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

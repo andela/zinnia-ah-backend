@@ -38,7 +38,6 @@ describe('LIKE COMMENT', () => {
       .set({
         Authorization: token,
       });
-    console.log(res.body);
     expect(res.status).to.equal(200);
     expect(res.body.message).to.equal('You have liked this post');
   });

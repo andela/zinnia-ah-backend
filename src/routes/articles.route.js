@@ -13,6 +13,8 @@ import {
   likeAnArticle,
   unlikeAnArticle,
   shareArticleViaEmail,
+  bookmarkArticle,
+  removeBookmark,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -211,7 +213,7 @@ articleRouter.get('/:articleId', validateUuid, getArticle);
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/article/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -283,6 +285,17 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+articleRouter.post(
+  '/:articleId/bookmark',
+  checkAuthorizedUser,
+  bookmarkArticle,
+);
+
+articleRouter.post(
+  '/:articleId/removebookmark',
+  checkAuthorizedUser,
+  removeBookmark,
+);
 
 /**
  * @swagger

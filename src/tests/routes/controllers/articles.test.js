@@ -23,6 +23,10 @@ const likeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
 const unlikeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
+const bookmarkUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/bookmark';
+const removeBookmarkUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
 const loginUrl = '/api/v1/auth/login';
 let jwtToken = '';
 const endPoint = '/api/v1/articles';
@@ -244,6 +248,48 @@ describe('Articles', () => {
         'Article has been successfully shared',
       );
       expect(response.body.data).to.be.an('object');
+    });
+  });
+});
+
+describe('Bookmark and un-bookmark Articles', () => {
+  context('User can bookmark an article', () => {
+    it('should allow authenticated users bookmark an article', async () => {
+      const res = await chai
+        .request(app)
+        .post(bookmarkUrl)
+        .set('x-access-token', jwtToken);
+      expect(res.status).to.equal(200);
+      expect(res.body.message)
+        .to.be.a('String')
+        .to.eql('Article successfully bookmarked');
+      expect(res.body.data)
+        .to.be.an('object')
+        .to.have.property('userData');
+      expect(res.body.data.userData.bookmarks).to.deep.include({
+        title: 'Test Article for likes and unlikes',
+        id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+        slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+      });
+    });
+  });
+
+  context('User can remove bookmark', () => {
+    it('should allow authenticated users to remove bookmark', async () => {
+      const res = await chai
+        .request(app)
+        .post(removeBookmarkUrl)
+        .set('x-access-token', jwtToken);
+      expect(res.status).to.equal(200);
+      expect(res.body.message)
+        .to.be.a('String')
+        .to.eql('Bookmark successfully removed');
+      expect(res.body.data)
+        .to.be.an('object')
+        .to.have.property('userData');
+      expect(res.body.data.userData.bookmarks)
+        .to.be.an('array')
+        .to.have.lengthOf(0);
     });
   });
 });
