@@ -123,13 +123,4 @@ router.post('/users/forgot-password', forgotPassword);
 router.patch('/users/reset-password/:token', resetPassword);
 router.use('/article', articleRouter);
 
-router.get('/auth/facebook', passport.authenticate('facebook'));
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }),
-);
-
 export default router;
