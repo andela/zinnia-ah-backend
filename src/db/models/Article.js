@@ -2,52 +2,60 @@ export default (sequelize, DataTypes) => {
   const Article = sequelize.define(
     'Article',
     {
-      articleId: {
+      id: {
+        allowNull: false,
+        primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-        autoIncrement: false,
-        allowNull: false,
-        field: 'id',
       },
       userId: {
         type: DataTypes.UUID,
         field: 'user_id',
+        allowNull: false,
       },
       slug: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
-      title: DataTypes.STRING,
-      description: DataTypes.STRING,
-      body: DataTypes.TEXT,
-      imageList: {
+      title: {
         type: DataTypes.STRING,
-        field: 'image_list',
+        allowNull: false,
       },
-      tagList: {
+      description: {
         type: DataTypes.STRING,
-        field: 'tag_list',
+        allowNull: false,
       },
-      favoriteCount: {
-        type: DataTypes.STRING,
-        field: 'favorite_count',
-      },
-      readTime: {
-        type: DataTypes.STRING,
-        field: 'read_time',
+      body: {
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
       subcriptionType: {
         type: DataTypes.ENUM('free', 'premium'),
         field: 'subcription_type',
+        default: 'free',
       },
-      status: DataTypes.ENUM('published', 'draft', 'trash', 'banned'),
+      status: {
+        type: DataTypes.ENUM('published', 'draft', 'trashed', 'banned'),
+        default: 'draft',
+      },
+      readTime: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'read_time',
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {},
   );
-  Article.associate = models => {
-    Article.belongsTo(models.User);
-  };
+  Article.associate = () => {};
   return Article;
 };

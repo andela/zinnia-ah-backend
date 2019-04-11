@@ -31,13 +31,13 @@
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
-    "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch --no-timeouts",
+    "test:watch": "NODE_ENV=test mocha --recursive src/tests --require @babel/register --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
-    "pretest": "npm run lint && npm run prettier"
+    "pretest": "npm run lint && npm run prettier && npm run db:migrate:testdb"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -58,7 +58,8 @@
     "sequelize": "^5.1.1",
     "sequelize-cli": "^5.4.0",
     "slug": "^1.1.0",
-    "swagger-jsdoc": "^3.2.8"
+    "swagger-jsdoc": "^3.2.8",
+    "uuidv4": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -79,11 +80,11 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
     "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
     "mocha": "^6.1.2",
     "mockery": "^2.1.0",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0",
-    "prettier": "^1.16.4",
     "sinon": "^7.3.1"
   }
 }

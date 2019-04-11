@@ -7,9 +7,6 @@ import app from '../../../server';
 chai.use(chaiHttp);
 const { expect } = chai;
 
-before(async () => {
-  await models.sequelize.sync({ force: true });
-});
 let resetToken;
 const userEmail = {
   email: 'jsmith@gmail.com',
