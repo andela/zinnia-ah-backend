@@ -18,7 +18,7 @@
       "text"
     ],
     "sourceMap": false,
-    "instrument": true,
+    "instrument": false,
     "all": true
   },
   "husky": {
@@ -37,6 +37,7 @@
     "start:dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
+    "pretest": "NODE_ENV=test npm run lint && npm run prettier && npm run db:migrate:testdb && npm run seedall",
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit",
     "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch",
     "build": "rm -rf build && babel src -d build",
@@ -45,8 +46,7 @@
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
     "seedall": "NODE_ENV=test sequelize db:seed:all",
-    "coveralls": "cat coverage/lcov.info | coveralls",
-    "pretest": "npm run lint && npm run prettier"
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",

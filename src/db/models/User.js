@@ -83,7 +83,7 @@ export default (sequelize, DataTypes) => {
     return this.password;
   };
 
-  User.prototype.validPassword = function validPassword(password) {
+  User.prototype.validPassword = async function validPassword(password) {
     return bcrypt.compare(password, this.password);
   };
 
