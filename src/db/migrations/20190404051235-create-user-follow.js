@@ -1,34 +1,16 @@
 export default {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('UserFollowers', {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-      },
+    queryInterface.createTable('UserFollower', {
       userId: {
-        type: Sequelize.UUID,
         allowNull: false,
-        field: 'user_id',
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
+        type: Sequelize.UUID,
+        underscored: true,
       },
-
       followerId: {
-        type: Sequelize.UUID,
         allowNull: false,
-        field: 'follower_id',
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
+        type: Sequelize.UUID,
+        underscored: true,
       },
     }),
-
-  down: queryInterface => queryInterface.dropTable('UserFollowers'),
+  down: queryInterface => queryInterface.dropTable('UserFollower'),
 };

@@ -62,7 +62,9 @@ describe('FOLLOW USER', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
-        expect(res.body.data).to.equal('You are already following this person');
+        expect(res.body.errors).to.equal(
+          'You are already following this person',
+        );
         done();
       });
   });
@@ -100,7 +102,7 @@ describe('FOLLOW USER', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(409);
-        expect(res.body.data).to.equal('You are not following this person');
+        expect(res.body.errors).to.equal('You are not following this person');
         done();
       });
   });

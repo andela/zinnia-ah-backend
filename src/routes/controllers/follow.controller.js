@@ -20,6 +20,7 @@ const follow = async (req, res) => {
 
   const userToBeFollowed = await getUserbyUsername(username);
   const follower = await User.findByPk(user.id);
+
   try {
     if (url.includes('unfollow')) {
       if (userToBeFollowed.id === follower.id) {
@@ -27,7 +28,7 @@ const follow = async (req, res) => {
       }
       const checkFollower = await userToBeFollowed.removeFollowers(follower);
       if (!checkFollower) {
-        return successResponse(
+        return errorResponse(
           res,
           409,
           'error',
@@ -40,7 +41,7 @@ const follow = async (req, res) => {
       }
       const checkFollower = await userToBeFollowed.addFollowers(follower);
       if (!checkFollower) {
-        return successResponse(
+        return errorResponse(
           res,
           409,
           'error',
