@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { errorResponse } from '../utils/helpers';
+import { errorResponse } from '../utils/helpers.utils';
 
 /**
  * Input validator for a new user account

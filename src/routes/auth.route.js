@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import validateNewUser from './middlewares/validate-user.middleware';
+import { validateNewUser } from './middlewares/validate-input.middleware';
 import passport from './services/passport-strategies.services';
 import {
   signup,

@@ -1,5 +1,8 @@
-import validator from '../utils/validator.util';
-import { newUserSchema, articleIdSchema } from '../../utils/validationSchema';
+import validator from '../../utils/validator.utils';
+import {
+  newUserSchema,
+  articleIdSchema,
+} from '../../utils/validation-schema.utils';
 /**
  * Input validator for a new user account
  * @param {Object} req - request body
@@ -7,10 +10,10 @@ import { newUserSchema, articleIdSchema } from '../../utils/validationSchema';
  * @param {Object} next - pass control to the next handler
  * @returns {Object} Validator helper function
  */
-export const validUser = (req, res, next) => {
+export const validateNewUser = (req, res, next) => {
   validator(req.body, newUserSchema, res, next);
 };
 
-export const validUuid = (req, res, next) => {
+export const validateUuid = (req, res, next) => {
   return validator(req.params, articleIdSchema, res, next);
 };

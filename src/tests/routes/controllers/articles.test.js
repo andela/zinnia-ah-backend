@@ -46,7 +46,7 @@ describe('Articles', () => {
     it('should create article successfully, with valid user input', done => {
       chai
         .request(app)
-        .post('/api/v1/articles')
+        .post(endPoint)
         .set('x-access-token', xAccessToken)
         .send(articleRequestObject)
         .end((err, res) => {
@@ -60,7 +60,7 @@ describe('Articles', () => {
     it('should fail when all fields are not supplied', done => {
       chai
         .request(app)
-        .post('/api/v1/articles')
+        .post(endPoint)
         .set('x-access-token', xAccessToken)
         .send(userRequestObject)
         .end((err, res) => {
