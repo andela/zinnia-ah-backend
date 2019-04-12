@@ -3,7 +3,7 @@ import { Router } from 'express';
 import authRouter from './auth.route';
 import passwordRouter from './password.route';
 import articleRouter from './articles.route';
-import followRouter from './follow';
+import followRouter from './follow.route';
 
 const router = Router();
 

@@ -21,7 +21,7 @@ describe('FOLLOW USER', () => {
   before(done => {
     chai
       .request(app)
-      .post('/api/v1/users')
+      .post('/api/v1/auth/signup')
       .send(userRequestObject)
       .end((err, res) => {
         authToken = res.body.data.token;

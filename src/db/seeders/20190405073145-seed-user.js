@@ -9,8 +9,7 @@ export default {
           id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           username: 'igbominadeveloper',
           email: 'igbominadeveloper@ah.com',
-          password:
-            '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
+          password: await hashPassword('favourafolayan'),
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
         },
@@ -34,8 +33,7 @@ export default {
           id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
           username: 'nedyudomabt',
           email: 'nedyudombat@ah.com',
-          password:
-            '$2a$10$.StOfzK2iJZhwc6H8wxEHOL5ae/wL19ucGlYrMZ0/ll0hdsdfWOPy',
+          password: await hashPassword('nedyudombat'),
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
         },
@@ -43,8 +41,7 @@ export default {
           id: '6d1cdd96-c3b0-43d7-8446-a0db534a1c57',
           username: 'tinawhatsgood',
           email: 'tinawhatsgood@ah.com',
-          password:
-            '$2a$10$vfaNddbJXmn7AMhUSifEQeh0fvGxjGDP3ne4beeELoosHeVqM0dkO',
+          password: await hashPassword('newtyronne'),
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
         },

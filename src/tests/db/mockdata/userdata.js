@@ -79,8 +79,8 @@ export const userMissingPasswordConfirmation = {
 };
 
 export const loginCredentials = {
-  email: 'giant@gmail.com',
-  password: 'smiley007',
+  email: 'roses@gmail.com',
+  password: '16goingOn17',
 };
 
 export const nonExistentUser = {

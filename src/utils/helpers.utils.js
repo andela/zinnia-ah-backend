@@ -9,7 +9,7 @@ const { User } = models;
 dotenv.config();
 
 /**
- * Check Email existence
+ * Check User existence
  *
  * @param {String} email
  * @returns {Boolean} true if email exists
@@ -19,19 +19,25 @@ export const getUserbyEmail = async email => {
   return await User.findOne({ where: { email } });
 };
 
+/**
+ * Check User existence
+ *
+ * @param {String} username
+ * @returns {Boolean} true if username exists
+ * @returns {Boolean} false if username does not exist
+ */
 export const getUserbyUsername = async username => {
   return await User.findOne({ where: { username } });
 };
 
 /**
- * Check Email existence to prevent duplication
- * @param {String} email email to be checked
- @ @param {String} username username to be checked
- * @param username
+ * Check User duplication
+ *
+ * @param {String} email
+ * @param {String} username
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
-
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {

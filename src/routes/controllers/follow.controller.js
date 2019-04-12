@@ -3,7 +3,7 @@ import {
   errorResponse,
   successResponse,
   getUserbyUsername,
-} from '../utils/helpers';
+} from '../../utils/helpers.utils';
 
 const { User } = models;
 
