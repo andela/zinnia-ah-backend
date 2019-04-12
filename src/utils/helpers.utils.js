@@ -1,12 +1,12 @@
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Op } from 'sequelize';
-import models from '../../db/models';
+import models from '../db/models';
 
 const { User } = models;
 
 dotenv.config();
-const { SECRET_KEY } = process.env;
 
 /**
  * Check Email existence
@@ -51,14 +51,46 @@ export const successResponse = (res, statusCode, message, data) =>
     data,
   });
 
-export const generateToken = async (payload, time = '14d') => {
-  return await jwt.sign(payload, SECRET_KEY, {
-    expiresIn: time,
-  });
-};
+/**
+ *
+ *
+ * @export
+ * @param {string} password
+ * @param {number} [salt=10]
+ * @returns {string} hash
+ */
+export async function hashPassword(password, salt = 10) {
+  const hash = await bcrypt.hash(password, salt);
+  return hash;
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {string} hashedPassword
+ * @param {string} password
+ * @returns {boolean} true/false
+ */
+export function comparePassword(hashedPassword, password) {
+  return bcrypt.compareSync(password, hashedPassword);
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} payload
+ * @param {string} [expiresIn='30days']
+ * @returns {string} token
+ */
+export function generateToken(payload, expiresIn = '30days') {
+  const token = jwt.sign(payload, 'SECRET_KEY', { expiresIn });
+  return token;
+}
 
 export const verifyToken = async token => {
-  return await jwt.verify(token, SECRET_KEY, (err, data) => {
+  return await jwt.verify(token, 'SECRET_KEY', (err, data) => {
     if (err) {
       return null;
     }

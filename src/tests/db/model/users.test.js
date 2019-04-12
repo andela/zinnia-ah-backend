@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../server';
+import app from '../../../server';
 import {
   emptyUser,
   userWithInvalidEmail,
@@ -11,15 +11,15 @@ import {
   userMissingUsername,
   userMissingPassword,
   userWithPasswordLessThanEightChars,
-} from './userdata';
+} from '../mockdata/userdata';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-const endPoint = '/api/v1/users';
+const endPoint = '/api/v1/auth/signup';
 
 describe('User', () => {
-  describe('POST /api/v1/users', () => {
+  describe('POST /api/v1/auth/signup', () => {
     it('returns a 422 response code an empty request body is sent by user', async () => {
       const response = await chai
         .request(app)

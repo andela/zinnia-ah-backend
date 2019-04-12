@@ -30,14 +30,15 @@
     "start:dev": "nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
+    "pretest": "NODE_ENV=test npm run lint && npm run prettier && npm run db:migrate:testdb && npm run seedall",
     "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
-    "test:watch": "NODE_ENV=test mocha --recursive src/tests --require @babel/register --watch",
+    "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch --no-timeouts",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
-    "pretest": "npm run lint && npm run prettier && npm run db:migrate:testdb"
+    "seedall": "NODE_ENV=test sequelize db:seed:all"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",

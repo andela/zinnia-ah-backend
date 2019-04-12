@@ -29,9 +29,9 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      subcriptionType: {
+      subscriptionType: {
         type: DataTypes.ENUM('free', 'premium'),
-        field: 'subcription_type',
+        field: 'subscription_type',
         default: 'free',
       },
       status: {

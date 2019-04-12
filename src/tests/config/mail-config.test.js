@@ -1,6 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import { sendMailer, transporter } from '../../config/mailConfig';
+import { sendMailer, transporter } from '../../config/mail-config';
 
 const { expect } = chai;
 

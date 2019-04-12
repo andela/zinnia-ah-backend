@@ -12,12 +12,10 @@ export default (sequelize, DataTypes) => {
       },
       firstName: {
         type: DataTypes.STRING,
-        allowNull: true,
         field: 'first_name',
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: true,
         field: 'last_name',
       },
       username: {
@@ -32,22 +30,15 @@ export default (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
       },
-      bio: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
+      bio: DataTypes.TEXT,
       interests: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
-        allowNull: true,
       },
-      image: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
+      image: DataTypes.TEXT,
       isEmailVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        allowNull: true,
+        allowNull: false,
         field: 'is_email_verified',
       },
       createdAt: {

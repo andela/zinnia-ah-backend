@@ -20,17 +20,18 @@ const articleRequestObject = {
   tags: 'hope, life, source.',
 };
 
+const signupUrl = '/api/v1/auth/signup';
 let xAccessToken = '';
 
 describe('CREATE ARTICLE', () => {
   it('should create user, to enable us use jwt token', done => {
     chai
       .request(app)
-      .post('/api/v1/users')
+      .post(signupUrl)
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        xAccessToken = res.body.data[0].token;
+        xAccessToken = res.body.data;
         done();
       });
   });
