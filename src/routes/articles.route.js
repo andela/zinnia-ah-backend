@@ -523,4 +523,11 @@ articleRouter.post(
   rateArticle,
 );
 
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
+
 export default articleRouter;
