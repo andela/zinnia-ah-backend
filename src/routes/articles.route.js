@@ -380,7 +380,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/articles/:articleId/bookmark:
+ * /api/v1/article/:articleId/bookmark:
  *   post:
  *     tags:
  *       - article
@@ -423,7 +423,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/articles/:articleId/removebookmark:
+ * /api/v1/article/:articleId/removebookmark:
  *   post:
  *     tags:
  *       - article
