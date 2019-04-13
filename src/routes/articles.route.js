@@ -368,4 +368,11 @@ articleRouter.post(
  */
 articleRouter.post('/:articleId/share', shareArticleViaEmail);
 
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
+
 export default articleRouter;
