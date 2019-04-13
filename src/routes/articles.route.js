@@ -507,6 +507,43 @@ articleRouter.post(
  *   post:
  *     tags:
  *       - article
+ *     description: users can rate a single article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article rated
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/like:
+ *   post:
+ *     tags:
+ *       - article
  *     description: users can like a comment.
  *     produces:
  *       - application/json
