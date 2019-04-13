@@ -758,7 +758,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/articles/:articleId/rate:
+ * /api/v1/article/:articleId/rate:
  *   post:
  *     tags:
  *       - article
