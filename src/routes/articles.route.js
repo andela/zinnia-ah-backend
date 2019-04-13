@@ -18,6 +18,7 @@ import {
   shareArticleViaEmail,
   bookmarkArticle,
   removeBookmark,
+  rateArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -379,5 +380,12 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.post('/:articleId/share', shareArticleViaEmail);
+
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 export default articleRouter;
