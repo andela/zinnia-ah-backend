@@ -213,12 +213,6 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.get('/:articleId', validateUuid, getArticle);
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
 
 /**
  * @swagger
@@ -295,12 +289,85 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/bookmark:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can bookmark an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article bookmarked
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
 articleRouter.post(
   '/:articleId/bookmark',
   checkAuthorizedUser,
   bookmarkArticle,
 );
 
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/removebookmark:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can remove a bookmarked article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article bookmark successfully removed
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
 articleRouter.post(
   '/:articleId/removebookmark',
   checkAuthorizedUser,
@@ -381,6 +448,36 @@ articleRouter.post(
  */
 articleRouter.post('/:articleId/share', shareArticleViaEmail);
 
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/rate:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can rate a single article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article rated
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
 articleRouter.post(
   '/:articleId/rate',
   checkAuthorizedUser,
