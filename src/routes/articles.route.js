@@ -23,10 +23,6 @@ import {
   reportArticle,
   rateArticle,
 } from './controllers/articles.controller';
-import {
-  validateUuid,
-  validateRating,
-} from './middlewares/validate-input.middleware';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
@@ -224,22 +220,18 @@ articleRouter.get('/:articleId', getSingleArticle);
 /**
  * @swagger
  *
- * /api/v1/articles:
- *   get:
+ * /api/v1/article/:articleId/rate:
+ *   post:
  *     tags:
  *       - article
- *     description: users can fetch all articles and paginate them.
+ *     description: users can rate a single article.
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: limit
- *         description: the number of articles per page
- *         in: query
- *         required: false
- *       - name: page
- *         description: the page number to fetch articles from
- *         in: query
- *         required: false
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
  *     request:
  *         content:
  *         - application/json
@@ -249,16 +241,23 @@ articleRouter.get('/:articleId', getSingleArticle);
  *         $ref: '#/definitions/article'
  *     responses:
  *       200:
- *         description: articles fetched
+ *         description: article rated
+ *       404:
+ *         description: article not found
  *       500:
  *         description: Database error
  */
-articleRouter.get('/', getAllArticles);
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 /**
  * @swagger
  *
- * /api/v1/articles/:articleId/like:
+ * /api/v1/article/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -720,12 +719,5 @@ articleRouter.post(
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
-
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
 
 export default articleRouter;
