@@ -466,7 +466,6 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/rate:
  *   post:
  *     tags:
  *       - article
@@ -545,12 +544,6 @@ articleRouter.post(
  *     tags:
  *       - article
  *     description: users can like a comment.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: id
- *         description: the id of the user.
- *         from: token in Header
  *         required: true
  *       - name: article id
  *         description: the summary of the article.

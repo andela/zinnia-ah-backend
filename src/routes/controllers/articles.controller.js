@@ -479,11 +479,17 @@ export const rateArticle = async (req, res) => {
       ],
     });
 
+    const ratedArticleJSON = ratedArticle.toJSON();
+    ratedArticleJSON.averageRating = calcAverageRating(
+      ratedArticleJSON.ratings,
+    );
+    delete ratedArticleJSON.ratings;
+
     return successResponse(
       res,
-      201,
-      'your rating has been recorded',
-      ratedArticle,
+      200,
+      'Your rating has been recorded',
+      ratedArticleJSON,
     );
   } catch (error) {
     return errorResponse(res, 500, 'An error occurred', error.message);
