@@ -21,6 +21,7 @@ import {
   bookmarkArticle,
   removeBookmark,
   reportArticle,
+  rateArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -555,6 +556,13 @@ articleRouter.post(
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
+
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 articleRouter.post(
   '/:articleId/rate',
