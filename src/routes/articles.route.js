@@ -215,6 +215,12 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.get('/:articleId', validateUuid, getArticle);
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 /**
  * @swagger
