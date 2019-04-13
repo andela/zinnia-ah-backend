@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
 import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
+import {
   createComment,
   createThreadedComment,
   editComment,
@@ -19,7 +23,6 @@ import {
   reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
-import { validateUuid } from './middlewares/validate-input.middleware.js';
 
 const articleRouter = Router();
 
