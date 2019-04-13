@@ -31,3 +31,12 @@ export const newUserSchema = Joi.object()
       .required(),
   })
   .options({ stripUnknown: true });
+
+export const ratingSchema = Joi.object()
+  .keys({
+    rating: Joi.number()
+      .min(0)
+      .max(5)
+      .required(),
+  })
+  .options({ stripUnknown: true });

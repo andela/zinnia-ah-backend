@@ -1,7 +1,15 @@
 import { Router } from 'express';
 
-import { create, getArticle } from './controllers/articles.controller';
-import { validateUuid } from './middlewares/validate-input.middleware';
+import {
+  create,
+  getArticle,
+  rateArticle,
+} from './controllers/articles.controller';
+import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
+import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
 
@@ -84,5 +92,11 @@ articleRouter.post('/', create);
  *         description: Database error
  */
 articleRouter.get('/:articleId', validateUuid, getArticle);
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 export default articleRouter;
