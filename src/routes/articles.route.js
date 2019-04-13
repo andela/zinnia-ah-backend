@@ -713,4 +713,11 @@ articleRouter.post(
  */
 articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
 
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
+
 export default articleRouter;
