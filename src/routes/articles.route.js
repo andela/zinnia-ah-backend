@@ -23,6 +23,10 @@ import {
   reportArticle,
   rateArticle,
 } from './controllers/articles.controller';
+import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
