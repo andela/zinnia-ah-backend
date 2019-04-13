@@ -8,6 +8,7 @@ const { User } = models;
 
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 
 const credentials = {
   facebook: {
@@ -23,6 +24,12 @@ const credentials = {
     callbackURL: process.env.TWITTER_APP_CALLBACK,
     includeEmail: true,
     profileFields: ['id', 'email', 'name'],
+  },
+
+  google: {
+    consumerKey: process.env.GOOGLE_CLIENT_ID,
+    consumerSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_APP_CALLBACK,
   },
 };
 
@@ -72,7 +79,21 @@ const twitterAuth = async (token, tokenSecret, profile, done) => {
   }
 };
 
+const googleAuth = async (token, tokenSecret, profile, done) => {
+  console.log('===>>>>', profile);
+  const [user] = await User.findOrCreate({
+    where: { socialId: profile.id, socialProvider: 'google' },
+    defaults: {
+      firstName: profile.username,
+      username: profile.emails[0].value,
+      email: profile.emails[0].value,
+      socialProvider: profile.provider,
+    },
+  });
+};
+
 passport.use(new FacebookStrategy(credentials.facebook, facebookAuth));
 passport.use(new TwitterStrategy(credentials.twitter, twitterAuth));
+passport.use(new GoogleStrategy(credentials.google, googleAuth));
 
 export default passport;
