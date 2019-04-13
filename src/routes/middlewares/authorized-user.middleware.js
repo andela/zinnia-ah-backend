@@ -14,6 +14,17 @@ import { errorResponse, verifyToken } from '../../utils/helpers.utils';
 
 dotenv.config();
 
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @param {void} next
+ * @returns {void}
+ */
+
+dotenv.config();
 const checkAuthorizedUser = async (req, res, next) => {
   const token = req.headers.authorization || req.headers['x-access-token'];
 

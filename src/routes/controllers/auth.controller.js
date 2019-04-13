@@ -9,6 +9,7 @@ import {
 } from '../../utils/helpers.utils';
 import models from '../../db/models';
 import { sendMailer } from '../../config/mail-config';
+import mailTemplate from '../../utils/mail-template/mail-template.utils';
 
 const { User } = models;
 /**
@@ -36,14 +37,19 @@ export async function signup(req, res) {
     };
     const token = await generateToken(tokenPayload);
     const url =
-      process.env.NODE_ENV === 'test'
+      process.env.NODE_ENV === 'development' || 'test'
         ? `${process.env.LOCAL_URL}/${token}`
         : `${process.env.PRODUCTION_URL}/${token}`;
+    const body = {
+      title: 'Verification Email',
+      content: `Please click this <a href="${url}"> link</a> to confirm your email`,
+    };
+
     const emailDetails = {
       receivers: [`${user.email}`],
-      subject: 'Verification email',
+      subject: body.title,
       text: '',
-      html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
+      html: mailTemplate(body),
     };
     await sendMailer(emailDetails);
     return successResponse(

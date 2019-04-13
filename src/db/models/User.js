@@ -59,6 +59,12 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         field: 'social_id',
       },
+      subscribedForNotification: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+        field: 'subscribed_for_notification',
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: 'created_at',
@@ -90,6 +96,7 @@ export default (sequelize, DataTypes) => {
       as: 'followings',
       timestamps: false,
     });
+    User.hasMany(models.Article);
     User.hasMany(models.Article, {
       foreignKey: 'userId',
       as: 'publications',
