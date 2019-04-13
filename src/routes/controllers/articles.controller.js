@@ -446,7 +446,6 @@ export async function getAllArticles(req, res) {
     return serverError(res);
   }
 }
-
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
