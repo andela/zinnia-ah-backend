@@ -16,11 +16,9 @@ const { User } = models;
 const verifyAdminUser = async (req, res, next) => {
   const { user } = req;
 
-  const requestUser = await User.findOne({
-    where: { id: user.id, role: 'admin' },
-  });
+  const admin = User.findOne({ where: { role: admin } });
 
-  if (!requestUser) {
+  if (!admin) {
     return errorResponse(
       res,
       403,
