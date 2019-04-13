@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-import { validateUuid, validateRating, } from './middlewares/validate-input.middleware';
+import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
@@ -417,6 +420,13 @@ articleRouter.post(
   '/:articleId/comments/:commentId/edit',
   checkAuthorizedUser,
   editComment,
+);
+
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
 );
 
 export default articleRouter;
