@@ -95,3 +95,10 @@ export async function getArticle(req, res) {
     return errorResponse(res, 500, 'An error occured', error.message);
   }
 }
+export const rateArticle = async (req, res) => {
+  const { rating } = req.body;
+  const { articleId } = req.params;
+  const userId = req.user.id;
+
+  return errorResponse(res, 400, 'Nothing happened');
+};
