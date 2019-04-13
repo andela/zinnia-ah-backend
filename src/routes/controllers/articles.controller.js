@@ -261,3 +261,10 @@ export async function shareArticleViaEmail(req, res) {
     );
   }
 }
+export const rateArticle = async (req, res) => {
+  const { rating } = req.body;
+  const { articleId } = req.params;
+  const userId = req.user.id;
+
+  return errorResponse(res, 400, 'Nothing happened');
+};

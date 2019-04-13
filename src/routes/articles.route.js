@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-import { validateUuid } from './middlewares/validate-input.middleware';
+import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
@@ -13,6 +16,7 @@ import {
   likeAnArticle,
   unlikeAnArticle,
   shareArticleViaEmail,
+  rateArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -207,6 +211,12 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.get('/:articleId', validateUuid, getArticle);
+articleRouter.post(
+  '/:articleId/rate',
+  checkAuthorizedUser,
+  validateRating,
+  rateArticle,
+);
 
 /**
  * @swagger
