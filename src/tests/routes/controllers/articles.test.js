@@ -4,16 +4,13 @@ import sinon from 'sinon';
 
 import app from '../../../server';
 import { transporter } from '../../../config/mail-config';
+import { loginCredentials } from '../../db/mockdata/userdata';
+
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
 const endPoint = '/api/v1/articles';
 
-const userRequestObject = {
-  username: 'rdxtcfygvubh',
-  email: 'lilfgcvhly@gmail.com',
-  password: 'hhrtuyhgty5t678',
-};
 const articleRequestObject = {
   title: 'the hope of life',
   description: 'in times of trouble, where do we find hope',
@@ -23,22 +20,41 @@ const articleRequestObject = {
   tags: 'hope, life, source.',
 };
 
-const signupUrl = '/api/v1/auth/signup';
-let xAccessToken = '';
+const likeArticleUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
+const unlikeArticleUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
+const loginUrl = '/api/v1/auth/login';
+let jwtToken = '';
+
 describe('Articles', () => {
+  before(async () => {
+    try {
+      const res = await chai
+        .request(app)
+        .post(loginUrl)
+        .send(loginCredentials);
+      jwtToken = res.body.data.token;
+    } catch (error) {
+      return error.message;
+    }
+  });
+
   describe('CREATE ARTICLE', () => {
     before(() => {
-      let mockSendMail = sinon.stub(transporter, 'sendMail');
+      // mocking sendMail
+      sinon.stub(transporter, 'sendMail');
     });
 
-    it('should create user, to enable us use jwt token', done => {
+    it('should fail when token is invalid or not supplied', done => {
       chai
         .request(app)
-        .post(signupUrl)
-        .send(userRequestObject)
+        .post('/api/v1/articles')
+        .send(articleRequestObject)
         .end((err, res) => {
-          expect(res.status).to.equal(201);
-          xAccessToken = res.body.data.token;
+          expect(res.status).to.equal(401);
+          expect(res.body.status).to.equal('error');
+          expect(res.body.message).to.equal('jwt must be provided');
           done();
         });
     });
@@ -46,8 +62,8 @@ describe('Articles', () => {
     it('should create article successfully, with valid user input', done => {
       chai
         .request(app)
-        .post(endPoint)
-        .set('x-access-token', xAccessToken)
+        .post('/api/v1/articles')
+        .set('x-access-token', jwtToken)
         .send(articleRequestObject)
         .end((err, res) => {
           expect(res.status).to.eql(201);
@@ -60,9 +76,9 @@ describe('Articles', () => {
     it('should fail when all fields are not supplied', done => {
       chai
         .request(app)
-        .post(endPoint)
-        .set('x-access-token', xAccessToken)
-        .send(userRequestObject)
+        .post('/api/v1/articles')
+        .set('x-access-token', jwtToken)
+        .send(loginCredentials)
         .end((err, res) => {
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal(
@@ -102,6 +118,48 @@ describe('Articles', () => {
       expect(response.body.status).to.eql('error');
       expect(response.body.message).to.eql('validation error');
       expect(response.body.errors[0]).to.eql('articleId must be a valid GUID');
+    });
+  });
+
+  describe('Like and Unlike Articles', () => {
+    context('User can like article', () => {
+      it('should allow authenticated users like an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(likeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Article has been liked');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.likes).to.deep.include({
+          title: 'Test Article for likes and unlikes',
+          id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+          slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+        });
+      });
+    });
+
+    context('User can unlike article', () => {
+      it('should allow authenticated users unlike an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(unlikeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('unlike article successful');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.likes)
+          .to.be.an('array')
+          .to.have.lengthOf(0);
+      });
     });
   });
 });
