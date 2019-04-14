@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -79,6 +80,13 @@ export default (sequelize, DataTypes) => {
       otherKey: 'article_id',
       through: 'ArticleLikes',
       as: 'likes',
+      timestamps: false,
+    });
+    User.belongsToMany(models.Role, {
+      foreignKey: 'user_id',
+      otherKey: 'role_id',
+      through: 'UserRoles',
+      as: 'role',
       timestamps: false,
     });
   };

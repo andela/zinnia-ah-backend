@@ -5,6 +5,7 @@ import passwordRouter from './password.route';
 import articleRouter from './articles.route';
 import followRouter from './follow.route';
 import userRouter from './users.route';
+import rolesRouter from './roles.route';
 
 const router = Router();
 
@@ -20,5 +21,7 @@ router.use('/profiles', userRouter);
 router.use('/profiles', followRouter);
 
 router.use('/users', userRouter);
+
+router.use('/roles', rolesRouter);
 
 export default router;
