@@ -7,7 +7,8 @@ import {
   likeComment,
 } from './controllers/comments.controller.js';
 import {
-  getArticle,
+  getSingleArticle,
+  getAllArticles,
   createArticle,
   removeArticle,
   likeAnArticle,
@@ -210,7 +211,7 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.get('/slug/:articleSlug', getArticle);
+articleRouter.get('/slug/:articleSlug', getSingleArticle);
 
 /**
  * @swagger
@@ -242,7 +243,7 @@ articleRouter.get('/slug/:articleSlug', getArticle);
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:articleId', validateUuid, getArticle);
+articleRouter.get('/:articleId', validateUuid, getSingleArticle);
 
 /**
  * @swagger

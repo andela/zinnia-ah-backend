@@ -129,7 +129,7 @@ export async function removeArticle(req, res) {
  * @returns {Object} res with article object if it exists
  * @returns {Object} res with 404 response if the array is empty
  */
-export async function getArticle(req, res) {
+export async function getSingleArticle(req, res) {
   const { articleId, articleSlug } = req.params;
   let requestUser;
   let articleParam;
@@ -149,13 +149,6 @@ export async function getArticle(req, res) {
 
   try {
     const article = await Article.findOne({
-      include: [
-        {
-          model: User,
-          as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
-        },
-      ],
       where: { ...articleParam },
     });
 
@@ -170,8 +163,46 @@ export async function getArticle(req, res) {
         article,
       );
     }
-
     return errorResponse(res, 404, 'Article does not exist');
+  } catch (error) {
+    return errorResponse(res, 500, 'database error', error);
+  }
+}
+
+/**
+ * Fetch all articles
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with articles array if it exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function getAllArticles(req, res) {
+  const currentPage = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const offset = limit * (currentPage - 1);
+  try {
+    const articles = await Article.findAndCountAll({
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['firstName', 'lastName', 'username'],
+        },
+      ],
+      limit,
+      offset,
+    });
+
+    if (articles.rows.length) {
+      return successResponse(
+        res,
+        200,
+        'Articles successfully retrieved',
+        articles,
+      );
+    }
+
+    return errorResponse(res, 404, 'No Articles found');
   } catch (error) {
     return errorResponse(res, 500, 'An error occured', error.message);
   }
