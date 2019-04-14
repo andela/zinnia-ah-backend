@@ -19,7 +19,16 @@ const { expect } = chai;
 const endPoint = '/api/v1/auth/signup';
 
 describe('User', () => {
-  describe('POST /api/v1/auth/signup', () => {
+  describe('POST /api/v1/users', () => {
+    before(done => {
+      chai
+        .request(app)
+        .post(endPoint)
+        .send(userWithExistingEmail)
+        .end(() => {
+          done();
+        });
+    });
     it('returns a 422 response code an empty request body is sent by user', async () => {
       const response = await chai
         .request(app)
@@ -102,7 +111,6 @@ describe('User', () => {
         .request(app)
         .post(endPoint)
         .send(userWithExistingEmail);
-
       expect(response.body).to.have.key('errors', 'status', 'message');
       expect(response.status).to.be.eql(409);
       expect(response.body.errors.length).to.be.greaterThan(0);

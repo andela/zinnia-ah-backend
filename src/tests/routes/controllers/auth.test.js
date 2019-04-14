@@ -1,9 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import sinon from 'sinon';
 
 import app from '../../../server';
-import { transporter } from '../../../config/mail-config';
 import {
   loginCredentials,
   signupCredentials,
@@ -20,13 +18,7 @@ const signupUrl = '/api/v1/auth/signup';
 const loginUrl = '/api/v1/auth/login';
 const confirmationUrl = '/api/v1/auth/users/confirmation';
 
-let mockSendMail;
-
 describe('User registration', () => {
-  before(() => {
-    mockSendMail = sinon.stub(transporter, 'sendMail');
-  });
-
   let userToken;
 
   context('SIGN UP a user', () => {
@@ -35,7 +27,7 @@ describe('User registration', () => {
         .request(app)
         .post(signupUrl)
         .send(signupCredentials);
-      userToken = res.body.data;
+      userToken = res.body.data.token;
       expect(res.status).to.equal(201);
       expect(res.body)
         .to.have.property('message')
@@ -61,23 +53,20 @@ describe('User Login Feature', () => {
       const res = await chai
         .request(app)
         .post(loginUrl)
-        .send({
-          email,
-          password,
-        });
+        .send(loginCredentials);
       expect(res.status).to.equal(200);
       expect(res.body)
         .to.have.property('data')
-        .to.be.a('String');
+        .to.be.an('object');
       expect(res.body.data).to.not.eql('');
       expect(res.body)
         .to.have.property('message')
-        .to.be.an('object');
-      expect(res.body.message).to.include.deep.keys('message', 'user');
-      expect(res.body.message)
-        .to.have.property('message')
-        .to.eql('You have successfully logged in');
-      expect(res.body.message).to.nested.include({ 'user.email': email });
+        .to.be.a('string');
+      expect(res.body.data).to.include.deep.keys('user', 'token');
+      expect(res.body.data)
+        .to.have.property('token')
+        .to.not.eql('');
+      expect(res.body.data).to.nested.include({ 'user.email': email });
     });
   });
 

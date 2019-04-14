@@ -46,7 +46,7 @@ export async function signup(req, res) {
       res,
       201,
       'Please check your mail to verify your account',
-      token,
+      { token },
     );
   } catch (err) {
     return errorResponse(res, 500, err.message);
@@ -131,8 +131,10 @@ export async function login(req, res) {
     }
     const { id } = user;
     const token = generateToken({ id, email });
-    const response = { message: 'You have successfully logged in', user };
-    return successResponse(res, 200, response, token);
+    return successResponse(res, 200, 'You have successfully logged in', {
+      user,
+      token,
+    });
   } catch (error) {
     return errorResponse(
       res,

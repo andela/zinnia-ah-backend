@@ -16,6 +16,10 @@ export const transporter = nodemailer.createTransport({
     user: username,
     pass,
   },
+  pool: true,
+  rateLimit: true,
+  maxConnections: 1,
+  maxMessages: 3,
 });
 
 export const sendMailer = async body => {

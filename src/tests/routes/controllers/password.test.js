@@ -8,7 +8,7 @@ const { expect } = chai;
 
 let resetToken;
 const userEmail = {
-  email: 'giant@gmail.com',
+  email: 'jsmith@gmail.com',
 };
 
 const fpUrl = '/api/v1/auth/users/forgot-password';

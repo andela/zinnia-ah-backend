@@ -1,39 +1,23 @@
-import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { errorResponse, verifyToken } from '../../utils/helpers.utils';
 
-import { errorResponse } from '../../utils/helpers.utils';
+dotenv.config();
 
-/**
- *
- *
- * @export
- * @param {object} req
- * @param {object} res
- * @param {void} next
- * @returns {void}
- */
-export async function checkAuthorizedUser(req, res, next) {
-  const header = req.headers.authorization || req.headers['x-access-token'];
-  if (typeof header === 'undefined') {
-    return errorResponse(
-      res,
-      401,
-      'You are not authorized to make this action',
-    );
-  }
+const checkAuthorizedUser = async (req, res, next) => {
+  const token = req.headers.authorization || req.headers['x-access-token'];
 
-  const token = header.split(' ')[1];
   if (!token) {
+    return errorResponse(res, 401, 'Please provide a JWT token');
+  }
+  req.user = await verifyToken(token, process.env.SECRET);
+  if (!req.user) {
     return errorResponse(
       res,
-      401,
-      'You are not authorized to make this action please login',
+      400,
+      'Token is invalid, please provide a valid token',
     );
   }
-  try {
-    const decoded = await jwt.verify(token, 'SECRET_KEY');
-    req.user = decoded;
-    next();
-  } catch (error) {
-    return errorResponse(res, 400, error.message);
-  }
-}
+  return next();
+};
+
+export default checkAuthorizedUser;
