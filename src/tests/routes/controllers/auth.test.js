@@ -35,7 +35,8 @@ describe('User registration', () => {
       expect(res.body.message).to.eql(
         'Please check your mail to verify your account',
       );
-      expect(res.body.data).to.not.eql('');
+      expect(res.body.data).to.have.all.keys('token');
+      expect(res.body.data.token).to.not.eql('');
     });
 
     it('should confirm a user', async () => {
