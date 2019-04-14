@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import Joi from 'joi';
 
 export const emailSchema = Joi.string()
@@ -53,5 +52,30 @@ export const ratingSchema = Joi.object()
       .min(0)
       .max(5)
       .required(),
+  })
+  .options({ stripUnknown: true });
+
+/**
+ * This is the schema definition
+ * for a Article.
+ */
+export const articleSchema = Joi.object()
+  .keys({
+    title: Joi.string()
+      .trim()
+      .required(),
+    description: Joi.string()
+      .trim()
+      .required(),
+    body: Joi.string()
+      .trim()
+      .required(),
+    readTime: Joi.string().trim(),
+    images: Joi.array().items(),
+    tags: Joi.array().items(),
+    subscriptionType: Joi.string().trim(),
+    status: Joi.string()
+      .trim()
+      .optional(),
   })
   .options({ stripUnknown: true });

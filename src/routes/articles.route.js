@@ -3,6 +3,7 @@ import { Router } from 'express';
 import {
   validateUuid,
   validateRating,
+  validateArticle,
 } from './middlewares/validate-input.middleware';
 import {
   createComment,
@@ -15,6 +16,7 @@ import {
   getAllArticles,
   createArticle,
   removeArticle,
+  updateArticle,
   likeAnArticle,
   unlikeAnArticle,
   shareArticleViaEmail,
@@ -23,7 +25,7 @@ import {
   reportArticle,
   rateArticle,
 } from './controllers/articles.controller';
-import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
 
@@ -121,7 +123,60 @@ articleRouter.delete('/:article_id', removeArticle);
  *       500:
  *         description: ran
  */
-articleRouter.post('/', createArticle);
+articleRouter.post('/', checkAuthorizedUser, validateArticle, createArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
+ *   put:
+ *     tags:
+ *       - article
+ *     description: users can update an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: title
+ *         description: the title of the article to be updated.
+ *         in: body
+ *         required: true
+ *       - name: description
+ *         description: the summary of the article.
+ *         in: body
+ *         required: true
+ *       - name: body
+ *         description: the content of the article.
+ *         in: body
+ *         required: true
+ *       - name: images
+ *         description: url to all images in the articles. {string} seperated with a comma.
+ *         in: body
+ *       - name: tags
+ *         description: the tag list.
+ *         in: body
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article updated
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: ran
+ */
+articleRouter.put(
+  '/:slug',
+  checkAuthorizedUser,
+  validateArticle,
+  updateArticle,
+);
 
 /**
  * @swagger

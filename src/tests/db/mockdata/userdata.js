@@ -88,8 +88,8 @@ export const userMissingPasswordConfirmation = {
 };
 
 export const loginCredentials = {
-  email: 'giant@gmail.com',
-  password: 'smiley007',
+  email: 'favourafolayan@ah.com',
+  password: 'favourafolayan',
 };
 
 export const loginCommenter = {
