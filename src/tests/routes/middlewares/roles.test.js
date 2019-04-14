@@ -34,49 +34,41 @@ describe('Roles and Access control', () => {
     it('should return a 401 when token is not set', async () => {
       const { status, body } = await chai.request(app).get(rolesEndpoint);
 
-      expect(status).to.be.eql(401);
-      expect(body).to.have.key('errors', 'status', 'message');
+      expect(status).to.eql(401);
+      expect(body).to.have.key('status', 'message');
       expect(body.status).to.eql('error');
-      expect(body.message).to.eql('Unauthorized access');
+      expect(body.message).to.eql('Please provide a JWT token');
     });
 
-    it('should return a 401 when token is invalid', async () => {
+    it('should return a 400 when token is invalid', async () => {
       const { status, body } = await chai
         .request(app)
-        .post(rolesEndpoint)
+        .get(rolesEndpoint)
         .set('x-access-token', 'jwt-token');
 
-      expect(status).to.be.eql(401);
-      expect(body).to.have.key('errors', 'status', 'message');
+      expect(status).to.eql(400);
+      expect(body).to.have.key('status', 'message');
       expect(body.status).to.eql('error');
-      expect(body.message).to.eql('Unauthorized access');
+      expect(body.message).to.eql(
+        'Token is invalid, please provide a valid token',
+      );
     });
 
     it('should return a 403 response when an unauthorized user tries to access an admin only route', async () => {
       const { status, body } = await chai
         .request(app)
-        .post(rolesEndpoint)
-        .set('x-acess-token', userToken);
+        .get(rolesEndpoint)
+        .set('x-access-token', userToken);
 
       expect(status).to.be.eql(403);
-      expect(body).to.have.key('errors', 'status', 'message');
+      expect(body).to.have.key('status', 'message');
       expect(body.status).to.eql('error');
       expect(body.message).to.eql(
-        'Your credentials do not allow access to this resource',
+        'You are not allowed to perform this action because you are not an Admin',
       );
     });
-  });
-  describe('roles assignment', () => {
-    before(async () => {
-      const { body } = await chai
-        .request(app)
-        .post('/api/v1/auth/login')
-        .send(adminCredentials);
 
-      adminToken = body.data;
-    });
-
-    it('should return a 200 response and an array of user roles when request user is an admin', async () => {
+    it('should return a 200 response when an authorized user accesses a protected route', async () => {
       const { status, body } = await chai
         .request(app)
         .get(rolesEndpoint)
