@@ -36,11 +36,11 @@ export default (sequelize, DataTypes) => {
       subscriptionType: {
         type: DataTypes.ENUM('free', 'premium'),
         field: 'subscription_type',
-        default: 'free',
+        defaultValue: 'free',
       },
       status: {
         type: DataTypes.ENUM('published', 'draft', 'trashed', 'banned'),
-        default: 'draft',
+        defaultValue: 'draft',
       },
       readTime: {
         type: DataTypes.STRING,
