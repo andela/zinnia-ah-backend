@@ -20,15 +20,15 @@ describe.only('Roles and Access control', () => {
         .request(app)
         .post('/api/v1/auth/login')
         .send(authorCredentials);
-
-      userToken = body.data;
+      const { token } = body.data;
+      userToken = token;
 
       const res = await chai
         .request(app)
         .post('/api/v1/auth/login')
         .send(adminCredentials);
-
-      adminToken = res.body.data;
+      const { data } = res.body;
+      adminToken = data.token;
     });
 
     it('should return a 401 when token is not set', async () => {
