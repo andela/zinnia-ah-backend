@@ -54,29 +54,55 @@ describe('Reset Password', () => {
       });
   });
 
-  it('should fail if no token is provided in the request', done => {
+  it('should fail if the user email doesnt exist', done => {
+    userEmail.email = 'nedyudobat@gmail.com';
     chai
       .request(app)
-      .patch('/api/v1/auth/users/reset-password/')
-      .send('password')
+      .post(fpUrl)
+      .send(userEmail)
       .end((err, res) => {
-        expect(res.status).to.equal(405);
+        expect(res.status).to.equal(404);
+        expect(res.body.message).to.equal('User does not exist');
+        expect(res.body.errors).to.equal(true);
         done();
       });
   });
 
-  it('should fail if token is invalid in the request', done => {
-    chai
-      .request(app)
-      .patch(
-        '/api/v1/auth/users/reset-password/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf',
-      )
-      .send('password')
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('Token Malformed');
-        expect(res.body.errors).to.equal(true);
-        done();
-      });
+  describe('Reset Password', () => {
+    it('should return a success and status of 200 if password has been reset', done => {
+      chai
+        .request(app)
+        .patch(`${resetUrl}/${resetToken}`)
+        .send('password')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Password successfully reset');
+          done();
+        });
+    });
+
+    it('should fail if no token is provided in the request', done => {
+      chai
+        .request(app)
+        .patch(resetUrl)
+        .send('password')
+        .end((err, res) => {
+          expect(res.status).to.equal(405);
+          done();
+        });
+    });
+
+    it('should fail if token is invalid in the request', done => {
+      chai
+        .request(app)
+        .patch(`${resetUrl}/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf`)
+        .send('password')
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Token Malformed');
+          expect(res.body.errors).to.equal(true);
+          done();
+        });
+    });
   });
 });

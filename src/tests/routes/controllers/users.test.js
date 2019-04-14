@@ -68,7 +68,7 @@ describe('USER PROFILE', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        xAccessToken = res.body.data;
+        xAccessToken = res.body.data.token;
         done();
       });
   });
@@ -98,7 +98,7 @@ describe('USER PROFILE', () => {
     it('Should not get a non-existent user', async () => {
       const response = await chai
         .request(app)
-        .get('/api/v1/users/profiles/b26edf90-8975-442e-9d3c-4a595073dd7a')
+        .get('/api/v1/users/profiles/4c033c41-b47f-48e8-bb85-946212b380fe')
         .set('Authorization', xAccessToken);
       expect(response.status).to.equal(404);
       expect(response.body.message).to.equal(
@@ -109,7 +109,7 @@ describe('USER PROFILE', () => {
     it('Should get a user with valid userID param', async () => {
       const response = await chai
         .request(app)
-        .get('/api/v1/users/3231983a-b944-4c53-a549-f561f7474428')
+        .get('/api/v1/users/profiles/3231983a-b944-4c53-a549-f561f7474428')
         .set('Authorization', xAccessToken);
       expect(response.status).to.equal(200);
       expect(response.body.data)
