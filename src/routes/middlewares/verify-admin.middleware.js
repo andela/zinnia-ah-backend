@@ -1,5 +1,4 @@
 import { errorResponse, verifyToken } from '../../utils/helpers.utils';
-import { models } from '../../db/models';
 import models from '../../db/models';
 
 const { User } = models;
