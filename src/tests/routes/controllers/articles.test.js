@@ -24,7 +24,7 @@ const articleRequestObject = {
 
 const signupUrl = '/api/v1/auth/signup';
 let xAccessToken = '';
-// let mockSendMail;
+
 describe('CREATE ARTICLE', () => {
   before(() => {
     let mockSendMail = sinon.stub(transporter, 'sendMail');
