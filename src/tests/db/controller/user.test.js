@@ -1,16 +1,15 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import models from '../../../db/models';
 import app from '../../../server';
 
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
-const url = '/api/v1/users';
-const confirmationUrl = '/api/v1/users/confirmation';
+const url = '/api/v1/auth/signup';
+const confirmationUrl = '/api/v1/auth/users/confirmation';
 const userRequestObject = {
-  username: 'janesmith',
-  email: 'jsmith@gmail.com',
+  username: 'janesmith2',
+  email: 'jsmith2@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
 
@@ -23,7 +22,7 @@ describe('CREATE USER', () => {
       .send(userRequestObject)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        userToken = res.body.data[0].token;
+        userToken = res.body.data.token;
         done();
       });
   });
