@@ -1,15 +1,10 @@
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('CommentLikes', {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-      },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'user_id',
         references: {
           model: 'Users',
@@ -20,6 +15,7 @@ export default {
       commentId: {
         type: Sequelize.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'comment_id',
         references: {
           model: 'Comments',

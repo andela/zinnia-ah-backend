@@ -10,9 +10,14 @@ import {
 
 // configure chai to use expect
 chai.use(chaiHttp);
-const { expect } = chai;
+const {
+  expect
+} = chai;
 
-const { email, password } = loginCredentials;
+const {
+  email,
+  password
+} = loginCredentials;
 
 const signupUrl = '/api/v1/auth/signup';
 const loginUrl = '/api/v1/auth/login';
@@ -67,7 +72,17 @@ describe('User Login Feature', () => {
       expect(res.body.data)
         .to.have.property('token')
         .to.not.eql('');
-      expect(res.body.data).to.nested.include({ 'user.email': email });
+      expect(res.body.data).to.nested.include({
+        'user.email': email
+      });
+      .to.be.an('object');
+      expect(res.body.message).to.include.deep.keys('message', 'user');
+      expect(res.body.message)
+        .to.have.property('message')
+        .to.eql('You have successfully logged in');
+      expect(res.body.message).to.nested.include({
+        'user.email': email,
+      });
     });
   });
 

@@ -4,8 +4,7 @@ import slug from 'slug';
 
 export default {
   up: async queryInterface =>
-    await queryInterface.bulkInsert('Articles', [
-      {
+    await queryInterface.bulkInsert('Articles', [{
         id: '141f4f05-7d81-4593-ab54-e256c1006210',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'EMMSDAN article',

@@ -1,6 +1,10 @@
-import { Router } from 'express';
+import {
+  Router
+} from 'express';
 
-import { validateUuid } from './middlewares/validate-input.middleware';
+import {
+  validateUuid
+} from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
