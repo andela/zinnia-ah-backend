@@ -26,7 +26,7 @@ const followRouter = Router();
  *           items:
  *         $ref: '#/definitions/users'
  *     responses:
- *       201:
+ *       200:
  *         description: User followed
  *       400:
  *         description: Bad request.
@@ -55,7 +55,7 @@ followRouter.post('/:username/follow', checkAuthorizedUser, follow);
  *           items:
  *         $ref: '#/definitions/users'
  *     responses:
- *       201:
+ *       200:
  *         description: User un-followed
  *       400:
  *         description: Bad request.

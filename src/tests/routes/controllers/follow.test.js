@@ -36,7 +36,7 @@ describe('FOLLOW USER', () => {
       .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         done();
       });
   });
@@ -76,7 +76,7 @@ describe('FOLLOW USER', () => {
       .set('authorization', authToken)
       .send(userRequestObject)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         done();
       });
   });

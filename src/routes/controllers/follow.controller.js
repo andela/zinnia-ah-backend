@@ -56,7 +56,7 @@ const follow = async (req, res) => {
       firstname: followee.firstname,
       lastname: followee.lastname,
     }));
-    return successResponse(res, 201, userData);
+    return successResponse(res, 200, userData);
   } catch (err) {
     return errorResponse(res, 500);
   }
