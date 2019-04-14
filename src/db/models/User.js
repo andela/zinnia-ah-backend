@@ -95,6 +95,10 @@ export default (sequelize, DataTypes) => {
       through: 'Bookmarks',
       as: 'bookmarks',
     });
+    User.hasMany(models.Highlight, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

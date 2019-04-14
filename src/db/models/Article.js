@@ -66,13 +66,16 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'updated_at',
       },
-    },
-    {},
-  );
+    });
+
   Article.associate = models => {
     Article.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'author',
+    });
+    Article.hasMany(models.Highlight, {
+      foreignKey: 'articleId',
+      onDelete: 'CASCADE',
     });
   };
   return Article;
