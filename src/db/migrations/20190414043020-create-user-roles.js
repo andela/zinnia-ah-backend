@@ -4,6 +4,7 @@ export default {
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'user_id',
         references: {
           model: 'Users',
@@ -14,6 +15,7 @@ export default {
       roleId: {
         type: Sequelize.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'role_id',
         references: {
           model: 'Roles',
@@ -24,12 +26,10 @@ export default {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: 'created_at',
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: 'updated_at',
       },
     });
   },

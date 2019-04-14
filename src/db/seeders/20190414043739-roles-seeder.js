@@ -5,7 +5,7 @@ export default {
       [
         {
           id: '565ad3cd-383b-4bd7-9c11-8038bdf8d46f',
-          name: 'administrator',
+          name: 'admin',
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
         },
