@@ -118,6 +118,92 @@ describe('Articles', () => {
       expect(response.body.status).to.eql('error');
       expect(response.body.message).to.eql('Article does not exist');
     });
+
+    it('should return a 422 response when articleID is not valid UUID', async () => {
+      const articleID = '141f4f05-7d81-4593-e256c1006219';
+      const response = await chai.request(app).get(`${endPoint}/${articleID}`);
+
+      expect(response.body).to.include.keys('status', 'message', 'errors');
+      expect(response.status).to.eql(422);
+      expect(response.body.status).to.eql('error');
+      expect(response.body.message).to.eql('validation error');
+      expect(response.body.errors[0]).to.eql('articleId must be a valid GUID');
+    });
+    it('should fail when token is invalid or not supplied', done => {
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.status).to.equal('error');
+          expect(res.body.message).to.equal('jwt must be provided');
+          done();
+        });
+    });
+
+    it('should create article successfully, with valid user input', done => {
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .set('x-access-token', xAccessToken)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.eql(201);
+          expect(res.body.status).to.eql('success');
+          expect(res.body.data).to.be.an('object');
+          done();
+        });
+    });
+
+    it('should fail when all fields are not supplied', done => {
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .set('x-access-token', xAccessToken)
+        .send(userRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal(
+            'invalid/empty input. all fields must be specified.',
+          );
+          done();
+        });
+    });
+    describe('GET /api/v1/articles', () => {
+      it('should return a 200 response when articles exist', async () => {
+        const response = await chai.request(app).get(endPoint);
+        expect(response.body).to.include.keys('status', 'message', 'data');
+        expect(response.status).to.eql(200);
+        expect(response.body.status).to.eql('success');
+        expect(response.body.message).to.eql('Articles successfully retrieved');
+        expect(response.body.data.rows.length).to.be.greaterThan(0);
+      });
+
+      it('should return 10 articles when limit is set to 10', async () => {
+        const limit = 10;
+        const response = await chai
+          .request(app)
+          .get(endPoint)
+          .query({ limit });
+        expect(response.body).to.include.keys('status', 'message', 'data');
+        expect(response.status).to.eql(200);
+        expect(response.body.status).to.eql('success');
+        expect(response.body.data.rows.length).to.eql(limit);
+      });
+
+      it('should return 20 articles when limit is set to 20', async () => {
+        const limit = 20;
+        const response = await chai
+          .request(app)
+          .get(endPoint)
+          .query({ limit });
+        expect(response.body).to.include.keys('status', 'message', 'data');
+        expect(response.status).to.eql(200);
+        expect(response.body.status).to.eql('success');
+        expect(response.body.data.rows.length).to.eql(limit);
+      });
+    });
   });
 
   describe('Like and Unlike Articles', () => {
