@@ -26,7 +26,7 @@ export default {
         {
           id: '4c6fab4c-3926-4be5-166c-4a911165cd35',
           username: 'superadmin',
-          email: 'superadmin@ah.com',
+          email: 'admin@ah.com',
           password: await hashPassword('password1'),
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
