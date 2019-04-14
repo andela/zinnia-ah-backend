@@ -34,6 +34,11 @@ export default (sequelize, DataTypes) => {
       interests: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
       },
+      role: {
+        type: DataTypes.ENUM('author', 'admin'),
+        defaultValue: 'author',
+        allowNull: false,
+      },
       image: DataTypes.TEXT,
       isEmailVerified: {
         type: DataTypes.BOOLEAN,

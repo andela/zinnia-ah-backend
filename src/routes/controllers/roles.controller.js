@@ -1,7 +1,7 @@
 import models from '../../db/models';
 import { successResponse, errorResponse } from '../../utils/helpers.utils';
 
-const { Role } = models;
+const { User } = models;
 
 /**
  * Fetch all users and roles
@@ -13,7 +13,9 @@ const { Role } = models;
  */
 export async function getAll(req, res) {
   try {
-    const roles = await Role.findAll();
+    const roles = await User.findAll({
+      attributes: ['id', 'email', 'username', 'role'],
+    });
     return successResponse(res, 200, 'roles fetched successfully', roles);
   } catch (error) {
     return errorResponse(res, 500, 'database error', error.message);

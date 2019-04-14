@@ -48,6 +48,11 @@ export default {
         type: Sequelize.STRING,
         field: 'social_id',
       },
+      role: {
+        type: Sequelize.ENUM('author', 'admin'),
+        defaultValue: 'author',
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
