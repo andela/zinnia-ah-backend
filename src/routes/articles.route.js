@@ -16,7 +16,6 @@ import {
   shareArticleViaEmail,
   bookmarkArticle,
   removeBookmark,
-  reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 import { validateUuid } from './middlewares/validate-input.middleware.js';
@@ -423,6 +422,36 @@ articleRouter.post(
  *         description: the id of the article.
  *         in: params
  *         required: true
+ *
+ *         $ref: '#/definitions/articles'
+ *     responses:
+ *       200:
+ *         description: articles fetched
+ *       400:
+ *         description: Bad request.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post('/:articleId/share', shareArticleViaEmail);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles:
+ *   get:
+ *     tags:
+ *       - articles
+ *     description: users fetch articles and paginate them.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: page
+ *         description: the page to fetch from
+ *         required: false
+ *       - name: limit
+ *         description: the number of rows to return
+ *         in: params
+ *         required: false
  *     request:
  *         content:
  *         - application/json
@@ -438,7 +467,7 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.post('/:articleId/share', shareArticleViaEmail);
+articleRouter.get('/', getAllArticles);
 
 /**
  * @swagger

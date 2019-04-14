@@ -11,15 +11,13 @@
       "doc",
       "coverage",
       "src/db/migrations",
-      "src/db/seeders"
+      "src/db/seeders",
+      "src/tests"
     ],
     "reporter": [
       "lcov",
       "text"
-    ],
-    "sourceMap": false,
-    "instrument": false,
-    "all": true
+    ]
   },
   "husky": {
     "hooks": {
@@ -50,8 +48,7 @@
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
     "seedall": "NODE_ENV=test sequelize db:seed:all",
-    "coveralls": "cat coverage/lcov.info | coveralls",
-    "db:drop": "sequelize db:drop && sequelize db:create"
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
