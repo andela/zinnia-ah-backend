@@ -13,7 +13,7 @@ const rolesEndpoint = '/api/v1/roles';
 let userToken;
 let adminToken;
 
-describe.only('Roles and Access control', () => {
+describe('Roles and Access control', () => {
   describe('protected routes', () => {
     before(async () => {
       const { body } = await chai
