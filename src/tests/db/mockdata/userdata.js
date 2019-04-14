@@ -83,6 +83,11 @@ export const loginCredentials = {
   password: 'smiley007',
 };
 
+export const loginCommenter = {
+  email: 'igbominadeveloper@ah.com',
+  password: 'favourafolayan',
+};
+
 export const nonExistentUser = {
   email: 'humpty@dumpty.com',
   password: 'not12database',

@@ -37,7 +37,6 @@
     ]
   },
   "scripts": {
-    "close:port": "kill $(lsof -t -i:5432)",
     "start": "node build/server.js",
     "start:dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",

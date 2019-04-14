@@ -2,8 +2,7 @@ import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 import models from '../../db/models';
 
-<<<<<<< HEAD
-const { Comment, User, Article } = models;
+const { Comment, User, Article, CommentLike } = models;
 
 export const createComment = async (req, res) => {
   const { id } = req.user;
@@ -78,19 +77,16 @@ export const createThreadedComment = async (req, res) => {
     return errorResponse(res, 500, err.message);
   }
 };
-=======
-const {
-  // Comment,
-  // User,
-  // Article,
-  CommentLike,
-} = models;
 
 export const likeComment = async (req, res) => {
   const { commentId } = req.params;
   const { id } = req.user;
 
   try {
+    const checkIfCommentExists = await Comment.findByPk(commentId);
+    if (!checkIfCommentExists) {
+      return errorResponse(res, 404, 'Comment not found');
+    }
     const likedComment = await CommentLike.findOne({
       where: {
         userId: id,
@@ -98,7 +94,7 @@ export const likeComment = async (req, res) => {
       },
     });
 
-    if (likedComment !== null) {
+    if (likedComment) {
       await CommentLike.destroy({
         where: {
           userId: id,
@@ -117,6 +113,3 @@ export const likeComment = async (req, res) => {
     errorResponse(res, 500, err);
   }
 };
-
-export const LikeThreadedComment = async (req, res) => {};
->>>>>>> [Feature 164797164] Added like comment functionality

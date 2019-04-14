@@ -9,7 +9,7 @@ const checkAuthorizedUser = async (req, res, next) => {
   if (!token) {
     return errorResponse(res, 401, 'Please provide a JWT token');
   }
-  req.user = await verifyToken(token, process.env.SECRET);
+  req.user = await verifyToken(token, process.env.SECRET_KEY);
   if (!req.user) {
     return errorResponse(
       res,
