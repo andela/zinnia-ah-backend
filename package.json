@@ -50,7 +50,8 @@
     "db:migrate:testdb": "NODE_ENV=test npm run db:migrate",
     "lint": "node_modules/eslint/bin/eslint.js src --fix",
     "seedall": "NODE_ENV=test sequelize db:seed:all",
-    "coveralls": "cat coverage/lcov.info | coveralls"
+    "coveralls": "cat coverage/lcov.info | coveralls",
+    "db:drop": "sequelize db:drop && sequelize db:create"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
