@@ -16,7 +16,11 @@ dotenv.config();
  * @returns {Boolean} false if email does not exist
  */
 export const getUserbyEmail = async email => {
-  return await User.findOne({ where: { email } });
+  return await User.findOne({
+    where: {
+      email,
+    },
+  });
 };
 
 /**
@@ -27,7 +31,11 @@ export const getUserbyEmail = async email => {
  * @returns {Boolean} false if username does not exist
  */
 export const getUserbyUsername = async username => {
-  return await User.findOne({ where: { username } });
+  return await User.findOne({
+    where: {
+      username,
+    },
+  });
 };
 
 /**
@@ -41,7 +49,14 @@ export const getUserbyUsername = async username => {
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {
-      [Op.or]: [{ email }, { username }],
+      [Op.or]: [
+        {
+          email,
+        },
+        {
+          username,
+        },
+      ],
     },
   });
   return existingUser !== null;
@@ -95,7 +110,9 @@ export function comparePassword(hashedPassword, password) {
  * @returns {string} token
  */
 export function generateToken(payload, expiresIn = '30days') {
-  const token = jwt.sign(payload, 'SECRET_KEY', { expiresIn });
+  const token = jwt.sign(payload, 'SECRET_KEY', {
+    expiresIn,
+  });
   return token;
 }
 

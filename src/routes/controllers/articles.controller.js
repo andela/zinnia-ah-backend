@@ -15,7 +15,7 @@ const { Article, User } = models;
  * @param {object} res
  * @returns {object} article creation error/success message.
  */
-export async function create(req, res) {
+export async function createArticle(req, res) {
   const { title, description, body, images, tags } = req.body;
   if (!title || !description || !body) {
     return errorResponse(
@@ -32,7 +32,7 @@ export async function create(req, res) {
       throw Error('jwt must be provided');
     }
 
-    const createArticle = await Article.create({
+    const createdArticle = await Article.create({
       userId: userInfo.id,
       title,
       slug: slug(
@@ -50,7 +50,7 @@ export async function create(req, res) {
       res,
       201,
       'your article has been created successfully',
-      createArticle,
+      createdArticle,
     );
   } catch (error) {
     return errorResponse(res, 401, error.message);

@@ -41,6 +41,11 @@ export default {
         type: Sequelize.DATE,
         field: 'updated_at',
       },
+      parentId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        field: 'parent_id',
+      },
     }),
   down: queryInterface => queryInterface.dropTable('Comments'),
 };

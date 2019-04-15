@@ -4,10 +4,14 @@ import Joi from 'joi';
 export const emailSchema = Joi.string()
   .lowercase()
   .trim()
-  .email({ minDomainAtoms: 2 })
+  .email({
+    minDomainAtoms: 2,
+  })
   .required();
 
-export const uuidSchema = Joi.string().guid({ version: ['uuidv4', 'uuidv5'] });
+export const uuidSchema = Joi.string().guid({
+  version: ['uuidv4', 'uuidv5'],
+});
 
 export const usernameSchema = Joi.string()
   .alphanum()
@@ -23,11 +27,24 @@ export const articleIdSchema = Joi.object({
 export const newUserSchema = Joi.object()
   .keys({
     fullName: Joi.string().trim(),
-    username: usernameSchema,
-    email: emailSchema,
+    username: Joi.string()
+      .alphanum()
+      .lowercase()
+      .trim()
+      .min(8)
+      .required(),
+    email: Joi.string()
+      .lowercase()
+      .trim()
+      .email({
+        minDomainAtoms: 2,
+      })
+      .required(),
     password: Joi.string()
       .alphanum()
       .min(8)
       .required(),
   })
-  .options({ stripUnknown: true });
+  .options({
+    stripUnknown: true,
+  });

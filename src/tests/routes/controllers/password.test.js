@@ -11,14 +11,11 @@ const userEmail = {
   email: 'jsmith@gmail.com',
 };
 
-const fpUrl = '/api/v1/auth/users/forgot-password';
-const resetUrl = '/api/v1/auth/users/reset-password';
-
 describe('Forgot Password', () => {
   it('should send the user a password reset link via email', done => {
     chai
       .request(app)
-      .post(fpUrl)
+      .post('/api/v1/auth/users/forgot-password')
       .send(userEmail)
       .end((err, res) => {
         resetToken = res.body.data.token;
@@ -33,7 +30,7 @@ describe('Forgot Password', () => {
     userEmail.email = 'nedyudobat@gmail.com';
     chai
       .request(app)
-      .post(fpUrl)
+      .post('/api/v1/auth/users/forgot-password')
       .send(userEmail)
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -48,7 +45,7 @@ describe('Reset Password', () => {
   it('should return a success and status of 200 if password has been reset', done => {
     chai
       .request(app)
-      .patch(`${resetUrl}/${resetToken}`)
+      .patch(`/api/v1/auth/users/reset-password/${resetToken}`)
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -60,7 +57,7 @@ describe('Reset Password', () => {
   it('should fail if no token is provided in the request', done => {
     chai
       .request(app)
-      .patch(resetUrl)
+      .patch('/api/v1/auth/users/reset-password/')
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(405);
@@ -71,7 +68,9 @@ describe('Reset Password', () => {
   it('should fail if token is invalid in the request', done => {
     chai
       .request(app)
-      .patch(`${resetUrl}/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf`)
+      .patch(
+        '/api/v1/auth/users/reset-password/qwertyuikmnjhdr434567bvfre3rtybvde3rtytrf',
+      )
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(400);
