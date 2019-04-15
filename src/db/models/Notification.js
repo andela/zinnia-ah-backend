@@ -16,15 +16,23 @@ export default (sequelize, DataTypes) => {
       notificationType: {
         allowNull: false,
         type: DataTypes.ENUM('follow', 'article', 'comment', null),
+        field: 'notification_type',
       },
       notificationTypeId: {
         allowNull: true,
         type: DataTypes.UUID,
+        field: 'notification_type_id',
+      },
+      userId: {
+        allowNull: true,
+        type: DataTypes.UUID,
+        field: 'user_id',
       },
       isRead: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+        field: 'is_read',
       },
     },
     {},
@@ -33,6 +41,7 @@ export default (sequelize, DataTypes) => {
     // associations can be defined here
     Notification.belongsTo(models.User, {
       foreignKey: 'userId',
+      as: 'user_id',
     });
   };
   return Notification;

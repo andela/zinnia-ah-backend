@@ -1,6 +1,7 @@
-import sendMailer from '../../config/mail-config';
+import { sendMailer } from '../../config/mail-config';
 import models from '../../db/models';
 import { getUserbyId } from '../helpers.utils';
+import mailTemplate from '../../utils/mail-template/mail-template.utils';
 
 const { Notification } = models;
 
@@ -20,24 +21,26 @@ export default async function newFollowerNotification(followeeId, followerId) {
     return 'This user does not exist';
   }
 
-  const emailBody = `Hi ${followee.username}, you have a new follower, ${
-    follower.username
-  } is now following you`;
+  const emailBody = {
+    title: 'Notification: New Follower',
+    content: `Hi ${followee.username}, you have a new follower, ${
+      follower.username
+    } is now following you`,
+  };
   const body = {
     receivers: [`${followee.email}`],
-    subject: `Notification: New Follower`,
+    subject: emailBody.title,
     text: '',
-    html: `<p>${emailBody}<p/> `,
+    html: mailTemplate(emailBody),
   };
 
-  await Notification.create({
-    notification: body,
-    userId: followee.id,
-    notificationType: 'follow',
-    notificationTypeId: follower.id,
-  });
-
   try {
+    await Notification.create({
+      notification: emailBody.content,
+      userId: followee.id,
+      notificationType: 'follow',
+      notificationTypeId: follower.id,
+    });
     return await sendMailer(body);
   } catch (e) {
     return e.message;

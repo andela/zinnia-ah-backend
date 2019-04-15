@@ -96,7 +96,6 @@ export default (sequelize, DataTypes) => {
       as: 'followings',
       timestamps: false,
     });
-    User.hasMany(models.Article);
     User.hasMany(models.Article, {
       foreignKey: 'userId',
       as: 'publications',

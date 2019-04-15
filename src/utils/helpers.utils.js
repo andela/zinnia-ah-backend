@@ -44,7 +44,7 @@ export const getUserbyUsername = async username => {
 /**
  * Check User existence
  *
- * @param {String} id
+ * @param {integer} id
  * @returns {Boolean} true if username exists
  * @returns {Boolean} false if username does not exist
  */

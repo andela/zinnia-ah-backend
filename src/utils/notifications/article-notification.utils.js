@@ -1,6 +1,7 @@
-import sendMailer from '../../config/mail-config';
+import { sendMailer } from '../../config/mail-config';
 import models from '../../db/models';
 import { getUserbyId } from '../helpers.utils';
+import mailTemplate from '../../utils/mail-template/mail-template.utils';
 
 const { Notification } = models;
 
@@ -23,31 +24,35 @@ export default async function newArticleNotification(userId, article) {
   if (followers.length === 0) {
     return null;
   }
+
   const articleUrl =
     process.env.NODE_ENV === 'development' || 'test'
       ? `${process.env.LOCAL_URL}/article/${article.slug}`
       : `${process.env.PRODUCTION_URL}/article/${article.slug}`;
 
-  const emailBody = `${user.username}, has posted a new article ${
-    article.title
-  }, Read it here ${articleUrl}`;
+  const emailBody = {
+    title: `Notification: New Article`,
+    content: `${user.username}, has posted a new article ${
+      article.title
+    }, Read it <a href="${articleUrl}">here</a>`,
+  };
 
   followers.forEach(async follower => {
     const body = {
-      receivers: [`${follower.email}`],
-      subject: `Notification: New Article`,
+      receivers: [`${follower.dataValues.email}`],
+      subject: emailBody.title,
       text: '',
-      html: `<p>${emailBody}<p/> `,
+      html: mailTemplate(emailBody),
     };
 
-    await Notification.create({
-      notification: body,
-      userId: follower.id,
-      notificationType: 'article',
-      notificationTypeId: article.id,
-    });
-
     try {
+      await Notification.create({
+        notification: emailBody.content,
+        userId: follower.id,
+        notificationType: 'article',
+        notificationTypeId: article.id,
+      });
+
       return await sendMailer(body);
     } catch (e) {
       return e.message;
