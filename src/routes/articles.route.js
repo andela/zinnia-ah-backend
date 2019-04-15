@@ -72,7 +72,7 @@ articleRouter.delete('/:article_id', removeArticle);
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles:
  *   post:
  *     tags:
  *       - article
