@@ -53,7 +53,6 @@ export default (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: user => user.password && user.hashPassword(),
-        beforeUpdate: user => user.password && user.hashPassword(),
       },
     },
   );
@@ -73,7 +72,9 @@ export default (sequelize, DataTypes) => {
       as: 'followings',
       timestamps: false,
     });
-    User.hasMany(models.Article);
+    User.hasMany(models.Article, {
+      foreignKey: 'id',
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

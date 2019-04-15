@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "node build/server.js",
-    "start:dev": "nodemon --exec babel-node src/server.js",
+    "start:dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
     "pretest": "NODE_ENV=test npm run lint && npm run prettier && npm run db:migrate:testdb && npm run seedall",
@@ -49,6 +49,7 @@
     "express": "^4.16.3",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.3.0",
+    "lint-staged": "^8.1.5",
     "morgan": "^1.9.1",
     "nodemailer": "^6.0.0",
     "passport": "^0.4.0",
@@ -86,6 +87,7 @@
     "mockery": "^2.1.0",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
     "sinon": "^7.3.1"
   }
 }

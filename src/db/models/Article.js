@@ -21,6 +21,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       description: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -56,6 +60,11 @@ export default (sequelize, DataTypes) => {
     },
     {},
   );
-  Article.associate = () => {};
+  Article.associate = models => {
+    Article.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'author',
+    });
+  };
   return Article;
 };

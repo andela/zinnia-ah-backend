@@ -12,7 +12,7 @@ router.use('/auth', authRouter);
 
 router.use('/auth/users', passwordRouter);
 
-router.use('/article', articleRouter);
+router.use('/articles', articleRouter);
 
 router.use('/users', userRouter);
 

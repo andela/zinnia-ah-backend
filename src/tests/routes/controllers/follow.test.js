@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import models from '../../../db/models';
+
 import app from '../../../server';
 
 // configure chai to use expect

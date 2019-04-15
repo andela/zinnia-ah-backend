@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import create from './controllers/articles.controller';
+
+import { create, getArticle } from './controllers/articles.controller';
+import { validateUuid } from './middlewares/validate-input.middleware';
 
 const articleRouter = Router();
 
@@ -50,5 +52,37 @@ const articleRouter = Router();
  *         description: ran
  */
 articleRouter.post('/', create);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can fetch a single article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article fetched
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.get('/:articleId', validateUuid, getArticle);
 
 export default articleRouter;
