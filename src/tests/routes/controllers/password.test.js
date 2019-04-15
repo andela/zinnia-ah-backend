@@ -10,12 +10,13 @@ let resetToken;
 const userEmail = {
   email: 'jsmith@gmail.com',
 };
-
+const fpUrl = '/api/v1/auth/users/forgot-password';
+const resetUrl = '/api/v1/auth/users/reset-password';
 describe('Forgot Password', () => {
   it('should send the user a password reset link via email', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/users/forgot-password')
+      .post(fpUrl)
       .send(userEmail)
       .end((err, res) => {
         resetToken = res.body.data.token;
@@ -24,28 +25,27 @@ describe('Forgot Password', () => {
         expect(res.body.data.token).to.exist;
         done();
       });
-  }, 10000);
-});
+  });
 
-it('should fail if the user email doesnt exist', done => {
-  userEmail.email = 'nedyudobat@gmail.com';
-  chai
-    .request(app)
-    .post(fpUrl)
-    .send(userEmail)
-    .end((err, res) => {
-      expect(res.status).to.equal(404);
-      expect(res.body.message).to.equal('User does not exist');
-      expect(res.body.errors).to.equal(true);
-      done();
-    });
+  it('should fail if the user email doesnt exist', done => {
+    userEmail.email = 'nedyudobat@gmail.com';
+    chai
+      .request(app)
+      .post(fpUrl)
+      .send(userEmail)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body.message).to.equal('User does not exist');
+        expect(res.body.errors).to.equal(true);
+        done();
+      });
+  });
 });
-
 describe('Reset Password', () => {
   it('should return a success and status of 200 if password has been reset', done => {
     chai
       .request(app)
-      .patch(`/api/v1/auth/users/reset-password/${resetToken}`)
+      .patch(`${resetUrl}/${resetToken}`)
       .send('password')
       .end((err, res) => {
         expect(res.status).to.equal(200);

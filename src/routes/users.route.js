@@ -3,7 +3,6 @@ import { Router } from 'express';
 import {
   getAllAuthors,
   getAuthorProfile,
-  getUserProfile,
   updateUserProfile,
 } from './controllers/users.controller';
 
@@ -57,91 +56,11 @@ userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
 
 /**
  * @swagger
- * definition:
- *    default:
- *    users:
- *    profiles:
- *    articles:
- *    tags:
- */
-/**
- * @swagger
- *
- * /api/v1/users/profiles/:userId:
- *   gett:
- *     description: Get User Profile Endpoint
- *     produces:
- *       - application/json
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/users'
- *     responses:
- *       201:
- *         description: User created
- *       200:
- *         description: User found
- *       400:
- *         description: Bad request.
- *       401:
- *         description: Authorization information is missing or invalid.
- *       404:
- *        description: A user with the specified ID was not found.
- *       5XX:
- *        description: Unexpected error.
- */
-userRouter.get('/profiles/:userId', checkAuthorizedUser, getUserProfile);
-
-/**
- * @swagger
  *
  * /api/v1/profiles/:username:
  *   post:
  *     description: View user's profile
  */
 userRouter.get('/:username', getAuthorProfile);
-
-/**
- * @swagger
- * definition:
- *    default:
- *    users:
- *    profiles:
- *    articles:
- *    tags:
- */
-/**
- * @swagger
- *
- * /api/v1/users/:userId:
- *   gett:
- *     description: Get Current User Profile Endpoint
- *     produces:
- *       - application/json
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/users'
- *     responses:
- *       201:
- *         description: User created
- *       200:
- *         description: User found
- *       400:
- *         description: Bad request.
- *       401:
- *         description: Authorization information is missing or invalid.
- *       404:
- *        description: A user with the specified ID was not found.
- *       5XX:
- *        description: Unexpected error.
- */
-userRouter.get('/:userId', checkAuthorizedUser, getUserProfile);
 
 export default userRouter;

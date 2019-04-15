@@ -1,10 +1,6 @@
 import models from '../../db/models';
-// import { successResponse, errorResponse } from '../../utils/helpers.utils';
-import {
-  errorResponse,
-  successResponse,
-  findUserbyId,
-} from '../../utils/helpers.utils';
+
+import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 const { User } = models;
 
@@ -54,33 +50,6 @@ export async function getAuthorProfile(req, res) {
     return errorResponse(res, 500, error.message);
   }
 }
-/**
- * Get current User
- * @constructor
- * @param {object} req
- * @param {object} res
- * @param {uuid} userId - The uuid variable.
- */
-export const getUserProfile = async (req, res) => {
-  const { url } = req;
-  const { user } = req;
-  const { userId } = req.params;
-  let userFound;
-
-  try {
-    if (url.includes('profiles')) {
-      userFound = await findUserbyId(userId);
-    } else {
-      userFound = await findUserbyId(user.id);
-    }
-    if (!userFound) {
-      return errorResponse(res, 404, 'The userID provided does not exist');
-    }
-    return successResponse(res, 200, 'Your requested profile', userFound);
-  } catch (err) {
-    return errorResponse(res, 500, err.message);
-  }
-};
 
 /**
  * Update user profile.
@@ -111,7 +80,7 @@ export const updateUserProfile = async (req, res) => {
       res,
       200,
       'Your profile has been updated succesfully',
-      [dataValues],
+      dataValues,
     );
   } catch (err) {
     return errorResponse(res, 500, err.message);

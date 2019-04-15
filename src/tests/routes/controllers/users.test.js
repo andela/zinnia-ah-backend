@@ -90,32 +90,27 @@ describe('USER PROFILE', () => {
         .send(userUpdateObject)
         .end((err, res) => {
           expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal(
+            'Your profile has been updated succesfully',
+          );
+          expect(res.body.data).to.be.an('object');
           done();
         });
     });
-  });
-  describe('Get a single User', () => {
-    it('Should not get a non-existent user', async () => {
+    it('Should not allow update if there is invalid token ', async () => {
       const response = await chai
         .request(app)
-        .get('/api/v1/users/profiles/4c033c41-b47f-48e8-bb85-946212b380fe')
-        .set('Authorization', xAccessToken);
-      expect(response.status).to.equal(404);
+        .put(url)
+        .set('Authorization', 'xAccessToken');
+      expect(response.status).to.equal(400);
       expect(response.body.message).to.equal(
-        'The userID provided does not exist',
+        'Token is invalid, please provide a valid token',
       );
     });
-
-    it('Should get a user with valid userID param', async () => {
-      const response = await chai
-        .request(app)
-        .get('/api/v1/users/profiles/3231983a-b944-4c53-a549-f561f7474428')
-        .set('Authorization', xAccessToken);
-      expect(response.status).to.equal(200);
-      expect(response.body.data)
-        .to.be.an('object')
-        .to.have.property('username');
-      expect(response.body.message).to.equal('Your requested profile');
+    it('Should not allow update if there is no token ', async () => {
+      const response = await chai.request(app).put(url);
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Please provide a JWT token');
     });
   });
 });
