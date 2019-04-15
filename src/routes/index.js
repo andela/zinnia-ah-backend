@@ -6,7 +6,6 @@ import articleRouter from './articles.route';
 import followRouter from './follow.route';
 import userRouter from './users.route';
 import rolesRouter from './roles.route';
-import rolesRouter from './roles.route';
 
 const router = Router();
 
