@@ -1,6 +1,6 @@
 import { errorResponse } from '../../utils/helpers.utils';
 import models from '../../db/models';
-import { ADMIN } from '../../tests/utils/constants';
+import { ADMIN } from '../../utils/constants';
 
 const { User } = models;
 

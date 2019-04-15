@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-import { ADMIN, AUTHOR } from '../../tests/utils/constants';
+import { ADMIN, AUTHOR } from '../../utils/constants';
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(

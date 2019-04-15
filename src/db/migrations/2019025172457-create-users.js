@@ -1,4 +1,4 @@
-import { ADMIN, AUTHOR } from '../../tests/utils/constants';
+import { ADMIN, AUTHOR } from '../../utils/constants';
 
 export default {
   up: (queryInterface, Sequelize) =>

@@ -4,7 +4,7 @@ import {
   errorResponse,
   getUserbyEmail,
 } from '../../utils/helpers.utils';
-import { AUTHOR, ADMIN } from '../../tests/utils/constants';
+import { AUTHOR, ADMIN } from '../../utils/constants';
 
 const { User } = models;
 

@@ -1,5 +1,5 @@
 import { hashPassword } from '../../utils/helpers.utils';
-import { ADMIN, AUTHOR } from '../../tests/utils/constants';
+import { ADMIN, AUTHOR } from '../../utils/constants';
 
 export default {
   up: async queryInterface => {

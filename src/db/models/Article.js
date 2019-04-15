@@ -5,7 +5,7 @@ import {
   TRASHED,
   PUBLISHED,
   BANNED,
-} from '../../tests/utils/constants';
+} from '../../utils/constants';
 
 export default (sequelize, DataTypes) => {
   const Article = sequelize.define(

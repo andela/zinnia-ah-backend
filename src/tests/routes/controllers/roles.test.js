@@ -6,7 +6,7 @@ import {
   adminCredentials,
   authorCredentials,
 } from '../../db/mockdata/userdata';
-import { AUTHOR, ADMIN } from '../../utils/constants';
+import { AUTHOR, ADMIN } from '../../../utils/constants';
 
 chai.use(chaiHttp);
 const { expect } = chai;
