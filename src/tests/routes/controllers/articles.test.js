@@ -10,8 +10,8 @@ const { expect } = chai;
 const endPoint = '/api/v1/articles';
 
 const userRequestObject = {
-  username: 'boxunivers',
-  email: 'lilly@gmail.com',
+  username: 'rdxtcfygvubh',
+  email: 'lilfgcvhly@gmail.com',
   password: 'hhrtuyhgty5t678',
 };
 const articleRequestObject = {
