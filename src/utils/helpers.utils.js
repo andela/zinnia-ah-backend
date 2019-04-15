@@ -195,3 +195,14 @@ export const isArticleExist = async articleId => {
   if (getArticle) return getArticle;
   return 'article does not exist';
 };
+
+/**
+ * Check Article existence
+ *
+ * @param {String} slug
+ * @returns {Boolean} true if email exists
+ * @returns {Boolean} false if email does not exist
+ */
+export const findArticleBySlug = async slug => {
+  return await Article.findOne({ where: { slug } });
+};
