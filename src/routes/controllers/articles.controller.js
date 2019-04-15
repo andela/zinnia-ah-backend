@@ -64,7 +64,7 @@ export async function create(req, res) {
  * @returns {Object} res with article object if it exists
  * @returns {Object} res with 404 response if the array is empty
  */
-export async function findArticle(req, res) {
+export async function getArticle(req, res) {
   const { articleId } = req.params;
 
   try {

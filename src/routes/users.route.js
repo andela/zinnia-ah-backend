@@ -1,11 +1,10 @@
 import { Router } from 'express';
 
-import { createUser, confirmUser } from './controllers/users.controller';
 import {
-  resetPassword,
-  forgotPassword,
-} from './controllers/password.controller';
-import { validUser } from './middlewares/validateInput';
+  getAllAuthors,
+  getAuthorProfile,
+} from './controllers/users.controller';
+
 const userRouter = Router();
 
 /**
@@ -13,7 +12,7 @@ const userRouter = Router();
  *
  * /api/v1/users:
  *   post:
- *     description: User Registration Endpoint
+ *     description: Get all authors
  *     produces:
  *       - application/json
  *     request:
@@ -35,44 +34,14 @@ const userRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.post('/', validUser, createUser);
-userRouter.get('/confirmation/:token', confirmUser);
-/**
- * @swagger
- *
- * /api/v1/users:
- *   post:
- *     description: Reset Password
- *     produces:
- *       - application/json
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/users'
- *     responses:
- *       201:
- *         description: User created
- *       400:
- *         description: Bad request.
- *       401:
- *         description: Authorization information is missing or invalid.
- *       404:
- *        description: A user with the specified ID was not found.
- *       5XX:
- *        description: Unexpected error.
- */
-
-userRouter.patch('/reset-password/:token', resetPassword);
+userRouter.get('/', getAllAuthors);
 
 /**
  * @swagger
  *
- * /api/v1/users:
+ * /api/v1/profiles/:username:
  *   post:
- *     description: Forgot Password
+ *     description: View user's profile
  *     produces:
  *       - application/json
  *     request:
@@ -94,7 +63,6 @@ userRouter.patch('/reset-password/:token', resetPassword);
  *       5XX:
  *        description: Unexpected error.
  */
-
-userRouter.post('/forgot-password', forgotPassword);
+userRouter.get('/:username', getAuthorProfile);
 
 export default userRouter;

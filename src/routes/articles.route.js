@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { create, findArticle } from './controllers/articles.controller';
+import { create, getArticle } from './controllers/articles.controller';
 import { validateUuid } from './middlewares/validate-input.middleware';
 
 const articleRouter = Router();
@@ -83,6 +83,6 @@ articleRouter.post('/', create);
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:articleId', validateUuid, findArticle);
+articleRouter.get('/:articleId', validateUuid, getArticle);
 
 export default articleRouter;
