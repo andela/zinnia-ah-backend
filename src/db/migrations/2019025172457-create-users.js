@@ -1,3 +1,5 @@
+import { ADMIN, AUTHOR } from '../../tests/utils/constants';
+
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Users', {
@@ -49,8 +51,8 @@ export default {
         field: 'social_id',
       },
       role: {
-        type: Sequelize.ENUM('author', 'admin'),
-        defaultValue: 'author',
+        type: Sequelize.ENUM(AUTHOR, ADMIN),
+        defaultValue: AUTHOR,
         allowNull: false,
       },
       createdAt: {

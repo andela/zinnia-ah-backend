@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 
+import { ADMIN, AUTHOR } from '../../tests/utils/constants';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -35,8 +37,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.ARRAY(DataTypes.TEXT),
       },
       role: {
-        type: DataTypes.ENUM('author', 'admin'),
-        defaultValue: 'author',
+        type: DataTypes.ENUM(AUTHOR, ADMIN),
+        defaultValue: AUTHOR,
         allowNull: false,
       },
       image: DataTypes.TEXT,

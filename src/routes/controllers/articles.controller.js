@@ -7,6 +7,7 @@ import {
   errorResponse,
   verifyToken,
 } from '../../utils/helpers.utils';
+import { FREE, DRAFT } from '../../tests/utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 
 const { Article, User } = models;
@@ -49,8 +50,8 @@ export async function createArticle(req, res) {
       imageList: images,
       tagList: tags,
       readTime: timeToReadArticle,
-      subscriptionType: 'free',
-      status: 'draft',
+      subscriptionType: FREE,
+      status: DRAFT,
     });
     return successResponse(
       res,

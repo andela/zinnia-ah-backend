@@ -1,3 +1,12 @@
+import {
+  PREMIUM,
+  FREE,
+  DRAFT,
+  TRASHED,
+  PUBLISHED,
+  BANNED,
+} from '../../tests/utils/constants';
+
 export default (sequelize, DataTypes) => {
   const Article = sequelize.define(
     'Article',
@@ -34,13 +43,13 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
       subscriptionType: {
-        type: DataTypes.ENUM('free', 'premium'),
+        type: DataTypes.ENUM(FREE, PREMIUM),
         field: 'subscription_type',
         defaultValue: 'free',
       },
       status: {
-        type: DataTypes.ENUM('published', 'draft', 'trashed', 'banned'),
-        defaultValue: 'draft',
+        type: DataTypes.ENUM(PUBLISHED, DRAFT, TRASHED, BANNED),
+        defaultValue: DRAFT,
       },
       readTime: {
         type: DataTypes.STRING,

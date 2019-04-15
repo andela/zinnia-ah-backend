@@ -4,6 +4,7 @@ import {
   errorResponse,
   getUserbyEmail,
 } from '../../utils/helpers.utils';
+import { AUTHOR, ADMIN } from '../../tests/utils/constants';
 
 const { User } = models;
 
@@ -36,7 +37,7 @@ export async function getAll(req, res) {
  */
 export async function makeAdmin(req, res) {
   const { email } = req.body;
-  const role = 'admin';
+  const role = ADMIN;
 
   const user = await getUserbyEmail(email);
   if (!user) {
@@ -47,7 +48,7 @@ export async function makeAdmin(req, res) {
   }
 
   try {
-    await User.update({ role: 'admin' }, { where: { email } });
+    await User.update({ role: ADMIN }, { where: { email } });
     return successResponse(res, 200, 'role updated successfully', { role });
   } catch (error) {
     return errorResponse(res, 500, 'database error', error.message);
@@ -64,7 +65,7 @@ export async function makeAdmin(req, res) {
  */
 export async function revokeAdmin(req, res) {
   const { email } = req.body;
-  const role = 'author';
+  const role = AUTHOR;
 
   const user = await getUserbyEmail(email);
   if (!user) {
@@ -75,7 +76,7 @@ export async function revokeAdmin(req, res) {
   }
 
   try {
-    await User.update({ role: 'author' }, { where: { email } });
+    await User.update({ role: AUTHOR }, { where: { email } });
     return successResponse(res, 200, 'role updated successfully', { role });
   } catch (error) {
     return errorResponse(res, 500, 'database error', error.message);

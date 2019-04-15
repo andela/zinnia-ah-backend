@@ -6,6 +6,7 @@ import {
   adminCredentials,
   authorCredentials,
 } from '../../db/mockdata/userdata';
+import { AUTHOR, ADMIN } from '../../utils/constants';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -97,7 +98,7 @@ describe('Roles and Access control', () => {
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');
       expect(body.message).to.eql('role updated successfully');
-      expect(body.data.role).to.eql('admin');
+      expect(body.data.role).to.eql(ADMIN);
     });
 
     it('return 404 if user does not exist', async () => {
@@ -142,7 +143,7 @@ describe('Roles and Access control', () => {
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');
       expect(body.message).to.eql('role updated successfully');
-      expect(body.data.role).to.eql('author');
+      expect(body.data.role).to.eql(AUTHOR);
     });
 
     it('return 404 if user does not exist', async () => {

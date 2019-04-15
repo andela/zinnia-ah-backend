@@ -1,5 +1,6 @@
 import { errorResponse } from '../../utils/helpers.utils';
 import models from '../../db/models';
+import { ADMIN } from '../../tests/utils/constants';
 
 const { User } = models;
 
@@ -17,7 +18,7 @@ const verifyAdminUser = async (req, res, next) => {
   const { user } = req;
 
   const requestUser = await User.findOne({
-    where: { id: user.id, role: 'admin' },
+    where: { id: user.id, role: ADMIN },
   });
 
   if (!requestUser) {

@@ -78,45 +78,6 @@ export const getArticlebySlug = async slug => {
 };
 
 /**
- * Check User existence
- *
- * @param {String} id
- * @returns {Boolean} true if username exists
- * @returns {Boolean} false if username does not exist
- */
-export const getUserbyId = async id => {
-  return await User.findByPk({ where: { id } });
-};
-
-/**
- * Check Article existence
- *
- * @param {String} id
- * @returns {Boolean} true if Article exists
- * @returns {Boolean} false if Article does not exist
- */
-export const getArticlebyId = async id => {
-  return await Article.findOne({
-    where: { id },
-    include: {
-      model: User,
-      as: 'user',
-    },
-  });
-};
-
-/**
- * Check Article existence
- *
- * @param {String} slug
- * @returns {Boolean} true if Article exists
- * @returns {Boolean} false if Article does not exist
- */
-export const getArticlebySlug = async slug => {
-  return await Article.findOne({ where: { slug } });
-};
-
-/**
  * Check User duplication
  *
  * @param {String} email
