@@ -38,7 +38,7 @@ describe('Articles', () => {
         .send(userRequestObject)
         .end((err, res) => {
           expect(res.status).to.equal(201);
-          xAccessToken = res.body.data;
+          xAccessToken = res.body.data.token;
           done();
         });
     });
