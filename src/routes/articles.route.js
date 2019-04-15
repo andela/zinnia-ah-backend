@@ -18,6 +18,7 @@ import {
   reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { validateUuid } from './middlewares/validate-input.middleware.js';
 
 const articleRouter = Router();
 
@@ -182,11 +183,43 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article:
- *   post:
+ * /api/v1/articles/slug:
+ *   get:
  *     tags:
  *       - article
- *     description: users can fetch a single article.
+ *     description: users can fetch a single article using slug.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleSlug
+ *         description: the slug of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article fetched
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.get('/slug/:articleSlug', getArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles:
+ *   get:
+ *     tags:
+ *       - article
+ *     description: users can fetch a single article using article Id.
  *     produces:
  *       - application/json
  *     parameters:
@@ -209,7 +242,41 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:slug', getArticle);
+articleRouter.get('/:articleId', validateUuid, getArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles:
+ *   get:
+ *     tags:
+ *       - article
+ *     description: users can fetch all articles and paginate them.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: limit
+ *         description: the number of articles per page
+ *         in: query
+ *         required: false
+ *       - name: page
+ *         description: the page number to fetch articles from
+ *         in: query
+ *         required: false
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: articles fetched
+ *       500:
+ *         description: Database error
+ */
+articleRouter.get('/', getAllArticles);
 
 /**
  * @swagger

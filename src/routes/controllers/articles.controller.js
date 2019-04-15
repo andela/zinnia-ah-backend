@@ -130,8 +130,16 @@ export async function removeArticle(req, res) {
  * @returns {Object} res with 404 response if the array is empty
  */
 export async function getArticle(req, res) {
-  const articleSlug = req.params.slug;
+  const { articleId, articleSlug } = req.params;
   let requestUser;
+  let articleParam;
+
+  if (articleId) {
+    articleParam = { id: articleId };
+  } else if (articleSlug) {
+    articleParam = { slug: articleSlug };
+  }
+
   const token = req.headers.authorization || req.headers['x-access-token'];
 
   if (token) {
@@ -148,7 +156,7 @@ export async function getArticle(req, res) {
           attributes: ['firstName', 'lastName', 'username'],
         },
       ],
-      where: { slug: articleSlug },
+      where: { ...articleParam },
     });
 
     if (article) {
