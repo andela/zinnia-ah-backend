@@ -92,18 +92,18 @@ export async function getArticle(req, res) {
 
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
-  const userId = req.user.id;
+  const { id } = req.user;
 
   try {
     const createdRating = await Rating.findOrCreate({
-      where: { articleId, userId },
+      where: { articleId, id },
       defaults: { rating },
     });
 
@@ -127,6 +127,6 @@ export const rateArticle = async (req, res) => {
       ratedArticle,
     );
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 };
