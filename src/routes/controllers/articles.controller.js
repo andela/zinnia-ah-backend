@@ -102,10 +102,16 @@ export const rateArticle = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const createdRating = await Rating.findOrCreate({
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
       where: { articleId, userId },
       defaults: { rating },
     });
+
+    if (!isNewRecord) {
+      await createdRating.update({
+        rating,
+      });
+    }
 
     const ratedArticle = await Article.findByPk(articleId, {
       attributes: {
