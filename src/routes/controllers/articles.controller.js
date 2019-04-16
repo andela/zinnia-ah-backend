@@ -261,6 +261,15 @@ export async function shareArticleViaEmail(req, res) {
     );
   }
 }
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} rateArticle success/error message and article data
+ */
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
@@ -292,6 +301,6 @@ export const rateArticle = async (req, res) => {
       ratedArticle,
     );
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 };
