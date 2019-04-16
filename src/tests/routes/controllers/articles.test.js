@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../../server';
 import sinon from 'sinon';
-import { transporter } from '../../../config/mail-config';
 
+import app from '../../../server';
+import { transporter } from '../../../config/mail-config';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;

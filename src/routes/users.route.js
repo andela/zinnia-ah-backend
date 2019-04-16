@@ -3,7 +3,10 @@ import { Router } from 'express';
 import {
   getAllAuthors,
   getAuthorProfile,
+  updateUserProfile,
 } from './controllers/users.controller';
+
+import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const userRouter = Router();
 
@@ -13,6 +16,21 @@ const userRouter = Router();
  * /api/v1/users:
  *   post:
  *     description: Get all authors
+ * definition:
+ *    default:
+ *    users:
+ *    profiles:
+ *    articles:
+ *    tags:
+ */
+
+userRouter.get('/', getAllAuthors);
+/**
+ * @swagger
+ *
+ * /api/v1/users/:userId:
+ *   put:
+ *     description: Update User Profile Endpoint
  *     produces:
  *       - application/json
  *     request:
@@ -23,8 +41,8 @@ const userRouter = Router();
  *           items:
  *         $ref: '#/definitions/users'
  *     responses:
- *       201:
- *         description: User created
+ *       200:
+ *         description: User updated
  *       400:
  *         description: Bad request.
  *       401:
@@ -34,7 +52,7 @@ const userRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/', getAllAuthors);
+userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
 
 /**
  * @swagger
@@ -42,26 +60,6 @@ userRouter.get('/', getAllAuthors);
  * /api/v1/profiles/:username:
  *   post:
  *     description: View user's profile
- *     produces:
- *       - application/json
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/users'
- *     responses:
- *       201:
- *         description: User created
- *       400:
- *         description: Bad request.
- *       401:
- *         description: Authorization information is missing or invalid.
- *       404:
- *        description: A user with the specified ID was not found.
- *       5XX:
- *        description: Unexpected error.
  */
 userRouter.get('/:username', getAuthorProfile);
 

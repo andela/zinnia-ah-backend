@@ -1,5 +1,6 @@
 import models from '../../db/models';
-import { successResponse, errorResponse } from '../../utils/helpers.utils';
+
+import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 const { User } = models;
 
@@ -49,3 +50,39 @@ export async function getAuthorProfile(req, res) {
     return errorResponse(res, 500, error.message);
   }
 }
+
+/**
+ * Update user profile.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} user object
+ */
+export const updateUserProfile = async (req, res) => {
+  const { id } = req.user;
+  const { firstName, lastName, username, bio, image } = req.body;
+  try {
+    const profileUpdate = await User.update(
+      {
+        firstName: firstName || user.firstName,
+        lastName: lastName || user.lastName,
+        username: username || user.username,
+        bio: bio || user.bio,
+        image: image || user.image,
+      },
+      {
+        returning: true,
+        where: { id },
+      },
+    );
+    const { dataValues } = profileUpdate[1][0];
+    delete dataValues.password;
+    return successResponse(
+      res,
+      200,
+      'Your profile has been updated succesfully',
+      dataValues,
+    );
+  } catch (err) {
+    return errorResponse(res, 500, err.message);
+  }
+};
