@@ -74,6 +74,13 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Article, {
       foreignKey: 'id',
     });
+    User.belongsToMany(models.Article, {
+      foreignKey: 'user_id',
+      otherKey: 'article_id',
+      through: 'ArticleLikes',
+      as: 'likes',
+      timestamps: false,
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

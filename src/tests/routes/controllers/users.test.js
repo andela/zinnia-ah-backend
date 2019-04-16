@@ -7,8 +7,8 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 const usersUrl = '/api/v1/users';
-const profileUrl = '/api/v1/profiles/gentlejane';
-const nonExistingProfileUrl = '/api/v1/profiles/teddybear';
+const profileUrl = '/api/v1/users/profiles/gentlejane';
+const nonExistingProfileUrl = '/api/v1/users/profiles/teddybear';
 
 describe('List Users functionality', () => {
   context('GET all users', () => {

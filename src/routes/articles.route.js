@@ -1,11 +1,16 @@
 import { Router } from 'express';
 
-import { getArticle, createArticle } from './controllers/articles.controller';
 import { validateUuid } from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
 } from './controllers/comments.controller.js';
+import {
+  getArticle,
+  createArticle,
+  likeAnArticle,
+  unlikeAnArticle,
+} from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const articleRouter = Router();
@@ -151,5 +156,81 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.get('/:articleId', validateUuid, getArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/unlike:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can like an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article liked
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/unlike:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can unlike an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article unliked
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
 
 export default articleRouter;

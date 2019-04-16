@@ -76,7 +76,7 @@ export async function getArticle(req, res) {
   try {
     const article = await Article.findByPk(articleId, {
       attributes: {
-        exclude: ['id', 'userId', 'subcriptionType', 'readTime'],
+        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
       },
       include: [
         {
@@ -99,5 +99,69 @@ export async function getArticle(req, res) {
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
     return errorResponse(res, 500, 'An error occured', error.message);
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} likeAnArticle success/error message and user data
+ */
+export async function likeAnArticle(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    await user.addLike(article);
+    const userData = user.toJSON();
+    const likes = await user.getLikes();
+
+    userData.likes = likes.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'Article has been liked', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.toString());
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} unlikeAnArticle success/error message and user data
+ */
+export async function unlikeAnArticle(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    await user.removeLike(article);
+    const userData = user.toJSON();
+    const likes = await user.getLikes();
+
+    userData.likes = likes.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'unlike article successful', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
   }
 }

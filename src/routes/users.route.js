@@ -61,6 +61,6 @@ userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
  *   post:
  *     description: View user's profile
  */
-userRouter.get('/:username', getAuthorProfile);
+userRouter.get('/profiles/:username', getAuthorProfile);
 
 export default userRouter;

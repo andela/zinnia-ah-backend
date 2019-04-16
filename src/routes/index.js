@@ -16,8 +16,6 @@ router.use('/articles', articleRouter);
 
 router.use('/users', userRouter);
 
-router.use('/profiles', userRouter);
-
 router.use('/profiles', followRouter);
 router.use('/users', userRouter);
 
