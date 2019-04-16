@@ -11,7 +11,7 @@ import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 import { sendMailer } from '../../config/mail-config';
 
-const { Article, User } = models;
+const { Article, User, Rating } = models;
 
 /**
  * passes new article to be created to the model
