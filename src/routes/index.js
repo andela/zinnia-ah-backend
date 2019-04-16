@@ -10,7 +10,10 @@ import rolesRouter from './roles.route';
 const router = Router();
 
 router.use('/auth', authRouter);
+
 router.use('/auth/users', passwordRouter);
+
+router.use('/users/roles', rolesRouter);
 
 router.use('/articles', articleRouter);
 
@@ -19,9 +22,5 @@ router.use('/users', userRouter);
 router.use('/profiles', userRouter);
 
 router.use('/profiles', followRouter);
-
-router.use('/users', userRouter);
-
-router.use('/roles', rolesRouter);
 
 export default router;

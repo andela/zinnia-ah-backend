@@ -10,7 +10,7 @@ import { AUTHOR, ADMIN } from '../../../utils/constants';
 
 chai.use(chaiHttp);
 const { expect } = chai;
-const rolesEndpoint = '/api/v1/roles';
+const rolesEndpoint = '/api/v1/users/roles';
 let userToken;
 let adminToken;
 
@@ -87,27 +87,31 @@ describe('Roles and Access control', () => {
   });
 
   describe('roles assignment', () => {
-    it('successfully makes an author an admin', async () => {
+    it('successfully changes a user role', async () => {
+      const requestBody = {
+        role: 'admin',
+      };
       const { status, body } = await chai
         .request(app)
-        .patch(`${rolesEndpoint}/make-admin`)
+        .put(`${rolesEndpoint}/gentlejane`)
         .set('x-access-token', adminToken)
-        .send(userEmail);
+        .send(requestBody);
 
       expect(status).to.be.eql(200);
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');
       expect(body.message).to.eql('role updated successfully');
-      expect(body.data.role).to.eql(ADMIN);
     });
 
     it('return 404 if user does not exist', async () => {
-      userEmail.email = 'nobody@ah.com';
+      const requestBody = {
+        role: 'admin',
+      };
       const { status, body } = await chai
         .request(app)
-        .patch(`${rolesEndpoint}/make-admin`)
+        .put(`${rolesEndpoint}/karlous`)
         .set('x-access-token', adminToken)
-        .send(userEmail);
+        .send(requestBody);
 
       expect(status).to.be.eql(404);
       expect(body).to.have.key('status', 'message', 'errors');
@@ -116,63 +120,20 @@ describe('Roles and Access control', () => {
       expect(body.errors).to.eql(true);
     });
 
-    it('return 409 if user is already an admin', async () => {
-      userEmail.email = 'admin@ah.com';
+    it('return 409 if user is already has that role', async () => {
+      const requestBody = {
+        role: 'admin',
+      };
       const { status, body } = await chai
         .request(app)
-        .patch(`${rolesEndpoint}/make-admin`)
+        .put(`${rolesEndpoint}/gentlejane`)
         .set('x-access-token', adminToken)
-        .send(userEmail);
+        .send(requestBody);
 
       expect(status).to.be.eql(409);
       expect(body).to.have.key('status', 'message', 'errors');
       expect(body.status).to.eql('error');
       expect(body.message).to.eql('This user is already an admin');
-      expect(body.errors).to.eql(true);
-    });
-
-    it('successfully revokes admin privileges for an admin', async () => {
-      userEmail.email = 'nedyudombat@ah.com';
-      const { status, body } = await chai
-        .request(app)
-        .patch(`${rolesEndpoint}/revoke-admin`)
-        .set('x-access-token', adminToken)
-        .send(userEmail);
-
-      expect(status).to.be.eql(200);
-      expect(body).to.have.key('status', 'message', 'data');
-      expect(body.status).to.eql('success');
-      expect(body.message).to.eql('role updated successfully');
-      expect(body.data.role).to.eql(AUTHOR);
-    });
-
-    it('return 404 if user does not exist', async () => {
-      userEmail.email = 'nobody@ah.com';
-      const { status, body } = await chai
-        .request(app)
-        .patch(`${rolesEndpoint}/revoke-admin`)
-        .set('x-access-token', adminToken)
-        .send(userEmail);
-
-      expect(status).to.be.eql(404);
-      expect(body).to.have.key('status', 'message', 'errors');
-      expect(body.status).to.eql('error');
-      expect(body.message).to.eql('This user does not exist');
-      expect(body.errors).to.eql(true);
-    });
-
-    it('return 409 if user is already an author', async () => {
-      userEmail.email = 'nedyudombat@ah.com';
-      const { status, body } = await chai
-        .request(app)
-        .patch(`${rolesEndpoint}/revoke-admin`)
-        .set('x-access-token', adminToken)
-        .send(userEmail);
-
-      expect(status).to.be.eql(409);
-      expect(body).to.have.key('status', 'message', 'errors');
-      expect(body.status).to.eql('error');
-      expect(body.message).to.eql('This user is not an admin');
       expect(body.errors).to.eql(true);
     });
   });

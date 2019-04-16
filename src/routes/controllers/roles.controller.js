@@ -2,9 +2,8 @@ import models from '../../db/models';
 import {
   successResponse,
   errorResponse,
-  getUserbyEmail,
+  getUserbyUsername,
 } from '../../utils/helpers.utils';
-import { AUTHOR, ADMIN } from '../../utils/constants';
 
 const { User } = models;
 
@@ -16,7 +15,7 @@ const { User } = models;
  * @returns {*} success response
  * @throws {*} error if database error
  */
-export async function getAll(req, res) {
+export async function getAllRoles(req, res) {
   try {
     const roles = await User.findAll({
       attributes: ['id', 'email', 'username', 'role'],
@@ -35,49 +34,24 @@ export async function getAll(req, res) {
  * @returns {*} success response
  * @throws {*} error if database error
  */
-export async function makeAdmin(req, res) {
-  const { email } = req.body;
-  const role = ADMIN;
+export async function updateUserRole(req, res) {
+  const { role } = req.body;
+  const { username } = req.params;
 
-  const user = await getUserbyEmail(email);
+  const user = await getUserbyUsername(username);
   if (!user) {
     return errorResponse(res, 404, 'This user does not exist', true);
   }
-  if (user.role === role) {
-    return errorResponse(res, 409, 'This user is already an admin', true);
+  if (user.role === role.toUpperCase()) {
+    return errorResponse(res, 409, `This user is already an ${role}`, true);
   }
 
   try {
-    await User.update({ role: ADMIN }, { where: { email } });
-    return successResponse(res, 200, 'role updated successfully', { role });
-  } catch (error) {
-    return errorResponse(res, 500, 'database error', error.message);
-  }
-}
-
-/**
- * Revoke a users' admin access
- *
- * @param {Object} req express request object
- * @param {Object} res express response object
- * @returns {*} success response
- * @throws {*} error if database error
- */
-export async function revokeAdmin(req, res) {
-  const { email } = req.body;
-  const role = AUTHOR;
-
-  const user = await getUserbyEmail(email);
-  if (!user) {
-    return errorResponse(res, 404, 'This user does not exist', true);
-  }
-  if (user.role === role) {
-    return errorResponse(res, 409, 'This user is not an admin', true);
-  }
-
-  try {
-    await User.update({ role: AUTHOR }, { where: { email } });
-    return successResponse(res, 200, 'role updated successfully', { role });
+    const updatedUser = await User.update(
+      { role: role.toUpperCase() },
+      { where: { username }, returning: true },
+    );
+    return successResponse(res, 200, 'role updated successfully', updatedUser);
   } catch (error) {
     return errorResponse(res, 500, 'database error', error.message);
   }
