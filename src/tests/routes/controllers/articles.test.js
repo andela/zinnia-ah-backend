@@ -29,6 +29,8 @@ const loginUrl = '/api/v1/auth/login';
 let jwtToken = '';
 const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
+const falseToken = generateToken({ id: 'fake' });
+let articleId = '';
 
 describe('Articles', () => {
   before(async () => {
@@ -166,7 +168,7 @@ describe('Articles', () => {
     });
   });
 
-  describe.only('Delete Article', () => {
+  describe('Delete Article', () => {
     it('should create article successfully, with valid user input', done => {
       chai
         .request(app)
@@ -180,7 +182,7 @@ describe('Articles', () => {
           expect(res.body.message).to.eql(
             'your article has been created successfully',
           );
-          articleID = res.body.data.id;
+          articleId = res.body.data.id;
           done();
         });
     });
@@ -188,9 +190,9 @@ describe('Articles', () => {
     it('should fail when id is invalid', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleID}ss`)
+        .delete(`/api/v1/articles/${articleId}ss`)
         .set('Authorization', xAccessToken)
-        .send(userRequestObject)
+        .send({})
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('article does not exist');
@@ -201,9 +203,9 @@ describe('Articles', () => {
     it('should fail when userid does not match articles users id', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleID}`)
+        .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', falseToken)
-        .send(userRequestObject)
+        .send({})
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body.message).to.equal(
@@ -216,7 +218,7 @@ describe('Articles', () => {
     it('should delete article successfully, with valid user input', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleID}`)
+        .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', xAccessToken)
         .end((err, res) => {
           expect(res.status).to.eql(200);
