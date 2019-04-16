@@ -174,7 +174,6 @@ describe('Articles', () => {
         .set('x-access-token', xAccessToken)
         .send(articleRequestObject)
         .end((err, res) => {
-          console.log(res.body);
           expect(res.status).to.eql(201);
           expect(res.body.status).to.eql('success');
           expect(res.body.message).to.eql(
