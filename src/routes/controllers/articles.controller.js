@@ -411,7 +411,7 @@ export async function reportArticle(req, res) {
 export const recordARead = async (articleId, user = null) => {
   let userId;
   if (user) {
-    userId = user.id;
+    userId = muser.id;
   } else {
     userId = null;
   }
