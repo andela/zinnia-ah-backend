@@ -7,7 +7,7 @@ import {
   errorResponse,
   verifyToken,
 } from '../../utils/helpers.utils';
-import { FREE, DRAFT } from '../../tests/utils/constants';
+import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 
 const { Article, User } = models;
