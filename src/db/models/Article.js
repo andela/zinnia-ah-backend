@@ -80,7 +80,7 @@ export default (sequelize, DataTypes) => {
       otherKey: 'tagId',
       through: 'ArticleTags',
       as: 'tags',
-      timestamps: false,
+      tdimestamps: false,
     });
     Article.hasMany(models.Rating, {
       foreignKey: 'articleId',
