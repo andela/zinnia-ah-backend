@@ -89,13 +89,6 @@ export default (sequelize, DataTypes) => {
       as: 'likes',
       timestamps: false,
     });
-    User.belongsToMany(models.Role, {
-      foreignKey: 'user_id',
-      otherKey: 'role_id',
-      through: 'UserRoles',
-      as: 'role',
-      timestamps: false,
-    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

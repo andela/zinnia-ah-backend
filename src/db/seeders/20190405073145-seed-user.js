@@ -46,6 +46,7 @@ export default {
           id: '856423fd-9c61-40e6-a72c-bd4cc9bdd880',
           username: 'Dctester',
           email: 'Dctester@gmail.com',
+          role: AUTHOR,
           password: await hashPassword('testseeder'),
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),

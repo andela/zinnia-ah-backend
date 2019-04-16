@@ -13,14 +13,21 @@ const likeCommentUrl =
   '/api/v1/articles/141f4f05-7d81-4593-ab54-e256c1006210/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/like';
 let token = '';
 
+const userRequestObject = {
+  email: 'igbominadeveloper@ah.com',
+  password: 'password1',
+};
+
 describe('LIKE COMMENT', () => {
-  it('should login a user successfully when valid input are supplied', async () => {
-    const res = await chai
+  it('login user to get token', done => {
+    chai
       .request(app)
-      .post(loginUrl)
-      .send(loginCommenter);
-    token = res.body.data.token;
-    expect(res.status).to.equal(200);
+      .post('/api/v1/auth/login')
+      .send(userRequestObject)
+      .end((err, res) => {
+        token = res.body.data.token;
+        done();
+      });
   });
 
   it('Should be able to like a comment', async () => {
