@@ -7,7 +7,7 @@ import {
   verifyToken,
 } from '../../utils/helpers.utils';
 
-const { Article, User } = models;
+const { Article, User, Rating } = models;
 
 /**
  * passes new article to be created to the model
@@ -70,7 +70,7 @@ export async function getArticle(req, res) {
   try {
     const article = await Article.findByPk(articleId, {
       attributes: {
-        exclude: ['id', 'userId', 'subcriptionType', 'readTime'],
+        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
       },
       include: [
         {
@@ -95,10 +95,38 @@ export async function getArticle(req, res) {
     return errorResponse(res, 500, 'An error occured', error.message);
   }
 }
+
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
   const userId = req.user.id;
 
-  return errorResponse(res, 400, 'Nothing happened');
+  try {
+    const createdRating = await Rating.findOrCreate({
+      where: { articleId, userId },
+      defaults: { rating },
+    });
+
+    const ratedArticle = await Article.findByPk(articleId, {
+      attributes: {
+        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
+      },
+      include: [
+        {
+          model: Rating,
+          as: 'ratings',
+          attributes: ['rating', 'userId'],
+        },
+      ],
+    });
+
+    return successResponse(
+      res,
+      201,
+      'your rating has been recorded',
+      ratedArticle,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, 'An error occured', error.message);
+  }
 };
