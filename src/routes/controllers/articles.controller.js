@@ -478,6 +478,6 @@ export const rateArticle = async (req, res) => {
       ratedArticle,
     );
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 };
