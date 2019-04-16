@@ -27,7 +27,7 @@ const swaggerDefinition = {
   basePath: '/',
 };
 
-// initialize swagger-jsdoc
+// // initialize swagger-jsdoc
 // const swaggerSpec = swaggerJSDoc({
 //   swaggerDefinition,
 //   apis: ['./**/routes/*.js'], // pass all in array

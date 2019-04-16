@@ -5,6 +5,7 @@ import {
   successResponse,
   errorResponse,
   verifyToken,
+  calcAverageRating,
 } from '../../utils/helpers.utils';
 
 const { Article, User, Rating } = models;
@@ -102,10 +103,16 @@ export const rateArticle = async (req, res) => {
   const { id } = req.user;
 
   try {
-    const createdRating = await Rating.findOrCreate({
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
       where: { articleId, id },
       defaults: { rating },
     });
+
+    if (!isNewRecord && createdRating.rating !== rating) {
+      await createdRating.update({
+        rating,
+      });
+    }
 
     const ratedArticle = await Article.findByPk(articleId, {
       attributes: {
@@ -120,11 +127,15 @@ export const rateArticle = async (req, res) => {
       ],
     });
 
+    const jsonRatedArticle = ratedArticle.toJSON();
+    jsonRatedArticle.rating = calcAverageRating(jsonRatedArticle.ratings);
+    jsonRatedArticle.ratings = undefined;
+
     return successResponse(
       res,
       201,
       'your rating has been recorded',
-      ratedArticle,
+      jsonRatedArticle,
     );
   } catch (error) {
     return errorResponse(res, 500, 'An error occurred', error.message);

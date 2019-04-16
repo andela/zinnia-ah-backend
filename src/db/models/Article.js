@@ -66,8 +66,8 @@ export default (sequelize, DataTypes) => {
       as: 'author',
     });
     Article.hasMany(models.Rating, {
-      foreignKey: 'article_id',
-      as: 'article',
+      foreignKey: 'articleId',
+      as: 'ratings',
     });
   };
   return Article;
