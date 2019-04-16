@@ -7,6 +7,7 @@ import followRouter from './follow.route';
 import userRouter from './users.route';
 import rolesRouter from './roles.route';
 import highlightRouter from './highlights.route';
+import searchRouter from './search.route';
 
 const router = Router();
 
