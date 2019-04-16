@@ -20,7 +20,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 
-const { Article, User, Report } = models;
+const { Article, User, Report, Rating } = models;
 
 /**
  * passes new article to be created to the model
