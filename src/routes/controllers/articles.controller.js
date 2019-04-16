@@ -447,6 +447,14 @@ export async function getAllArticles(req, res) {
   }
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} rateArticle success/error message and article data
+ */
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
