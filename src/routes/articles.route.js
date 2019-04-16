@@ -4,6 +4,7 @@ import { validateUuid } from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
+  editComment,
 } from './controllers/comments.controller.js';
 import {
   getArticle,
@@ -202,7 +203,7 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *   post:
  *     tags:
  *       - article
- *     description: users can unlike an article.
+ *     description: users can like an article.
  *     produces:
  *       - application/json
  *     parameters:
@@ -223,7 +224,7 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         $ref: '#/definitions/users'
  *     responses:
  *       200:
- *         description: article unliked
+ *         description: article liked
  *       400:
  *         description: Bad request.
  *       401:
@@ -232,5 +233,45 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/unlike:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can unlike an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article fetched
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.post(
+  '/:articleId/comments/:commentId/edit',
+  checkAuthorizedUser,
+  editComment,
+);
 
 export default articleRouter;

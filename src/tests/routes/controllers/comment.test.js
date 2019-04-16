@@ -125,4 +125,50 @@ describe('CREATE COMMENT', () => {
         done();
       });
   });
+
+  it('should be able to edit a comment', done => {
+    chai
+      .request(app)
+      .post(
+        '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/edit',
+      )
+      .send({
+        editCommentBody: 'Legit edited comment',
+      })
+      .set('Accept', 'application/json')
+      .set({
+        Authorization: token,
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal('You edited this comment');
+        expect(res.body.data.updatedComment[1][0].body).to.equal(
+          'Legit edited comment',
+        );
+        done();
+      });
+  });
+
+  it('Only the creator of a comment should have the ability to edit a comment', done => {
+    chai
+      .request(app)
+      .post(
+        '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/edit',
+      )
+      .send({
+        editCommentBody: 'Legit edited comment',
+      })
+      .set('Accept', 'application/json')
+      .set({
+        Authorization:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4NjUxOTg5LTczMmYtNGMwNC05ZGRjLWVhMWY3MzgxOGZkMSIsImVtYWlsIjoibmVkeXVkb21iYXRAYWguY29tIiwiaWF0IjoxNTU1NDI3MTE3LCJleHAiOjE1NTgwMTkxMTd9.WqOZX4UyP08wmOx-wYYfVmxFqWzLnvlK_t8MeRiakno',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        expect(res.body.message).to.equal(
+          'You are not authorized to edit this comment',
+        );
+        done();
+      });
+  });
 });

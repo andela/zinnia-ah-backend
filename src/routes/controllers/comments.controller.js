@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 import models from '../../db/models';
 
-const { Comment, User, Article } = models;
+const { Comment, User, Article, CommentHistory } = models;
 
 export const createComment = async (req, res) => {
   const { id } = req.user;
@@ -73,6 +74,59 @@ export const createThreadedComment = async (req, res) => {
     return successResponse(res, 201, 'You have commented under this thread', [
       response,
     ]);
+  } catch (err) {
+    return errorResponse(res, 500, err.message);
+  }
+};
+
+export const editComment = async (req, res) => {
+  const { id } = req.user;
+
+  const { articleId, commentId } = req.params;
+  const { editCommentBody } = req.body;
+  try {
+    const findArticle = await Article.findByPk(articleId);
+    if (!findArticle) {
+      return errorResponse(res, 404, 'Article not found');
+    }
+    const findUser = await User.findByPk(id);
+    if (!findUser) {
+      return errorResponse(res, 404, 'User not found');
+    }
+    const getOldComment = await Comment.findByPk(commentId);
+    if (!getOldComment) {
+      return errorResponse(res, 404, 'Comment not found');
+    }
+
+    if (id !== getOldComment.userId) {
+      return errorResponse(
+        res,
+        401,
+        'You are not authorized to edit this comment',
+      );
+    }
+
+    const archivedComment = await CommentHistory.create({
+      commentId: getOldComment.id,
+      userId: getOldComment.userId,
+      archivedComment: getOldComment.body,
+    });
+    const updatedComment = await Comment.update(
+      {
+        body: editCommentBody,
+      },
+      {
+        where: {
+          id: commentId,
+        },
+        returning: true,
+      },
+    );
+
+    successResponse(res, 200, 'You edited this comment', {
+      updatedComment,
+      archivedComment,
+    });
   } catch (err) {
     return errorResponse(res, 500, err.message);
   }

@@ -1,26 +1,23 @@
 export default (sequelize, DataTypes) => {
-  const Comment = sequelize.define(
-    'Comment',
+  const CommentHistory = sequelize.define(
+    'CommentHistory',
     {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-      },
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'user_id',
       },
-      articleId: {
+      commentId: {
         type: DataTypes.UUID,
         allowNull: false,
-        field: 'article_id',
+        primaryKey: true,
+        field: 'comment_id',
       },
-      body: {
+      archivedComment: {
         type: DataTypes.TEXT,
         allowNull: false,
+        field: 'archived_comment',
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +32,11 @@ export default (sequelize, DataTypes) => {
     },
     {},
   );
-  Comment.associate = models => {};
-  return Comment;
+  CommentHistory.associate = models => {
+    CommentHistory.belongsTo(models.Comment, {
+      foreignKey: 'commentId',
+      otherKey: 'userId',
+    });
+  };
+  return CommentHistory;
 };

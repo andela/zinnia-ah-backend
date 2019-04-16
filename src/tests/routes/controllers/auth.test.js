@@ -67,7 +67,9 @@ describe('User Login Feature', () => {
       expect(res.body.data)
         .to.have.property('token')
         .to.not.eql('');
-      expect(res.body.data).to.nested.include({ 'user.email': email });
+      expect(res.body.data).to.nested.include({
+        'user.email': email,
+      });
     });
   });
 
