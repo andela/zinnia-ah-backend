@@ -312,7 +312,7 @@ export async function bookmarkArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
