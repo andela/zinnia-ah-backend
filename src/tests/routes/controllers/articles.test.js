@@ -230,16 +230,21 @@ describe('Articles', () => {
   });
 
   describe('SHARE ARTICLES /api/v1/articles/:articleId/share', () => {
-    it.only('should return a 200 response when the article exists', async () => {
+    it('should return a 200 response when the article exists', async () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
-      const email = 'sanjose@ah.com';
+      const body = {
+        email: 'sanjose@ah.com',
+      };
 
       const response = await chai
         .request(app)
         .post(`${endPoint}/${articleID}/share`)
-        .send(email);
-
+        .send(body);
       expect(response.status).to.eql(200);
+      expect(response.body.message).to.eql(
+        'Article has been successfully shared',
+      );
+      expect(response.body.data).to.be.an('object');
     });
   });
 });
