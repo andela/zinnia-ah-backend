@@ -11,7 +11,7 @@ import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 import { sendMailer } from '../../config/mail-config';
 
-const { Article, User } = models;
+const { Article, User, Rating } = models;
 
 /**
  * passes new article to be created to the model
@@ -266,5 +266,32 @@ export const rateArticle = async (req, res) => {
   const { articleId } = req.params;
   const userId = req.user.id;
 
-  return errorResponse(res, 400, 'Nothing happened');
+  try {
+    const createdRating = await Rating.findOrCreate({
+      where: { articleId, userId },
+      defaults: { rating },
+    });
+
+    const ratedArticle = await Article.findByPk(articleId, {
+      attributes: {
+        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
+      },
+      include: [
+        {
+          model: Rating,
+          as: 'ratings',
+          attributes: ['rating', 'userId'],
+        },
+      ],
+    });
+
+    return successResponse(
+      res,
+      201,
+      'your rating has been recorded',
+      ratedArticle,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, 'An error occured', error.message);
+  }
 };
