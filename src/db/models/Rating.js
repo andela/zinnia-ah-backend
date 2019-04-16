@@ -36,8 +36,11 @@ export default (Sequelize, DataTypes) => {
     },
     {},
   );
-  Rating.associate = () => {
+  Rating.associate = models => {
     // associations can be defined here
+    Rating.belongsToMany(models.Article, {
+      through: 'articleId',
+    });
   };
   return Rating;
 };
