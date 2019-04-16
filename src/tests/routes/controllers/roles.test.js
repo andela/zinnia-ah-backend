@@ -6,17 +6,12 @@ import {
   adminCredentials,
   authorCredentials,
 } from '../../db/mockdata/userdata';
-import { AUTHOR, ADMIN } from '../../../utils/constants';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 const rolesEndpoint = '/api/v1/users/roles';
 let userToken;
 let adminToken;
-
-const userEmail = {
-  email: 'nedyudombat@ah.com',
-};
 
 describe('Roles and Access control', () => {
   describe('protected routes', () => {
