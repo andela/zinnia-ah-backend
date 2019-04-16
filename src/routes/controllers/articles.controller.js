@@ -6,6 +6,7 @@ import {
   successResponse,
   errorResponse,
   verifyToken,
+  calcAverageRating,
 } from '../../utils/helpers.utils';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 
@@ -98,7 +99,7 @@ export async function getArticle(req, res) {
 
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -177,13 +178,24 @@ export async function unlikeAnArticle(req, res) {
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
-  const userId = req.user.id;
+  const { id } = req.user;
 
   try {
-    const createdRating = await Rating.findOrCreate({
-      where: { articleId, userId },
+    const article = await Article.findByPk(articleId);
+    if (!article) {
+      return errorResponse(res, 404, 'This article was not found');
+    }
+
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
+      where: { articleId, userId: id },
       defaults: { rating },
     });
+
+    if (!isNewRecord && createdRating.rating !== rating) {
+      await createdRating.update({
+        rating,
+      });
+    }
 
     const ratedArticle = await Article.findByPk(articleId, {
       attributes: {
@@ -198,11 +210,17 @@ export const rateArticle = async (req, res) => {
       ],
     });
 
+    const jsonRatedArticle = ratedArticle.toJSON();
+    jsonRatedArticle.averageRating = calcAverageRating(
+      jsonRatedArticle.ratings,
+    );
+    jsonRatedArticle.ratings = undefined;
+
     return successResponse(
       res,
-      201,
-      'your rating has been recorded',
-      ratedArticle,
+      200,
+      'Your rating has been recorded',
+      jsonRatedArticle,
     );
   } catch (error) {
     return errorResponse(res, 500, 'An error occurred', error.message);
