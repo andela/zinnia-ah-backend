@@ -1,15 +1,11 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { Op } from 'sequelize';
 import Joi from 'joi';
 
 import models from '../db/models';
 
 const { User, Article } = models;
-
-dotenv.config();
-const { SECRET_KEY } = process.env;
 
 /**
  * Check Email existence
@@ -55,7 +51,7 @@ export const getUserbyId = async id => {
 /**
  * Check Article existence
  *
- * @param {String} id
+ * @param {integer} id
  * @returns {Boolean} true if Article exists
  * @returns {Boolean} false if Article does not exist
  */
@@ -77,7 +73,13 @@ export const getArticlebyId = async id => {
  * @returns {Boolean} false if Article does not exist
  */
 export const getArticlebySlug = async slug => {
-  return await Article.findOne({ where: { slug } });
+  return await Article.findOne({
+    where: { slug },
+    include: {
+      model: User,
+      as: 'author',
+    },
+  });
 };
 
 /**
@@ -174,6 +176,7 @@ export const isValidUuid = async identifier => {
   }
   return true;
 };
+
 export const serverError = (res, statusCode = 500) =>
   res.status(statusCode).json({
     status: 'error',

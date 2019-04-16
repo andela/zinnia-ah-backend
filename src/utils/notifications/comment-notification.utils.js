@@ -1,6 +1,7 @@
-import sendMailer from '../../config/mail-config';
+import { sendMailer } from '../../config/mail-config';
 import models from '../../db/models';
 import { getUserbyId, getArticlebyId } from '../helpers.utils';
+import mailTemplate from '../mail-template/mail-template.utils';
 
 const { Notification } = models;
 
@@ -15,30 +16,30 @@ const { Notification } = models;
 export default async function newCommentNotification(articleId, userId) {
   const user = await getUserbyId(userId);
   const article = await getArticlebyId(articleId);
-  const writer = article.user;
+  const author = article.author;
 
-  if (!user || !writer) {
-    return null;
+  if (!user || !author) {
+    return;
   }
-  const emailBody = `${user.username} commented on your article ${
-    article.title
-  }`;
-
-  const body = {
-    receivers: [`${writer.email}`],
-    subject: `Notification: New Comment`,
-    text: '',
-    html: `<p>${emailBody}<p/> `,
+  const emailBody = {
+    title: 'Notification: New Comment',
+    content: `${user.username} commented on your article ${article.title}`,
   };
 
-  await Notification.create({
-    notification: body,
-    userId: writer.id,
-    notificationType: 'comment',
-    notificationTypeId: articleId,
-  });
+  const body = {
+    receivers: [`${author.email}`],
+    subject: emailBody.title,
+    text: '',
+    html: mailTemplate(emailBody),
+  };
 
   try {
+    await Notification.create({
+      notification: emailBody.content,
+      userId: author.id,
+      notificationType: 'comment',
+      notificationTypeId: articleId,
+    });
     return await sendMailer(body);
   } catch (e) {
     return e.message;

@@ -243,7 +243,6 @@ describe('Articles', () => {
         .set('Authorization', falseToken)
         .send({})
         .end((err, res) => {
-          console.log(res.body);
           expect(res.status).to.equal(401);
           expect(res.body.message).to.equal(
             'you are not authorized to perform this action',
@@ -258,7 +257,6 @@ describe('Articles', () => {
         .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', xAccessToken)
         .end((err, res) => {
-          console.log(res.body);
           expect(res.status).to.eql(200);
           expect(res.body.status).to.equal('success');
           expect(res.body.message).to.equal(

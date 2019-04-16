@@ -18,7 +18,7 @@ export default async function newFollowerNotification(followeeId, followerId) {
   const follower = await getUserbyId(followerId);
 
   if (!followee || !follower) {
-    return 'This user does not exist';
+    return;
   }
 
   const emailBody = {

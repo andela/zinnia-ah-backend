@@ -70,7 +70,6 @@ export async function createArticle(req, res) {
       status: DRAFT,
     });
     if (tags) {
-      console.log(tags);
       const createdTag = await createTag(tags, createdArticle.id);
       if (!createdTag) {
         return errorResponse(
@@ -80,7 +79,6 @@ export async function createArticle(req, res) {
         );
       }
     }
-
 
     await newArticleNotification(userInfo.id, createArticle);
     return successResponse(

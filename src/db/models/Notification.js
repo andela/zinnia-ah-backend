@@ -41,7 +41,7 @@ export default (sequelize, DataTypes) => {
     // associations can be defined here
     Notification.belongsTo(models.User, {
       foreignKey: 'userId',
-      as: 'user_id',
+      as: 'user',
     });
   };
   return Notification;

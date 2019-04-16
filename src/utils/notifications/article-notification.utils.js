@@ -37,25 +37,27 @@ export default async function newArticleNotification(userId, article) {
     }, Read it <a href="${articleUrl}">here</a>`,
   };
 
+  const followersEmails = [];
   followers.forEach(async follower => {
-    const body = {
-      receivers: [`${follower.dataValues.email}`],
-      subject: emailBody.title,
-      text: '',
-      html: mailTemplate(emailBody),
-    };
-
-    try {
-      await Notification.create({
-        notification: emailBody.content,
-        userId: follower.id,
-        notificationType: 'article',
-        notificationTypeId: article.id,
-      });
-
-      return await sendMailer(body);
-    } catch (e) {
-      return e.message;
-    }
+    followersEmails.push(follower.dataValues.email);
   });
+
+  const body = {
+    receivers: followersEmails,
+    subject: emailBody.title,
+    text: '',
+    html: mailTemplate(emailBody),
+  };
+
+  try {
+    await Notification.create({
+      notification: emailBody.content,
+      userId: follower.id,
+      notificationType: 'article',
+      notificationTypeId: article.id,
+    });
+    return await sendMailer(body);
+  } catch (e) {
+    return e.message;
+  }
 }
