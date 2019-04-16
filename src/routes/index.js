@@ -26,4 +26,6 @@ router.use('/profiles', followRouter);
 
 router.use('/articles', highlightRouter);
 
+router.use('/search', searchRouter);
+
 export default router;

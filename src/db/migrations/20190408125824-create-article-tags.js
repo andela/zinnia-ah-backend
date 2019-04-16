@@ -1,34 +1,28 @@
 export default {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable(
-      'ArticleTags',
-      {
-        tagId: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          field: 'tag_id',
-          references: {
-            model: 'Tags',
-            key: 'id',
-          },
-          onDelete: 'CASCADE',
+    return queryInterface.createTable('ArticleTags', {
+      tagId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        primaryKey: true,
+        references: {
+          model: 'Tags',
+          key: 'id',
         },
-        articleId: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          field: 'article_id',
-          references: {
-            model: 'Articles',
-            key: 'id',
-          },
-          onDelete: 'CASCADE',
-        },
+        onDelete: 'CASCADE',
       },
-      { timestamps: false },
-    );
+      articleId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        primaryKey: true,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
+    });
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('ArticleTags');
-  },
+  down: queryInterface => queryInterface.dropTable('ArticleTags'),
 };

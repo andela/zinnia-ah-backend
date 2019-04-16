@@ -63,8 +63,8 @@ app.all('*', (req, res) =>
 );
 
 // finally, let's start our server...
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Listening on port`);
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log(`Listening on port ${app.request.url}`);
 });
 
 export default app;
