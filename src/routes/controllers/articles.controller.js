@@ -9,6 +9,7 @@ import {
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
+import { sendMailer } from '../../config/mail-config';
 
 const { Article, User } = models;
 
@@ -208,5 +209,55 @@ export async function unlikeAnArticle(req, res) {
     });
   } catch (error) {
     return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ * Share a single article via email
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with shareable link of article if article exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function shareArticleViaEmail(req, res) {
+  const { articleId } = req.params;
+  const { email } = req.body;
+
+  const article = await Article.findByPk(articleId, {
+    attributes: {
+      exclude: ['id', 'userId', 'subcriptionType', 'readTime'],
+    },
+    include: [
+      {
+        model: User,
+        as: 'author',
+      },
+    ],
+  });
+  const url =
+    process.env.NODE_ENV === 'development'
+      ? `${process.env.LOCAL_URL}/articles/${articleId}`
+      : `${process.env.PRODUCTION_URL}/articles/${articleId}`;
+  const body = {
+    receivers: [`${email}`],
+    subject: 'Authors Haven: An article has been shared with you',
+    text: '',
+    html: `<p> An article titled: ${article.title} by ${
+      article.author.username
+    } has been shared with you. Go <a href="${url}">here</a>  to read.</p> `,
+  };
+
+  try {
+    await sendMailer(body);
+    return successResponse(res, 200, 'Article has been successfully shared', {
+      article,
+    });
+  } catch (error) {
+    return errorResponse(
+      res,
+      500,
+      'Article could not be shared',
+      error.message,
+    );
   }
 }

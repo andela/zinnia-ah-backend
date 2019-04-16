@@ -42,7 +42,7 @@
     "check-staged": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx}'",
     "pretest": "NODE_ENV=test npm run lint && npm run prettier && npm run db:migrate:testdb && npm run seedall",
-    "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit",
+    "test": "NODE_ENV=test nyc mocha --recursive src/tests --require @babel/register --exit --no-timeouts",
     "test:watch": "NODE_ENV=test mocha  --recursive src/tests --require @babel/register --watch",
     "build": "rm -rf build && babel src -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
