@@ -41,7 +41,7 @@ const articleRouter = Router();
  *         in: body
  *         required: true
  *       - name: images
- *         description: url to all images in the articles. {string} seperated with a comma.
+ *         description: url to all images in the articles. {string} separated with a comma.
  *         in: body
  *       - name: tags
  *         description: the tag list.

@@ -101,6 +101,16 @@ export const signupCredentials = {
   username: 'flowergarden',
 };
 
+export const authorCredentials = {
+  email: 'igbominadeveloper@ah.com',
+  password: 'password1',
+};
+
+export const adminCredentials = {
+  email: 'admin@ah.com',
+  password: 'password1',
+};
+
 export const existingUser = {
   id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
   username: 'igbominadeveloper',

@@ -44,7 +44,7 @@ export async function signup(req, res) {
       text: '',
       html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
     };
-    sendMailer(emailDetails);
+    await sendMailer(emailDetails);
     return successResponse(
       res,
       201,

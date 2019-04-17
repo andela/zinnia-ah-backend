@@ -9,7 +9,7 @@ const { expect } = chai;
 let token = '';
 const userRequestObject = {
   email: 'igbominadeveloper@ah.com',
-  password: 'favourafolayan',
+  password: 'password1',
 };
 
 describe('CREATE COMMENT', () => {

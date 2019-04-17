@@ -1,4 +1,7 @@
 import bcrypt from 'bcryptjs';
+
+import { ADMIN, AUTHOR } from '../../utils/constants';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -32,6 +35,11 @@ export default (sequelize, DataTypes) => {
       bio: DataTypes.TEXT,
       interests: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
+      },
+      role: {
+        type: DataTypes.ENUM(AUTHOR, ADMIN),
+        defaultValue: AUTHOR,
+        allowNull: false,
       },
       image: DataTypes.TEXT,
       isEmailVerified: {

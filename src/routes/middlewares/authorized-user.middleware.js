@@ -1,5 +1,16 @@
 import dotenv from 'dotenv';
+
 import { errorResponse, verifyToken } from '../../utils/helpers.utils';
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @param {void} next
+ * @returns {void}
+ */
 
 dotenv.config();
 
