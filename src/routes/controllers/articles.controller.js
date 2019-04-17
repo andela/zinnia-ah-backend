@@ -11,6 +11,14 @@ import {
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 import { sendMailer } from '../../config/mail-config';
+import {
+  PLAGIARISM,
+  TERRORISM,
+  PROFANITY,
+  DISCRIMINATORY,
+  ADULT_CONTENT,
+  OTHER,
+} from '../../utils/constants';
 
 const { Article, User, Report } = models;
 
@@ -345,17 +353,41 @@ export async function reportArticle(req, res) {
   const { articleId } = req.params;
   const { user } = req;
   const { reportType, content } = req.body;
+  const reportArray = [
+    PLAGIARISM,
+    PROFANITY,
+    DISCRIMINATORY,
+    ADULT_CONTENT,
+    TERRORISM,
+    OTHER,
+  ];
 
   const article = await getArticlebyId(articleId);
   if (!article) return errorResponse(res, 404, 'Article does not exist', true);
 
-  const reportedArticle = await Report.create({
-    userId: user.id,
-    articleId: article.id,
-    reportType,
-    content,
-  });
-  if (!reportedArticle) {
+  if (reportArray.includes(reportType.toUpperCase()) === false) {
+    return errorResponse(
+      res,
+      400,
+      `${reportType} is not a report type, Please kindly choose "Other" if your category is not listed`,
+      true,
+    );
+  }
+
+  try {
+    const reportedArticle = await Report.create({
+      userId: user.id,
+      articleId: article.id,
+      reportType: reportType.toUpperCase(),
+      content,
+    });
+    return successResponse(
+      res,
+      200,
+      'Article has been reported',
+      reportedArticle,
+    );
+  } catch (error) {
     return errorResponse(
       res,
       500,
@@ -363,10 +395,4 @@ export async function reportArticle(req, res) {
       error.message,
     );
   }
-  return successResponse(
-    res,
-    200,
-    'Article has been reported',
-    reportedArticle,
-  );
 }

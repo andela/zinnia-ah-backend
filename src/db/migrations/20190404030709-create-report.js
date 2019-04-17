@@ -1,3 +1,12 @@
+import {
+  PLAGIARISM,
+  ADULT_CONTENT,
+  DISCRIMINATORY,
+  PROFANITY,
+  TERRORISM,
+  OTHER,
+} from '../../utils/constants';
+
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Reports', {
@@ -28,7 +37,14 @@ export default {
         onDelete: 'CASCADE',
       },
       reportType: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          PLAGIARISM,
+          ADULT_CONTENT,
+          DISCRIMINATORY,
+          PROFANITY,
+          TERRORISM,
+          OTHER,
+        ),
         allowNull: false,
         field: 'report_type',
       },
