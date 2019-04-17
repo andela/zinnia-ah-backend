@@ -9,10 +9,18 @@ import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const highlightRouter = Router();
 
-highlightRouter.post('/:slug/highlights', checkAuthorizedUser, createHighlight);
-highlightRouter.get('/:slug/highlights', checkAuthorizedUser, getHighlights);
+highlightRouter.post(
+  '/:articleId/highlights',
+  checkAuthorizedUser,
+  createHighlight,
+);
+highlightRouter.get(
+  '/:articleId/highlights',
+  checkAuthorizedUser,
+  getHighlights,
+);
 highlightRouter.delete(
-  '/:slug/highlights/:id',
+  '/:articleId/highlights/:id',
   checkAuthorizedUser,
   deleteHighlights,
 );

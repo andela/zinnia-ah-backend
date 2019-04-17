@@ -2,7 +2,7 @@ import models from '../../db/models';
 import {
   errorResponse,
   successResponse,
-  findArticleBySlug,
+  getArticlebyId,
 } from '../../utils/helpers.utils';
 
 const { Highlight } = models;
@@ -14,13 +14,15 @@ const { Highlight } = models;
  * @returns {object} highlighted article object
  */
 export const createHighlight = async (req, res) => {
-  const { slug } = req.params;
+  const { articleId } = req.params;
   const { id: userId } = req.user;
   const { highlightedText, startIndex, stopIndex, comment } = req.body;
-  const articleInContext = await findArticleBySlug(slug);
-  const articleId = articleInContext.id;
+  const articleInContext = await getArticlebyId(articleId);
 
   try {
+    if (!articleInContext) {
+      return errorResponse(res, 404, 'This article does not exist');
+    }
     const highlightThisText = await Highlight.create({
       articleId,
       userId,
@@ -55,19 +57,23 @@ export const createHighlight = async (req, res) => {
  * @returns {object} highlights object
  */
 export const getHighlights = async (req, res) => {
-  const { slug } = req.params;
-  const { id: userId } = req.user;
-  const articleInContext = await findArticleBySlug(slug);
-  const articleId = articleInContext.id;
+  const { articleId } = req.params;
+  const { id } = req.user;
 
   try {
+    const articleInContext = await getArticlebyId(articleId);
+    if (!articleInContext) {
+      return errorResponse(res, 404, 'This article does not exist');
+    }
     const highlights = await Highlight.findAll({
       where: {
         articleId,
-        userId,
+        userId: id,
       },
     });
-    if (highlights.length === 0) {
+
+    const highlightsData = highlights[0];
+    if (!highlightsData) {
       return errorResponse(res, 404, 'You have no highlights yet!');
     }
     return successResponse(res, 200, 'Your highlights', highlights);
@@ -83,15 +89,16 @@ export const getHighlights = async (req, res) => {
  * @returns {object} message
  */
 export const deleteHighlights = async (req, res) => {
-  const { id, slug } = req.params;
+  const { id, articleId } = req.params;
   const { id: userId } = req.user;
-  const articleInContext = await findArticleBySlug(slug);
-  const articleId = articleInContext.id;
 
   try {
-    const highlight = await Highlight.findOne({
+    const articleInContext = await getArticlebyId(articleId);
+    if (!articleInContext) {
+      return errorResponse(res, 404, 'This article does not exist');
+    }
+    const highlight = await Highlight.findByPk(id, {
       where: {
-        id,
         articleId,
         userId,
       },
