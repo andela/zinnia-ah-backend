@@ -2,7 +2,7 @@ import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 import models from '../../db/models';
 
-const { Comment, User, Article } = models;
+const { Comment, User, Article, CommentLike } = models;
 
 export const createComment = async (req, res) => {
   const { id } = req.user;
@@ -75,5 +75,41 @@ export const createThreadedComment = async (req, res) => {
     ]);
   } catch (err) {
     return errorResponse(res, 500, err.message);
+  }
+};
+
+export const likeComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { id } = req.user;
+
+  try {
+    const checkIfCommentExists = await Comment.findByPk(commentId);
+    if (!checkIfCommentExists) {
+      return errorResponse(res, 404, 'Comment not found');
+    }
+    const likedComment = await CommentLike.findOne({
+      where: {
+        userId: id,
+        commentId,
+      },
+    });
+
+    if (likedComment) {
+      await CommentLike.destroy({
+        where: {
+          userId: id,
+          commentId,
+        },
+      });
+      return successResponse(res, 200, 'You have unliked this post');
+    }
+
+    await CommentLike.create({
+      userId: id,
+      commentId,
+    });
+    return successResponse(res, 200, 'You have liked this post');
+  } catch (err) {
+    errorResponse(res, 500, err);
   }
 };
