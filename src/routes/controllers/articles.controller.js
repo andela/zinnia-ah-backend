@@ -6,12 +6,13 @@ import {
   successResponse,
   errorResponse,
   verifyToken,
+  getArticlebyId,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
 import { sendMailer } from '../../config/mail-config';
 
-const { Article, User } = models;
+const { Article, User, Report } = models;
 
 /**
  * passes new article to be created to the model
@@ -330,4 +331,42 @@ export async function removeBookmark(req, res) {
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} report an article
+ */
+export async function reportArticle(req, res) {
+  const { articleId } = req.params;
+  const { user } = req;
+  const { reportType, content } = req.body;
+
+  const article = await getArticlebyId(articleId);
+  if (!article) return errorResponse(res, 404, 'Article does not exist', true);
+
+  const reportedArticle = await Report.create({
+    userId: user.id,
+    articleId: article.id,
+    reportType,
+    content,
+  });
+  if (!reportedArticle) {
+    return errorResponse(
+      res,
+      500,
+      'Article could not be reported',
+      error.message,
+    );
+  }
+  return successResponse(
+    res,
+    200,
+    'Article has been reported',
+    reportedArticle,
+  );
 }

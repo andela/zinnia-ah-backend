@@ -250,6 +250,46 @@ describe('Articles', () => {
       expect(response.body.data).to.be.an('object');
     });
   });
+
+  describe('POST /api/v1/articles/:articleId/report', () => {
+    it('should return a 200 response when an article is reported', async () => {
+      const report = {
+        reportType: 'plagiarism',
+        content: 'qwertytrew',
+      };
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/report`)
+        .set('authorization', jwtToken)
+        .send(report);
+      expect(response.body).to.include.keys('status', 'message', 'data');
+      expect(response.status).to.eql(200);
+      expect(response.body.status).to.eql('success');
+      expect(response.body.message).to.eql('Article has been reported');
+    });
+
+    // it('should return a 404 response when article does not exist', async () => {
+    //   const articleID = '141f4f05-7d81-4593-ab54-e256c1006219';
+    //   const response = await chai.request(app).get(`${endPoint}/${articleID}`);
+    //
+    //   expect(response.body).to.include.keys('status', 'message');
+    //   expect(response.status).to.eql(404);
+    //   expect(response.body.status).to.eql('error');
+    //   expect(response.body.message).to.eql('Article does not exist');
+    // });
+    //
+    // it('should return a 422 response when articleID is not valid UUID', async () => {
+    //   const articleID = '141f4f05-7d81-4593-e256c1006219';
+    //   const response = await chai.request(app).get(`${endPoint}/${articleID}`);
+    //
+    //   expect(response.body).to.include.keys('status', 'message', 'errors');
+    //   expect(response.status).to.eql(422);
+    //   expect(response.body.status).to.eql('error');
+    //   expect(response.body.message).to.eql('validation error');
+    //   expect(response.body.errors[0]).to.eql('articleId must be a valid GUID');
+    // });
+  });
 });
 
 describe('Bookmark and un-bookmark Articles', () => {
