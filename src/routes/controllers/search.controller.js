@@ -1,5 +1,9 @@
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
-import { articleFilter, authorsFilter } from '../../utils/database.utils';
+import {
+  articleFilter,
+  authorsFilter,
+  tagsFilter,
+} from '../../utils/database.utils';
 
 /**
  * perform custom search sitewide
@@ -20,10 +24,13 @@ export default async function customSearch(req, res) {
 
     const authors = await authorsFilter(keyword);
 
+    const tags = await tagsFilter(keyword);
+
     return successResponse(res, 200, 'matches found', {
       keyword,
       articles,
       authors,
+      tags,
     });
   } catch (error) {
     return errorResponse(res, 500, 'database error', error.message);

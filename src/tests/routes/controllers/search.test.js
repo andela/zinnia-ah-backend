@@ -20,7 +20,7 @@ describe('Custom search', () => {
     expect(body.message).to.eql('Please input a search parameter');
   });
 
-  it('returns matching results from authors table for a author name input', async () => {
+  it('returns matching results from authors table for an author name input', async () => {
     const keyword = 'igbominadeveloper';
 
     const { status, body } = await chai
@@ -36,7 +36,7 @@ describe('Custom search', () => {
     expect(body.data.authors.length).to.be.greaterThan(0);
   });
 
-  it('returns matching results from the articles table for a article title input', async () => {
+  it('returns matching results from the articles table for an article title input', async () => {
     const keyword = 'messi';
 
     const { status, body } = await chai
