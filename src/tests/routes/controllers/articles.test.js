@@ -1,15 +1,16 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import uuidv4 from 'uuidv4';
 import sinon from 'sinon';
 
 import app from '../../../server';
 import { transporter } from '../../../config/mail-config';
 import { loginCredentials } from '../../db/mockdata/userdata';
-
+import { generateToken } from '../../../utils/helpers.utils';
+import { existingUser } from '../../db/mockdata/userdata';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
-const endPoint = '/api/v1/articles';
 
 const articleRequestObject = {
   title: 'the hope of life',
@@ -26,6 +27,10 @@ const unlikeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
 const loginUrl = '/api/v1/auth/login';
 let jwtToken = '';
+const endPoint = '/api/v1/articles';
+const xAccessToken = generateToken(existingUser);
+const falseToken = generateToken({ id: 'fake' });
+let articleId = '';
 
 describe('Articles', () => {
   before(async () => {
@@ -160,6 +165,69 @@ describe('Articles', () => {
           .to.be.an('array')
           .to.have.lengthOf(0);
       });
+    });
+  });
+
+  describe('Delete Article', () => {
+    it('should create article successfully, with valid user input', done => {
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .set('x-access-token', xAccessToken)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          console.log(res.body);
+          expect(res.status).to.eql(201);
+          expect(res.body.status).to.eql('success');
+          expect(res.body.message).to.eql(
+            'your article has been created successfully',
+          );
+          articleId = res.body.data.id;
+          done();
+        });
+    });
+
+    it('should fail when id is invalid', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}ss`)
+        .set('Authorization', xAccessToken)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('article does not exist');
+          done();
+        });
+    });
+
+    it('should fail when userid does not match articles users id', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}`)
+        .set('Authorization', falseToken)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal(
+            'you are not authorized to perform this action',
+          );
+          done();
+        });
+    });
+
+    it('should delete article successfully, with valid user input', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}`)
+        .set('Authorization', xAccessToken)
+        .end((err, res) => {
+          expect(res.status).to.eql(200);
+          expect(res.body.status).to.equal('success');
+          expect(res.body.message).to.equal(
+            'article as been deleted successfully',
+          );
+          done();
+        });
     });
   });
 });

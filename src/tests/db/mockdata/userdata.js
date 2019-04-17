@@ -1,3 +1,5 @@
+import { hashPassword } from '../../../utils/helpers.utils';
+
 export const emptyUser = {
   username: '',
   email: '',
@@ -92,4 +94,13 @@ export const signupCredentials = {
   email: 'roses@gmail.com',
   password: '16goingOn17',
   username: 'flowergarden',
+};
+
+export const existingUser = {
+  id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+  username: 'igbominadeveloper',
+  email: 'igbominadeveloper@ah.com',
+  password: hashPassword('favourafolayan'),
+  created_at: new Date().toLocaleString(),
+  updated_at: new Date().toLocaleString(),
 };

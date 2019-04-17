@@ -31,7 +31,7 @@ export async function createArticle(req, res) {
       req.headers['x-access-token'] || req.headers.authorization,
     );
     if (!userInfo) {
-      throw Error('jwt must be provided');
+      return errorResponse(res, 401, 'jwt must be provided');
     }
     const timeToReadArticle = calculateTimeToReadArticle({
       images: images.split(','),
@@ -59,7 +59,51 @@ export async function createArticle(req, res) {
       createdArticle,
     );
   } catch (error) {
-    return errorResponse(res, 401, error.message);
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ * @description users can delete articles there have created.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response object
+ */
+export async function removeArticle(req, res) {
+  try {
+    const userInfo = await verifyToken(
+      req.headers['x-access-token'] || req.headers.authorization,
+    );
+    const article = await Article.findOne({
+      where: { id: req.params.article_id },
+    });
+
+    if (article) {
+      if (article.userId === userInfo.id) {
+        const deletedArticle = await Article.destroy({
+          where: { id: req.params.article_id },
+        });
+        if (deletedArticle) {
+          return successResponse(
+            res,
+            200,
+            'article as been deleted successfully',
+          );
+        }
+        return errorResponse(res, 404, 'article does not exist');
+      }
+      return errorResponse(
+        res,
+        401,
+        'you are not authorized to perform this action',
+      );
+    }
+    return errorResponse(res, 404, 'article not found');
+  } catch (err) {
+    if (err.message.match(/syntax/g)) {
+      return errorResponse(res, 404, 'article does not exist', err.message);
+    }
+    return errorResponse(res, 500, err.message);
   }
 }
 
