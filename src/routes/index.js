@@ -8,6 +8,7 @@ import userRouter from './users.route';
 import rolesRouter from './roles.route';
 import highlightRouter from './highlights.route';
 import searchRouter from './search.route';
+import rolesRouter from './roles.route';
 
 const router = Router();
 

@@ -52,6 +52,22 @@ describe('Custom search', () => {
     expect(body.data.articles.length).to.be.greaterThan(0);
   });
 
+  it('returns matching results from the tags table for a tag name input', async () => {
+    const keyword = 'sports';
+
+    const { status, body } = await chai
+      .request(app)
+      .get(searchUrl)
+      .query({ keyword });
+
+    expect(status).to.be.eql(200);
+    expect(body.status).to.be.eql('success');
+    expect(body).to.have.keys('status', 'message', 'data');
+    expect(body.data.keyword).be.eql(keyword);
+    expect(body.data.tags).be.an('array');
+    expect(body.data.tags.length).to.be.greaterThan(0);
+  });
+
   it('returns an empty array for an unmatched search result', async () => {
     const keyword = 'Nigeria';
 
