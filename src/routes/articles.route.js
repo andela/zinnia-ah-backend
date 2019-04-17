@@ -12,6 +12,7 @@ import {
   removeArticle,
   likeAnArticle,
   unlikeAnArticle,
+  shareArticleViaEmail,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -324,5 +325,37 @@ articleRouter.post(
   checkAuthorizedUser,
   likeComment,
 );
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can share a single article via email.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article fetched
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.post('/:articleId/share', shareArticleViaEmail);
 
 export default articleRouter;

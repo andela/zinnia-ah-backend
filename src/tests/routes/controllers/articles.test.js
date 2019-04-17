@@ -1,13 +1,11 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import uuidv4 from 'uuidv4';
 import sinon from 'sinon';
 
 import app from '../../../server';
 import { transporter } from '../../../config/mail-config';
-import { loginCredentials } from '../../db/mockdata/userdata';
+import { loginCredentials, existingUser } from '../../db/mockdata/userdata';
 import { generateToken } from '../../../utils/helpers.utils';
-import { existingUser } from '../../db/mockdata/userdata';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -176,7 +174,6 @@ describe('Articles', () => {
         .set('x-access-token', xAccessToken)
         .send(articleRequestObject)
         .end((err, res) => {
-          console.log(res.body);
           expect(res.status).to.eql(201);
           expect(res.body.status).to.eql('success');
           expect(res.body.message).to.eql(
@@ -228,6 +225,25 @@ describe('Articles', () => {
           );
           done();
         });
+    });
+  });
+
+  describe('SHARE ARTICLES /api/v1/articles/:articleId/share', () => {
+    it('should return a 200 response when the article exists', async () => {
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
+      const body = {
+        email: 'sanjose@ah.com',
+      };
+
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/share`)
+        .send(body);
+      expect(response.status).to.eql(200);
+      expect(response.body.message).to.eql(
+        'Article has been successfully shared',
+      );
+      expect(response.body.data).to.be.an('object');
     });
   });
 });
