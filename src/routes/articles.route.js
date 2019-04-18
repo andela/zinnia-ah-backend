@@ -16,6 +16,7 @@ import {
   shareArticleViaEmail,
   bookmarkArticle,
   removeBookmark,
+  reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 import { validateUuid } from './middlewares/validate-input.middleware.js';

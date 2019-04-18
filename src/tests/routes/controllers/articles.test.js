@@ -120,7 +120,7 @@ describe('Articles', () => {
     it('should return a 404 response when article does not exist', async () => {
       const response = await chai
         .request(app)
-        .get(`${endPoint}/${articleSlug}-hhgh6`);
+        .get(`${endPoint}/slug/${articleSlug}-hhgh6`);
 
       expect(response.body).to.include.keys('status', 'message');
       expect(response.status).to.eql(404);

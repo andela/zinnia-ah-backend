@@ -11,8 +11,7 @@
       "doc",
       "coverage",
       "src/db/migrations",
-      "src/db/seeders",
-      "src/tests"
+      "src/db/seeders"
     ],
     "reporter": [
       "lcov",
