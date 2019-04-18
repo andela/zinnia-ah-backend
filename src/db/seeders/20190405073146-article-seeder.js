@@ -175,7 +175,7 @@ export default {
         updated_at: new Date().toLocaleString(),
       },
       {
-        id: uuidv4(),
+        id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 19',
         slug: slug(`Hello Article 19-${uuidv4()}`),

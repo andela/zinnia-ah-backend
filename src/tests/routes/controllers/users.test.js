@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import app from '../../../server';
 import { generateToken } from '../../../utils/helpers.utils';
 import { userCredentialsForToken } from '../../db/mockdata/userdata';
-import { SLUGONE } from '../../db/mockdata/articeldata';
+import { SLUGONE } from '../../db/mockdata/articledata';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -160,7 +160,7 @@ describe('User stats', () => {
       expect(status).to.eql(200);
       expect(body).to.have.keys('status', 'message', 'data');
       expect(body.data).to.be.an('object');
-      expect(body.message).to.be.eql('You have read 0 article(s)');
+      expect(body.message).to.be.eql('You have a read count of 0');
     });
 
     it('records the articles a user reads', async () => {
@@ -172,7 +172,7 @@ describe('User stats', () => {
       expect(status).to.eql(200);
       expect(body).to.have.keys('status', 'message', 'data');
       expect(body.data).to.be.an('object');
-      expect(body.message).to.be.eql('You have read 1 article(s)');
+      expect(body.message).to.be.eql('You have a read count of 1');
     });
 
     it('correctly increases the reads of a user by 1', async () => {
@@ -184,7 +184,7 @@ describe('User stats', () => {
       expect(status).to.eql(200);
       expect(body).to.have.keys('status', 'message', 'data');
       expect(body.data).to.be.an('object');
-      expect(body.message).to.be.eql('You have read 2 article(s)');
+      expect(body.message).to.be.eql('You have a read count of 2');
     });
   });
 });

@@ -1,9 +1,7 @@
 import moment from 'moment';
 
 import models from '../../db/models';
-
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
-import { read } from 'fs';
 
 const { User, ReadingStat, Article } = models;
 
@@ -111,14 +109,21 @@ export async function getReadingStats(req, res) {
           exclude: ['createdAt', 'updatedAt'],
         },
       },
+      order: [['createdAt', 'DESC']],
+    });
+
+    const mappedStats = readingStats.rows.map(item => {
+      return `You read ${item.article.title} ${moment(
+        item.createdAt,
+      ).fromNow()}`;
     });
 
     return successResponse(
       res,
       200,
-      `You have read ${readingStats.count} article(s)`,
+      `You have a read count of ${readingStats.count}`,
       {
-        articlesRead: readingStats.rows,
+        articlesRead: mappedStats,
       },
     );
   } catch (error) {

@@ -131,14 +131,11 @@ export async function removeArticle(req, res) {
  */
 export async function getArticle(req, res) {
   const articleSlug = req.params.slug;
-
   let requestUser;
-
   const token = req.headers.authorization || req.headers['x-access-token'];
 
   if (token) {
     const { id } = await verifyToken(token);
-
     requestUser = await User.findByPk(id);
   }
 
@@ -413,8 +410,10 @@ export async function reportArticle(req, res) {
 }
 export const recordARead = async (articleId, user = null) => {
   let userId;
-
-  user ? (userId = user.id) : (userId = null);
-
-  await ReadingStat.create({ articleId, userId });
+  if (user) {
+    userId = user.id;
+  } else {
+    userId = null;
+  }
+  return await ReadingStat.create({ articleId, userId });
 };
