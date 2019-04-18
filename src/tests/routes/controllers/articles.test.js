@@ -27,7 +27,15 @@ const bookmarkUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/bookmark';
 const removeBookmarkUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
+const rateArticleUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/rate';
+const rateFakeArticleUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c208e5f/rate';
+const rateBadUUIDUrl = '/api/v1/articles/4ea984b7-c44e3e8c208e5f/rate';
+const unlikeBadUUIDUrl = '/api/v1/articles/4ea984b7-c44e3e8c208e5f/unlike';
 const loginUrl = '/api/v1/auth/login';
+
+const rating = 4;
 let jwtToken = '';
 const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
@@ -168,6 +176,19 @@ describe('Articles', () => {
           .to.have.lengthOf(0);
       });
     });
+
+    context('Server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(unlikeBadUUIDUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('An error occurred');
+      });
+    });
   });
 
   describe('Delete Article', () => {
@@ -248,6 +269,77 @@ describe('Articles', () => {
         'Article has been successfully shared',
       );
       expect(response.body.data).to.be.an('object');
+    });
+  });
+  describe('Rate Articles', () => {
+    context('User can rate article', () => {
+      it('should allow authenticated users rate an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Your rating has been recorded');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('averageRating');
+        expect(res.body.data.averageRating).to.eql(4);
+      });
+
+      it('should update rating when the record already exists and but is different', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating: 2,
+          });
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Your rating has been recorded');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('averageRating');
+        expect(res.body.data.averageRating).to.eql(2);
+      });
+    });
+
+    context('Article not found to be rated', () => {
+      it('should throw an error that article is not found', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateFakeArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(404);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('This article was not found');
+      });
+    });
+
+    context('Server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateBadUUIDUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('An error occurred');
+      });
     });
   });
 });

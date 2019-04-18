@@ -195,3 +195,21 @@ export const isArticleExist = async articleId => {
   if (getArticle) return getArticle;
   return 'article does not exist';
 };
+/**
+ *
+ *
+ * @export
+ * @param {array} ratings
+ * @returns {number} averageRating
+ */
+export function calcAverageRating(ratings) {
+  // get an array of only the ratings
+  const allRatings = ratings.map(item => {
+    return item.rating;
+  });
+
+  const averageRating =
+    allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;
+
+  return averageRating;
+}
