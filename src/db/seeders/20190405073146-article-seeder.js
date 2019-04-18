@@ -295,6 +295,16 @@ export default {
         created_at: new Date().toLocaleString(),
         updated_at: new Date().toLocaleString(),
       },
+      {
+        id: '8ebdfc3c-ffd7-440a-80f3-ab4ebeeb9cae',
+        user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+        title: 'Highlights Test Article',
+        slug: slug('Hello Article 5-842afa04-cc9e-43ad-9384-007793d3fdcb'),
+        description: 'Description goes here, Eben',
+        body: 'Another Body',
+        created_at: new Date().toLocaleString(),
+        updated_at: new Date().toLocaleString(),
+      },
     ]),
   down: async queryInterface => queryInterface.bulkDelete('Articles', null, {}),
 };

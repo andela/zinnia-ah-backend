@@ -62,7 +62,7 @@ export const getArticlebyId = async id => {
     where: { id },
     include: {
       model: User,
-      as: 'user',
+      as: 'author',
     },
   });
 };

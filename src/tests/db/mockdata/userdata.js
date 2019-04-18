@@ -119,3 +119,22 @@ export const existingUser = {
   created_at: new Date().toLocaleString(),
   updated_at: new Date().toLocaleString(),
 };
+
+export const highlightLogin = {
+  email: 'roses@gmail.com',
+  password: '16goingOn17',
+};
+
+export const seededHighlight = {
+  highlightedText: 'Something to think about',
+  startIndex: '2',
+  stopIndex: '18',
+  comment: 'This pushed me to the edge.',
+};
+
+export const anotherHighlight = {
+  highlightedText: 'it was at that moment I knew who he was',
+  startIndex: '72',
+  stopIndex: '105',
+  comment: 'I love how it was well put',
+};

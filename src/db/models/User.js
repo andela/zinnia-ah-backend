@@ -80,7 +80,9 @@ export default (sequelize, DataTypes) => {
       timestamps: false,
     });
     User.hasMany(models.Article, {
-      foreignKey: 'id',
+      foreignKey: 'userId',
+      as: 'author',
+      onDelete: 'CASCADE',
     });
     User.belongsToMany(models.Article, {
       foreignKey: 'user_id',
@@ -94,6 +96,10 @@ export default (sequelize, DataTypes) => {
       otherKey: 'article_id',
       through: 'Bookmarks',
       as: 'bookmarks',
+    });
+    User.hasMany(models.Highlight, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
     });
   };
 
