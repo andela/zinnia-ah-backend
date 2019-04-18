@@ -19,9 +19,8 @@ import {
   ADULT_CONTENT,
   OTHER,
 } from '../../utils/constants';
-import { recordARead } from '../../utils/database.utils';
 
-const { Article, User, Report } = models;
+const { Article, User, Report, ReadingStat } = models;
 
 /**
  * passes new article to be created to the model
@@ -412,3 +411,10 @@ export async function reportArticle(req, res) {
     );
   }
 }
+export const recordARead = async (articleId, user = null) => {
+  let userId;
+
+  user ? (userId = user.id) : (userId = null);
+
+  await ReadingStat.create({ articleId, userId });
+};

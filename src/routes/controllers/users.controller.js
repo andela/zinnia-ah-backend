@@ -99,28 +99,29 @@ export const updateUserProfile = async (req, res) => {
 export async function getReadingStats(req, res) {
   const { id } = req.user;
 
-  const readingStats = await ReadingStat.findAndCountAll({
-    where: {
-      userId: id,
-    },
-
-    include: {
-      model: Article,
-      as: 'article',
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+  try {
+    const readingStats = await ReadingStat.findAndCountAll({
+      where: {
+        userId: id,
       },
-    },
-  });
+      include: {
+        model: Article,
+        as: 'article',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    });
 
-  readingStats.rows.map(row => {
-    row.createdAt = moment(row.createdAt).fromNow();
-  });
-
-  return successResponse(res, 200, 'stats fetched successfully', {
-    readingStats: {
-      number: `You have read ${readingStats.count} books`,
-      booksRead: readingStats.rows,
-    },
-  });
+    return successResponse(
+      res,
+      200,
+      `You have read ${readingStats.count} article(s)`,
+      {
+        articlesRead: readingStats.rows,
+      },
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
 }

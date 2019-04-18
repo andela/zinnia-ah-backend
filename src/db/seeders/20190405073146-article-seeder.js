@@ -68,7 +68,7 @@ export default {
         id: uuidv4(),
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 9',
-        slug: slug('Hello Article 9-5a6fab9c-5849-4be5-973c-5a371165cd5'),
+        slug: 'Hello-Article-9-5a6fab9c-5849-4be5-973c-5a371165cd5',
         description: 'Description goes here',
         body: 'Another Body',
         created_at: new Date().toLocaleString(),

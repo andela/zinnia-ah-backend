@@ -67,7 +67,7 @@ userRouter.get('/profiles/:username', getAuthorProfile);
 /**
  * @swagger
  *
- * /api/v1/users/profiles/:username/stats
+ * /api/v1/users/profiles/:username/stats:
  *   get:
  *     description: Get Reading stats for a user
  *     produces:

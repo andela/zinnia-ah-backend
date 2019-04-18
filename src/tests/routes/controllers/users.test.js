@@ -12,8 +12,8 @@ const { expect } = chai;
 const usersUrl = '/api/v1/users';
 const profileUrl = '/api/v1/users/profiles/gentlejane';
 const nonExistingProfileUrl = '/api/v1/users/profiles/teddybear';
-
-const userToken = generateToken(userCredentialsForToken);
+const { email, id, username } = userCredentialsForToken;
+const userToken = generateToken({ email, id });
 
 describe('List Users functionality', () => {
   context('GET all users', () => {
@@ -120,9 +120,8 @@ describe('USER PROFILE', () => {
   });
 });
 
-describe.only('User stats', () => {
-  const { id } = userCredentialsForToken;
-  const statsEndpoint = `/api/v1/users/${id}/stats`;
+describe('User stats', () => {
+  const statsEndpoint = `/api/v1/users/profiles/${username}/stats`;
   const articleEndpoint = `/api/v1/articles/${SLUGONE}`;
 
   context('authentication', () => {
@@ -135,7 +134,7 @@ describe.only('User stats', () => {
           '$2a$10$KZ2MJ8oNY/q8oF8rWt0QruJ6T2ioArE2LnV8R36jzMgW5J0iTlG.S',
         );
 
-      expect(status).to.be.eql(401);
+      expect(status).to.be.eql(400);
       expect(body).to.have.keys('status', 'message');
       expect(body.status).to.eql('error');
       expect(body.message).to.eql(
@@ -145,11 +144,23 @@ describe.only('User stats', () => {
   });
 
   context('User stats', () => {
-    beforeEach('trigger article read', async () => {
+    afterEach('trigger article read', async () => {
       await chai
         .request(app)
         .get(articleEndpoint)
         .set('x-access-token', userToken);
+    });
+
+    it('initializes the number of articles a user has read to 0', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('You have read 0 article(s)');
     });
 
     it('records the articles a user reads', async () => {
@@ -160,21 +171,20 @@ describe.only('User stats', () => {
 
       expect(status).to.eql(200);
       expect(body).to.have.keys('status', 'message', 'data');
-      expect(body.data).to.be.an('array');
-      expect(body.data.length).to.be.greaterThan(0);
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('You have read 1 article(s)');
     });
 
-    // it('increases the hits on an article to read to 1', async () => {
-    //   const { status, body } = await chai
-    //     .request(app)
-    //     .get(statsEndpoint)
-    //     .set('x-access-token', userToken);
+    it('correctly increases the reads of a user by 1', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
 
-    //   expect(status).to.eql(200);
-    //   expect(body).to.have.keys('status', 'message', 'data');
-    //   expect(body.data).to.be.an('array');
-    //   expect(body.data.length).to.be.greaterThan(0);
-    //   expect(body.data[0].hits).to.be.eql(1);
-    // });
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('You have read 2 article(s)');
+    });
   });
 });
