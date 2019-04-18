@@ -164,6 +164,8 @@ export async function likeAnArticle(req, res) {
     const user = await User.findByPk(id);
     const article = await Article.findByPk(articleId);
 
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
     await user.addLike(article);
     const userData = user.toJSON();
     const likes = await user.getLikes();
@@ -196,6 +198,8 @@ export async function unlikeAnArticle(req, res) {
     const user = await User.findByPk(id);
     const article = await Article.findByPk(articleId);
 
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
     await user.removeLike(article);
     const userData = user.toJSON();
     const likes = await user.getLikes();
@@ -225,7 +229,7 @@ export async function shareArticleViaEmail(req, res) {
 
   const article = await Article.findByPk(articleId, {
     attributes: {
-      exclude: ['id', 'userId', 'subcriptionType', 'readTime'],
+      exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
     },
     include: [
       {
@@ -259,5 +263,71 @@ export async function shareArticleViaEmail(req, res) {
       'Article could not be shared',
       error.message,
     );
+  }
+}
+
+/**
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} bookmarkArticle
+ */
+export async function bookmarkArticle(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
+    await user.addBookmarks(article);
+    const userData = user.toJSON();
+    const bookmarks = await user.getBookmarks();
+
+    userData.bookmarks = bookmarks.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'Article successfully bookmarked', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} removeBookmark response
+ */
+export async function removeBookmark(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
+    await user.removeBookmarks(article);
+    const userData = user.toJSON();
+    const bookmarks = await user.getBookmarks();
+
+    userData.bookmarks = bookmarks.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'Bookmark successfully removed', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
   }
 }
