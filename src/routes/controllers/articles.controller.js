@@ -7,6 +7,7 @@ import {
   errorResponse,
   verifyToken,
   getArticlebyId,
+  calcAverageRating,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
@@ -153,7 +154,7 @@ export async function getArticle(req, res) {
 
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -221,7 +222,7 @@ export async function unlikeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -396,3 +397,60 @@ export async function reportArticle(req, res) {
     );
   }
 }
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} rateArticle success/error message and article data
+ */
+export const rateArticle = async (req, res) => {
+  const { rating } = req.body;
+  const { articleId } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const article = await Article.findByPk(articleId);
+    if (!article) {
+      return errorResponse(res, 404, 'This article was not found');
+    }
+
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
+      where: { articleId, userId },
+      defaults: { rating },
+    });
+
+    if (!isNewRecord && createdRating.rating !== rating) {
+      await createdRating.update({
+        rating,
+      });
+    }
+
+    const ratedArticle = await Article.findByPk(articleId, {
+      include: [
+        {
+          model: Rating,
+          as: 'ratings',
+          attributes: ['rating', 'userId'],
+        },
+      ],
+    });
+
+    const jsonRatedArticle = ratedArticle.toJSON();
+    jsonRatedArticle.averageRating = calcAverageRating(
+      jsonRatedArticle.ratings,
+    );
+    delete jsonRatedArticle.ratings;
+
+    return successResponse(
+      res,
+      200,
+      'Your rating has been recorded',
+      jsonRatedArticle,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, 'An error occurred', error.message);
+  }
+};
