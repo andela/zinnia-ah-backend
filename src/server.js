@@ -28,15 +28,15 @@ const swaggerDefinition = {
 };
 
 // initialize swagger-jsdoc
-// const swaggerSpec = swaggerJSDoc({
-//   swaggerDefinition,
-//   apis: ['./**/routes/*.js'], // pass all in array
-// });
+const swaggerSpec = swaggerJSDoc({
+  swaggerDefinition,
+  apis: ['./**/routes/*.js'], // pass all in array
+});
 
 app.use(cors());
 
 // enable morgan logs only in development environment
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV == 'development') {
   app.use(morgan('dev'));
 }
 
