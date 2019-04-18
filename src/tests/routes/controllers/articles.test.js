@@ -250,6 +250,65 @@ describe('Articles', () => {
       expect(response.body.data).to.be.an('object');
     });
   });
+
+  describe('POST /api/v1/articles/:articleId/report', () => {
+    it('should return a 200 response when an article is reported', async () => {
+      const report = {
+        reportType: 'plagiarism',
+        content: 'qwertytrew',
+      };
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/report`)
+        .set('authorization', jwtToken)
+        .send(report);
+      expect(response.body).to.include.keys('status', 'message', 'data');
+      expect(response.status).to.eql(200);
+      expect(response.body.status).to.eql('success');
+      expect(response.body.message).to.eql('Article has been reported');
+    });
+
+    it('should return a 404 response when an article does not exist', async () => {
+      const report = {
+        reportType: 'plagiarism',
+        content: 'non existent',
+      };
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006410';
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/report`)
+        .set('authorization', jwtToken)
+        .send(report);
+      expect(response.body).to.include.keys('status', 'message', 'errors');
+      expect(response.status).to.eql(404);
+      expect(response.body.status).to.eql('error');
+      expect(response.body.message).to.eql('Article does not exist');
+      expect(response.body.errors).to.eql(true);
+    });
+
+    it('should return a 400 response if a report type does not exist', async () => {
+      const report = {
+        reportType: 'plagiarismm',
+        content: 'wrong reporttype',
+      };
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/report`)
+        .set('authorization', jwtToken)
+        .send(report);
+      expect(response.body).to.include.keys('status', 'message', 'errors');
+      expect(response.status).to.eql(400);
+      expect(response.body.status).to.eql('error');
+      expect(response.body.message).to.eql(
+        `${
+          report.reportType
+        } is not a report type, Please kindly choose "Other" if your category is not listed`,
+      );
+      expect(response.body.errors).to.eql(true);
+    });
+  });
 });
 
 describe('Bookmark and un-bookmark Articles', () => {

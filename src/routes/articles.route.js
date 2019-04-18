@@ -16,6 +16,7 @@ import {
   shareArticleViaEmail,
   bookmarkArticle,
   removeBookmark,
+  reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -93,7 +94,7 @@ articleRouter.delete('/:article_id', removeArticle);
  *         in: body
  *         required: true
  *       - name: images
- *         description: url to all images in the articles. {string} seperated with a comma.
+ *         description: url to all images in the articles. {string} separated with a comma.
  *         in: body
  *       - name: tags
  *         description: the tag list.
@@ -411,5 +412,43 @@ articleRouter.post(
   checkAuthorizedUser,
   editComment,
 );
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/unlike:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can report an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article report
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
 
 export default articleRouter;

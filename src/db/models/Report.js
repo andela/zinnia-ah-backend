@@ -27,6 +27,16 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {},
   );
