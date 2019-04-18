@@ -1,9 +1,9 @@
+import { Op } from 'sequelize';
+
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
-import {
-  articleFilter,
-  authorsFilter,
-  tagsFilter,
-} from '../../utils/database.utils';
+import models from '../../db/models';
+
+const { User, Article, Tag } = models;
 
 /**
  * perform custom search sitewide
@@ -20,11 +20,58 @@ export default async function customSearch(req, res) {
   }
 
   try {
-    const articles = await articleFilter(keyword);
+    const articleAttributes = [
+      'title',
+      'description',
+      'body',
+      'status',
+      'readTime',
+    ];
 
-    const authors = await authorsFilter(keyword);
+    const userAttributes = ['username', 'firstName', 'lastName', 'image'];
 
-    const tags = await tagsFilter(keyword);
+    const tagAttributes = ['name'];
+
+    const articles = await Article.findAll({
+      attributes: articleAttributes,
+      where: {
+        title: {
+          [Op.iLike]: `%${keyword}%`,
+        },
+      },
+    });
+
+    const authors = await User.findAll({
+      attributes: userAttributes,
+      where: {
+        [Op.or]: [
+          {
+            firstName: {
+              [Op.iLike]: `%${keyword}%`,
+            },
+          },
+          {
+            lastName: {
+              [Op.iLike]: `%${keyword}%`,
+            },
+          },
+          {
+            username: {
+              [Op.iLike]: `%${keyword}%`,
+            },
+          },
+        ],
+      },
+    });
+
+    const tags = await Tag.findAll({
+      attributes: tagAttributes,
+      where: {
+        name: {
+          [Op.iLike]: `%${keyword}%`,
+        },
+      },
+    });
 
     return successResponse(res, 200, 'matches found', {
       keyword,
