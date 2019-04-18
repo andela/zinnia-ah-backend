@@ -4,12 +4,11 @@ import sinon from 'sinon';
 
 import app from '../../../server';
 import { transporter } from '../../../config/mail-config';
-import { loginCredentials } from '../../db/mockdata/userdata';
-
+import { loginCredentials, existingUser } from '../../db/mockdata/userdata';
+import { generateToken } from '../../../utils/helpers.utils';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
-const endPoint = '/api/v1/articles';
 
 const articleRequestObject = {
   title: 'the hope of life',
@@ -24,8 +23,16 @@ const likeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
 const unlikeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
+const bookmarkUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/bookmark';
+const removeBookmarkUrl =
+  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
 const loginUrl = '/api/v1/auth/login';
 let jwtToken = '';
+const endPoint = '/api/v1/articles';
+const xAccessToken = generateToken(existingUser);
+const falseToken = generateToken({ id: 'fake' });
+let articleId = '';
 
 describe('Articles', () => {
   before(async () => {
@@ -160,6 +167,129 @@ describe('Articles', () => {
           .to.be.an('array')
           .to.have.lengthOf(0);
       });
+    });
+  });
+
+  describe('Delete Article', () => {
+    it('should create article successfully, with valid user input', done => {
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .set('x-access-token', xAccessToken)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.eql(201);
+          expect(res.body.status).to.eql('success');
+          expect(res.body.message).to.eql(
+            'your article has been created successfully',
+          );
+          articleId = res.body.data.id;
+          done();
+        });
+    });
+
+    it('should fail when id is invalid', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}ss`)
+        .set('Authorization', xAccessToken)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('article does not exist');
+          done();
+        });
+    });
+
+    it('should fail when userid does not match articles users id', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}`)
+        .set('Authorization', falseToken)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal(
+            'you are not authorized to perform this action',
+          );
+          done();
+        });
+    });
+
+    it('should delete article successfully, with valid user input', done => {
+      chai
+        .request(app)
+        .delete(`/api/v1/articles/${articleId}`)
+        .set('Authorization', xAccessToken)
+        .end((err, res) => {
+          expect(res.status).to.eql(200);
+          expect(res.body.status).to.equal('success');
+          expect(res.body.message).to.equal(
+            'article as been deleted successfully',
+          );
+          done();
+        });
+    });
+  });
+
+  describe('SHARE ARTICLES /api/v1/articles/:articleId/share', () => {
+    it('should return a 200 response when the article exists', async () => {
+      const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
+      const body = {
+        email: 'sanjose@ah.com',
+      };
+
+      const response = await chai
+        .request(app)
+        .post(`${endPoint}/${articleID}/share`)
+        .send(body);
+      expect(response.status).to.eql(200);
+      expect(response.body.message).to.eql(
+        'Article has been successfully shared',
+      );
+      expect(response.body.data).to.be.an('object');
+    });
+  });
+});
+
+describe('Bookmark and un-bookmark Articles', () => {
+  context('User can bookmark an article', () => {
+    it('should allow authenticated users bookmark an article', async () => {
+      const res = await chai
+        .request(app)
+        .post(bookmarkUrl)
+        .set('x-access-token', jwtToken);
+      expect(res.status).to.equal(200);
+      expect(res.body.message)
+        .to.be.a('String')
+        .to.eql('Article successfully bookmarked');
+      expect(res.body.data)
+        .to.be.an('object')
+        .to.have.property('userData');
+      expect(res.body.data.userData.bookmarks).to.deep.include({
+        title: 'Test Article for likes and unlikes',
+        id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+        slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+      });
+    });
+  });
+
+  context('User can remove bookmark', () => {
+    it('should allow authenticated users to remove bookmark', async () => {
+      const res = await chai
+        .request(app)
+        .post(removeBookmarkUrl)
+        .set('x-access-token', jwtToken);
+      expect(res.status).to.equal(200);
+      expect(res.body.message)
+        .to.be.a('String')
+        .to.eql('Bookmark successfully removed');
+      expect(res.body.data)
+        .to.be.an('object')
+        .to.have.property('userData');
+      expect(res.body.data.userData.bookmarks)
+        .to.be.an('array')
+        .to.have.lengthOf(0);
     });
   });
 });

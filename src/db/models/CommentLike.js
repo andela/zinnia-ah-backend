@@ -2,27 +2,36 @@ export default (sequelize, DataTypes) => {
   const CommentLike = sequelize.define(
     'CommentLike',
     {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-      },
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'user_id',
       },
       commentId: {
         type: DataTypes.UUID,
         allowNull: false,
+        primaryKey: true,
         field: 'comment_id',
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'updated_at',
       },
     },
     {},
   );
-  CommentLike.associate = () => {
-    // associations can be defined here
+  CommentLike.associate = models => {
+    CommentLike.belongsTo(models.Comment, {
+      foreignKey: 'commentId',
+      otherKey: 'userId',
+    });
   };
   return CommentLike;
 };

@@ -1,9 +1,8 @@
-/* eslint-disable prettier/prettier */
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
 import models from '../../db/models';
 
-const { Comment, User, Article, CommentHistory } = models;
+const { Comment, User, Article, CommentHistory, CommentLike } = models;
 
 export const createComment = async (req, res) => {
   const { id } = req.user;
@@ -93,12 +92,12 @@ export const editComment = async (req, res) => {
     if (!findUser) {
       return errorResponse(res, 404, 'User not found');
     }
-    const getOldComment = await Comment.findByPk(commentId);
-    if (!getOldComment) {
+    const oldComment = await Comment.findByPk(commentId);
+    if (!oldComment) {
       return errorResponse(res, 404, 'Comment not found');
     }
 
-    if (id !== getOldComment.userId) {
+    if (id !== oldComment.userId) {
       return errorResponse(
         res,
         401,
@@ -107,9 +106,9 @@ export const editComment = async (req, res) => {
     }
 
     const archivedComment = await CommentHistory.create({
-      commentId: getOldComment.id,
-      userId: getOldComment.userId,
-      archivedComment: getOldComment.body,
+      commentId: oldComment.id,
+      userId: oldComment.userId,
+      archivedComment: oldComment.body,
     });
     const updatedComment = await Comment.update(
       {
@@ -129,5 +128,41 @@ export const editComment = async (req, res) => {
     });
   } catch (err) {
     return errorResponse(res, 500, err.message);
+  }
+};
+
+export const likeComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { id } = req.user;
+
+  try {
+    const checkIfCommentExists = await Comment.findByPk(commentId);
+    if (!checkIfCommentExists) {
+      return errorResponse(res, 404, 'Comment not found');
+    }
+    const likedComment = await CommentLike.findOne({
+      where: {
+        userId: id,
+        commentId,
+      },
+    });
+
+    if (likedComment) {
+      await CommentLike.destroy({
+        where: {
+          userId: id,
+          commentId,
+        },
+      });
+      return successResponse(res, 200, 'You have unliked this post');
+    }
+
+    await CommentLike.create({
+      userId: id,
+      commentId,
+    });
+    return successResponse(res, 200, 'You have liked this post');
+  } catch (err) {
+    errorResponse(res, 500, err);
   }
 };

@@ -4,12 +4,13 @@ import dotenv from 'dotenv';
 import { Op } from 'sequelize';
 import models from '../db/models';
 
-const { User } = models;
+const { User, Article } = models;
 
 dotenv.config();
+const { SECRET_KEY } = process.env;
 
 /**
- * Check User existence
+ * Check Email existence
  *
  * @param {String} email
  * @returns {Boolean} true if email exists
@@ -39,6 +40,45 @@ export const getUserbyUsername = async username => {
 };
 
 /**
+ * Check User existence
+ *
+ * @param {String} id
+ * @returns {Boolean} true if username exists
+ * @returns {Boolean} false if username does not exist
+ */
+export const getUserbyId = async id => {
+  return await User.findByPk({ where: { id } });
+};
+
+/**
+ * Check Article existence
+ *
+ * @param {String} id
+ * @returns {Boolean} true if Article exists
+ * @returns {Boolean} false if Article does not exist
+ */
+export const getArticlebyId = async id => {
+  return await Article.findOne({
+    where: { id },
+    include: {
+      model: User,
+      as: 'user',
+    },
+  });
+};
+
+/**
+ * Check Article existence
+ *
+ * @param {String} slug
+ * @returns {Boolean} true if Article exists
+ * @returns {Boolean} false if Article does not exist
+ */
+export const getArticlebySlug = async slug => {
+  return await Article.findOne({ where: { slug } });
+};
+
+/**
  * Check User duplication
  *
  * @param {String} email
@@ -46,6 +86,7 @@ export const getUserbyUsername = async username => {
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
+
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {
@@ -123,4 +164,34 @@ export const verifyToken = async token => {
     }
     return data;
   });
+};
+
+export const checkUser = async (req, res, email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return res.status(404).json({
+      error: `User with this ${email} does not exist`,
+    });
+  }
+  return user;
+};
+
+export const isValidUser = async (req, res, next) => {
+  try {
+    const decodedToken = await verifyToken(
+      req.headers['x-access-token'] || req.headers.authorization,
+    );
+    req.userid = decodedToken.id;
+    return next();
+  } catch (err) {
+    return errorResponse(res, 401, 'unauthorized users');
+  }
+};
+
+export const isArticleExist = async articleId => {
+  const getArticle = await Article.findOne({
+    where: { articleId },
+  });
+  if (getArticle) return getArticle;
+  return 'article does not exist';
 };

@@ -35,6 +35,11 @@ export default (sequelize, DataTypes) => {
     },
     {},
   );
-  Comment.associate = models => {};
+  Comment.associate = models => {
+    Comment.hasMany(models.CommentLike, {
+      foreignKey: 'commentId',
+      as: 'likes',
+    });
+  };
   return Comment;
 };

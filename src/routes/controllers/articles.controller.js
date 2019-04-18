@@ -7,7 +7,9 @@ import {
   errorResponse,
   verifyToken,
 } from '../../utils/helpers.utils';
+import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
+import { sendMailer } from '../../config/mail-config';
 
 const { Article, User } = models;
 
@@ -31,7 +33,7 @@ export async function createArticle(req, res) {
       req.headers['x-access-token'] || req.headers.authorization,
     );
     if (!userInfo) {
-      throw Error('jwt must be provided');
+      return errorResponse(res, 401, 'jwt must be provided');
     }
     const timeToReadArticle = calculateTimeToReadArticle({
       images: images.split(','),
@@ -49,8 +51,8 @@ export async function createArticle(req, res) {
       imageList: images,
       tagList: tags,
       readTime: timeToReadArticle,
-      subscriptionType: 'free',
-      status: 'draft',
+      subscriptionType: FREE,
+      status: DRAFT,
     });
     return successResponse(
       res,
@@ -59,7 +61,51 @@ export async function createArticle(req, res) {
       createdArticle,
     );
   } catch (error) {
-    return errorResponse(res, 401, error.message);
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ * @description users can delete articles there have created.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response object
+ */
+export async function removeArticle(req, res) {
+  try {
+    const userInfo = await verifyToken(
+      req.headers['x-access-token'] || req.headers.authorization,
+    );
+    const article = await Article.findOne({
+      where: { id: req.params.article_id },
+    });
+
+    if (article) {
+      if (article.userId === userInfo.id) {
+        const deletedArticle = await Article.destroy({
+          where: { id: req.params.article_id },
+        });
+        if (deletedArticle) {
+          return successResponse(
+            res,
+            200,
+            'article as been deleted successfully',
+          );
+        }
+        return errorResponse(res, 404, 'article does not exist');
+      }
+      return errorResponse(
+        res,
+        401,
+        'you are not authorized to perform this action',
+      );
+    }
+    return errorResponse(res, 404, 'article not found');
+  } catch (err) {
+    if (err.message.match(/syntax/g)) {
+      return errorResponse(res, 404, 'article does not exist', err.message);
+    }
+    return errorResponse(res, 500, err.message);
   }
 }
 
@@ -118,6 +164,8 @@ export async function likeAnArticle(req, res) {
     const user = await User.findByPk(id);
     const article = await Article.findByPk(articleId);
 
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
     await user.addLike(article);
     const userData = user.toJSON();
     const likes = await user.getLikes();
@@ -150,6 +198,8 @@ export async function unlikeAnArticle(req, res) {
     const user = await User.findByPk(id);
     const article = await Article.findByPk(articleId);
 
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
     await user.removeLike(article);
     const userData = user.toJSON();
     const likes = await user.getLikes();
@@ -159,6 +209,122 @@ export async function unlikeAnArticle(req, res) {
     });
 
     return successResponse(res, 200, 'unlike article successful', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ * Share a single article via email
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with shareable link of article if article exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function shareArticleViaEmail(req, res) {
+  const { articleId } = req.params;
+  const { email } = req.body;
+
+  const article = await Article.findByPk(articleId, {
+    attributes: {
+      exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
+    },
+    include: [
+      {
+        model: User,
+        as: 'author',
+      },
+    ],
+  });
+  const url =
+    process.env.NODE_ENV === 'development'
+      ? `${process.env.LOCAL_URL}/articles/${articleId}`
+      : `${process.env.PRODUCTION_URL}/articles/${articleId}`;
+  const body = {
+    receivers: [`${email}`],
+    subject: 'Authors Haven: An article has been shared with you',
+    text: '',
+    html: `<p> An article titled: ${article.title} by ${
+      article.author.username
+    } has been shared with you. Go <a href="${url}">here</a>  to read.</p> `,
+  };
+
+  try {
+    await sendMailer(body);
+    return successResponse(res, 200, 'Article has been successfully shared', {
+      article,
+    });
+  } catch (error) {
+    return errorResponse(
+      res,
+      500,
+      'Article could not be shared',
+      error.message,
+    );
+  }
+}
+
+/**
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} bookmarkArticle
+ */
+export async function bookmarkArticle(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
+    await user.addBookmarks(article);
+    const userData = user.toJSON();
+    const bookmarks = await user.getBookmarks();
+
+    userData.bookmarks = bookmarks.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'Article successfully bookmarked', {
+      userData,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} removeBookmark response
+ */
+export async function removeBookmark(req, res) {
+  const { id } = req.user;
+  const { articleId } = req.params;
+
+  try {
+    const user = await User.findByPk(id);
+    const article = await Article.findByPk(articleId);
+
+    if (!article) return errorResponse(res, 404, 'Article does not exist');
+
+    await user.removeBookmarks(article);
+    const userData = user.toJSON();
+    const bookmarks = await user.getBookmarks();
+
+    userData.bookmarks = bookmarks.map(item => {
+      return { title: item.title, id: item.id, slug: item.slug };
+    });
+
+    return successResponse(res, 200, 'Bookmark successfully removed', {
       userData,
     });
   } catch (error) {

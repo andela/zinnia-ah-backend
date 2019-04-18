@@ -1,3 +1,12 @@
+import {
+  PREMIUM,
+  FREE,
+  DRAFT,
+  TRASHED,
+  PUBLISHED,
+  BANNED,
+} from '../../utils/constants';
+
 export default {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Articles', {
@@ -34,13 +43,13 @@ export default {
         allowNull: false,
       },
       subscriptionType: {
-        type: Sequelize.ENUM('free', 'premium'),
+        type: Sequelize.ENUM(FREE, PREMIUM),
         field: 'subscription_type',
-        defaultValue: 'free',
+        defaultValue: FREE,
       },
       status: {
-        type: Sequelize.ENUM('published', 'draft', 'trashed', 'banned'),
-        defaultValue: 'draft',
+        type: Sequelize.ENUM(PUBLISHED, DRAFT, TRASHED, BANNED),
+        defaultValue: DRAFT,
       },
       readTime: {
         type: Sequelize.STRING,

@@ -1,4 +1,7 @@
 import bcrypt from 'bcryptjs';
+
+import { ADMIN, AUTHOR } from '../../utils/constants';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -32,6 +35,11 @@ export default (sequelize, DataTypes) => {
       bio: DataTypes.TEXT,
       interests: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
+      },
+      role: {
+        type: DataTypes.ENUM(AUTHOR, ADMIN),
+        defaultValue: AUTHOR,
+        allowNull: false,
       },
       image: DataTypes.TEXT,
       isEmailVerified: {
@@ -80,6 +88,12 @@ export default (sequelize, DataTypes) => {
       through: 'ArticleLikes',
       as: 'likes',
       timestamps: false,
+    });
+    User.belongsToMany(models.Article, {
+      foreignKey: 'user_id',
+      otherKey: 'article_id',
+      through: 'Bookmarks',
+      as: 'bookmarks',
     });
   };
 

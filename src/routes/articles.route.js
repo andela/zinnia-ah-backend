@@ -5,12 +5,17 @@ import {
   createComment,
   createThreadedComment,
   editComment,
+  likeComment,
 } from './controllers/comments.controller.js';
 import {
   getArticle,
   createArticle,
+  removeArticle,
   likeAnArticle,
   unlikeAnArticle,
+  shareArticleViaEmail,
+  bookmarkArticle,
+  removeBookmark,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
@@ -20,10 +25,58 @@ const articleRouter = Router();
  * @swagger
  *
  * /api/v1/article:
+ *   delete:
+ *     tags:
+ *       - article
+ *     description: users can delete an article on authors haven.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: title
+ *         description: the title of the article.
+ *         in: body
+ *         required: true
+ *       - name: description
+ *         description: the summary of the article.
+ *         in: body
+ *         required: true
+ *       - name: body
+ *         description: the content of the article.
+ *         in: body
+ *         required: true
+ *       - name: images
+ *         description: url to all images in the articles. {string} separated with a comma.
+ *         in: body
+ *       - name: tags
+ *         description: the tag list.
+ *         in: body
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article deleted
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: ran
+ */
+articleRouter.delete('/:article_id', removeArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
  *   post:
  *     tags:
  *       - article
- *     description: users can create an article.
+ *     description: users can create an article on authors haven.
  *     produces:
  *       - application/json
  *     parameters:
@@ -161,7 +214,7 @@ articleRouter.get('/:articleId', validateUuid, getArticle);
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/article/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -233,6 +286,91 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+articleRouter.post(
+  '/:articleId/bookmark',
+  checkAuthorizedUser,
+  bookmarkArticle,
+);
+
+articleRouter.post(
+  '/:articleId/removebookmark',
+  checkAuthorizedUser,
+  removeBookmark,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/unlike:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can unlike an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article unliked
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post(
+  '/:articleId/comments/:commentId/like',
+  checkAuthorizedUser,
+  likeComment,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can share a single article via email.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article fetched
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.post('/:articleId/share', shareArticleViaEmail);
 
 /**
  * @swagger

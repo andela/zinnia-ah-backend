@@ -1,3 +1,5 @@
+import { hashPassword } from '../../../utils/helpers.utils';
+
 export const emptyUser = {
   username: '',
   email: '',
@@ -83,6 +85,11 @@ export const loginCredentials = {
   password: 'smiley007',
 };
 
+export const loginCommenter = {
+  email: 'igbominadeveloper@ah.com',
+  password: 'favourafolayan',
+};
+
 export const nonExistentUser = {
   email: 'humpty@dumpty.com',
   password: 'not12database',
@@ -92,4 +99,23 @@ export const signupCredentials = {
   email: 'roses@gmail.com',
   password: '16goingOn17',
   username: 'flowergarden',
+};
+
+export const authorCredentials = {
+  email: 'igbominadeveloper@ah.com',
+  password: 'password1',
+};
+
+export const adminCredentials = {
+  email: 'admin@ah.com',
+  password: 'password1',
+};
+
+export const existingUser = {
+  id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+  username: 'igbominadeveloper',
+  email: 'igbominadeveloper@ah.com',
+  password: hashPassword('favourafolayan'),
+  created_at: new Date().toLocaleString(),
+  updated_at: new Date().toLocaleString(),
 };
