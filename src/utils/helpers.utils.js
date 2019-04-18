@@ -2,10 +2,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Op } from 'sequelize';
+
 import models from '../db/models';
 
 const { User, Article } = models;
-
 dotenv.config();
 const { SECRET_KEY } = process.env;
 

@@ -170,45 +170,6 @@ export async function getSingleArticle(req, res) {
 }
 
 /**
- * Fetch all articles
- * @param {Object} req Express Request Object
- * @param {Object} res Express Response Object
- * @returns {Object} res with articles array if it exists
- * @returns {Object} res with 404 response if the array is empty
- */
-export async function getAllArticles(req, res) {
-  const currentPage = req.query.page || 1;
-  const limit = req.query.limit || 10;
-  const offset = limit * (currentPage - 1);
-  try {
-    const articles = await Article.findAndCountAll({
-      include: [
-        {
-          model: User,
-          as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
-        },
-      ],
-      limit,
-      offset,
-    });
-
-    if (articles.rows.length) {
-      return successResponse(
-        res,
-        200,
-        'Articles successfully retrieved',
-        articles,
-      );
-    }
-
-    return errorResponse(res, 404, 'No Articles found');
-  } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
-  }
-}
-
-/**
  *
  *
  * @export
@@ -447,7 +408,8 @@ export async function reportArticle(req, res) {
     );
   }
 }
-export const recordARead = async (articleId, user = null) => {
+
+const recordARead = async (articleId, user = null) => {
   let userId;
   if (user) {
     userId = user.id;
@@ -456,3 +418,39 @@ export const recordARead = async (articleId, user = null) => {
   }
   return await ReadingStat.create({ articleId, userId });
 };
+
+/**
+ * Fetch all articles
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with articles array if it exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function getAllArticles(req, res) {
+  const currentPage = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const offset = limit * (currentPage - 1);
+
+  try {
+    const articles = await Article.findAndCountAll({
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['firstName', 'lastName', 'username'],
+        },
+      ],
+      limit,
+      offset,
+    });
+
+    return successResponse(
+      res,
+      200,
+      'Articles successfully retrieved',
+      articles,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, 'An error occured', error.message);
+  }
+}
