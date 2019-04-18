@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { validateUuid } from './middlewares/validate-input.middleware';
 import {
   createComment,
   createThreadedComment,
@@ -210,7 +209,7 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:articleId', validateUuid, getArticle);
+articleRouter.get('/:slug', getArticle);
 
 /**
  * @swagger

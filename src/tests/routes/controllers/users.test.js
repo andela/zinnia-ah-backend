@@ -2,6 +2,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import app from '../../../server';
+import { generateToken } from '../../../utils/helpers.utils';
+import { userCredentialsForToken } from '../../db/mockdata/userdata';
+import { SLUGONE } from '../../db/mockdata/articeldata';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -9,6 +12,8 @@ const { expect } = chai;
 const usersUrl = '/api/v1/users';
 const profileUrl = '/api/v1/users/profiles/gentlejane';
 const nonExistingProfileUrl = '/api/v1/users/profiles/teddybear';
+
+const userToken = generateToken(userCredentialsForToken);
 
 describe('List Users functionality', () => {
   context('GET all users', () => {
@@ -112,5 +117,64 @@ describe('USER PROFILE', () => {
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Please provide a JWT token');
     });
+  });
+});
+
+describe.only('User stats', () => {
+  const { id } = userCredentialsForToken;
+  const statsEndpoint = `/api/v1/users/${id}/stats`;
+  const articleEndpoint = `/api/v1/articles/${SLUGONE}`;
+
+  context('authentication', () => {
+    it('is only accessible to an authenticated user', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set(
+          'x-access-token',
+          '$2a$10$KZ2MJ8oNY/q8oF8rWt0QruJ6T2ioArE2LnV8R36jzMgW5J0iTlG.S',
+        );
+
+      expect(status).to.be.eql(401);
+      expect(body).to.have.keys('status', 'message');
+      expect(body.status).to.eql('error');
+      expect(body.message).to.eql(
+        'Token is invalid, please provide a valid token',
+      );
+    });
+  });
+
+  context('User stats', () => {
+    beforeEach('trigger article read', async () => {
+      await chai
+        .request(app)
+        .get(articleEndpoint)
+        .set('x-access-token', userToken);
+    });
+
+    it('records the articles a user reads', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('array');
+      expect(body.data.length).to.be.greaterThan(0);
+    });
+
+    // it('increases the hits on an article to read to 1', async () => {
+    //   const { status, body } = await chai
+    //     .request(app)
+    //     .get(statsEndpoint)
+    //     .set('x-access-token', userToken);
+
+    //   expect(status).to.eql(200);
+    //   expect(body).to.have.keys('status', 'message', 'data');
+    //   expect(body.data).to.be.an('array');
+    //   expect(body.data.length).to.be.greaterThan(0);
+    //   expect(body.data[0].hits).to.be.eql(1);
+    // });
   });
 });

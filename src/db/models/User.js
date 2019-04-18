@@ -81,8 +81,7 @@ export default (sequelize, DataTypes) => {
     });
     User.hasMany(models.Article, {
       foreignKey: 'userId',
-      as: 'author',
-      onDelete: 'CASCADE',
+      as: 'publications',
     });
     User.belongsToMany(models.Article, {
       foreignKey: 'user_id',
@@ -100,6 +99,10 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Highlight, {
       foreignKey: 'userId',
       onDelete: 'CASCADE',
+    });
+    User.hasMany(models.ReadingStat, {
+      foreignKey: 'userId',
+      as: 'readingStat',
     });
   };
 

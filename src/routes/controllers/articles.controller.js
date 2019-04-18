@@ -19,6 +19,7 @@ import {
   ADULT_CONTENT,
   OTHER,
 } from '../../utils/constants';
+import { recordARead } from '../../utils/database.utils';
 
 const { Article, User, Report } = models;
 
@@ -41,14 +42,17 @@ export async function createArticle(req, res) {
     const userInfo = await verifyToken(
       req.headers['x-access-token'] || req.headers.authorization,
     );
+
     if (!userInfo) {
       return errorResponse(res, 401, 'jwt must be provided');
     }
+
     const timeToReadArticle = calculateTimeToReadArticle({
       images: images.split(','),
       videos: [],
       words: body,
     });
+
     const createdArticle = await Article.create({
       userId: userInfo.id,
       title,
@@ -63,6 +67,7 @@ export async function createArticle(req, res) {
       subscriptionType: FREE,
       status: DRAFT,
     });
+
     return successResponse(
       res,
       201,
@@ -126,13 +131,20 @@ export async function removeArticle(req, res) {
  * @returns {Object} res with 404 response if the array is empty
  */
 export async function getArticle(req, res) {
-  const { articleId } = req.params;
+  const articleSlug = req.params.slug;
+
+  let requestUser;
+
+  const token = req.headers.authorization || req.headers['x-access-token'];
+
+  if (token) {
+    const { id } = await verifyToken(token);
+
+    requestUser = await User.findByPk(id);
+  }
 
   try {
-    const article = await Article.findByPk(articleId, {
-      attributes: {
-        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
-      },
+    const article = await Article.findOne({
       include: [
         {
           model: User,
@@ -140,9 +152,13 @@ export async function getArticle(req, res) {
           attributes: ['firstName', 'lastName', 'username'],
         },
       ],
+      where: { slug: articleSlug },
     });
 
     if (article) {
+      // record the user reading the article
+      await recordARead(article.id, requestUser);
+
       return successResponse(
         res,
         200,
