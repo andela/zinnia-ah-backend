@@ -6,6 +6,15 @@ import {
   deleteHighlights,
 } from '../routes/controllers/highlights.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import {
+  validateReqParams,
+  validateReqBody,
+} from './middlewares/validate-input.middleware';
+import {
+  articleId,
+  highlightAndArticle,
+  highlightBody,
+} from '../utils/validation-schema.utils';
 
 const highlightRouter = Router();
 
@@ -38,6 +47,8 @@ const highlightRouter = Router();
  */
 highlightRouter.post(
   '/:articleId/highlights',
+  validateReqParams(articleId),
+  validateReqBody(highlightBody),
   checkAuthorizedUser,
   createHighlight,
 );
@@ -70,6 +81,7 @@ highlightRouter.post(
  */
 highlightRouter.get(
   '/:articleId/highlights',
+  validateReqParams(articleId),
   checkAuthorizedUser,
   getHighlights,
 );
@@ -103,6 +115,7 @@ highlightRouter.get(
  */
 highlightRouter.delete(
   '/:articleId/highlights/:id',
+  validateReqParams(highlightAndArticle),
   checkAuthorizedUser,
   deleteHighlights,
 );

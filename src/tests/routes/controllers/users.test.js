@@ -79,7 +79,7 @@ describe('USER PROFILE', () => {
   });
 
   describe('EDIT PROFILE', () => {
-    const url = '/api/v1/users/profile/3231983a-b944-4c53-a549-f561f7474428';
+    const url = '/api/v1/users/profiles';
     const userUpdateObject = {
       username: 'jake@jake',
       bio: 'I like to skateboard',
@@ -87,6 +87,7 @@ describe('USER PROFILE', () => {
       firstName: 'jake',
       lastName: 'smith',
     };
+
     it('should update a user profile successfully when valid input are supplied', done => {
       chai
         .request(app)
@@ -102,18 +103,26 @@ describe('USER PROFILE', () => {
           done();
         });
     });
+
     it('Should not allow update if there is invalid token ', async () => {
       const response = await chai
         .request(app)
         .put(url)
+        .send(userUpdateObject)
         .set('Authorization', 'xAccessToken');
+
       expect(response.status).to.equal(400);
       expect(response.body.message).to.equal(
         'Token is invalid, please provide a valid token',
       );
     });
+
     it('Should not allow update if there is no token ', async () => {
-      const response = await chai.request(app).put(url);
+      const response = await chai
+        .request(app)
+        .put(url)
+        .send(userUpdateObject);
+
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Please provide a JWT token');
     });

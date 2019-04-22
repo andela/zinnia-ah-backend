@@ -158,7 +158,9 @@ export function generateToken(payload, expiresIn = '30days') {
   return token;
 }
 
-export const verifyToken = async token => {
+const headerToken = req.headers.authorization || req.headers['x-access-token'];
+
+export const verifyToken = async (token = headerToken) => {
   return await jwt.verify(token, 'SECRET_KEY', (err, data) => {
     if (err) {
       return null;

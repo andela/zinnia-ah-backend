@@ -3,6 +3,11 @@ import { Router } from 'express';
 import { getAllRoles, updateUserRole } from './controllers/roles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 import verifyAdminUser from './middlewares/verify-admin.middleware';
+import {
+  validateReqParams,
+  validateReqBody,
+} from './middlewares/validate-input.middleware';
+import { role, usernameOnly } from '../utils/validation-schema.utils';
 
 const rolesRouter = Router();
 
@@ -64,6 +69,8 @@ rolesRouter.get('/', checkAuthorizedUser, verifyAdminUser, getAllRoles);
  */
 rolesRouter.put(
   '/:username',
+  validateReqParams(usernameOnly),
+  validateReqBody(role),
   checkAuthorizedUser,
   verifyAdminUser,
   updateUserRole,

@@ -50,7 +50,7 @@ export const createComment = async (req, res) => {
 };
 
 export const createThreadedComment = async (req, res) => {
-  const { threadedComment } = req.body;
+  const { comment } = req.body;
   const { articleId, commentId } = req.params;
   const { id } = req.user;
 
@@ -67,7 +67,7 @@ export const createThreadedComment = async (req, res) => {
     const newThreadedComment = await Comment.create({
       userId: id,
       articleId,
-      body: threadedComment,
+      body: comment,
       parentId: commentId,
     });
 
@@ -86,7 +86,7 @@ export const editComment = async (req, res) => {
   const { id } = req.user;
 
   const { articleId, commentId } = req.params;
-  const { editCommentBody } = req.body;
+  const { comment } = req.body;
   try {
     const findArticle = await Article.findByPk(articleId);
     if (!findArticle) {
@@ -116,7 +116,7 @@ export const editComment = async (req, res) => {
     });
     const updatedComment = await Comment.update(
       {
-        body: editCommentBody,
+        body: comment,
       },
       {
         where: {

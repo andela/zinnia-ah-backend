@@ -11,6 +11,11 @@ import {
 } from './controllers/users.controller';
 
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import {
+  validateReqParams,
+  validateReqBody,
+} from './middlewares/validate-input.middleware';
+import { userProfile, usernameOnly } from '../utils/validation-schema.utils';
 
 const userRouter = Router();
 
@@ -56,7 +61,12 @@ userRouter.get('/', getAllAuthors);
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
+userRouter.put(
+  '/profiles',
+  validateReqBody(userProfile),
+  checkAuthorizedUser,
+  updateUserProfile,
+);
 
 /**
  * @swagger
@@ -65,7 +75,11 @@ userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
  *   post:
  *     description: View user's profile
  */
-userRouter.get('/profiles/:username', getAuthorProfile);
+userRouter.get(
+  '/profiles/:username',
+  validateReqParams(usernameOnly),
+  getAuthorProfile,
+);
 
 /**
  * @swagger

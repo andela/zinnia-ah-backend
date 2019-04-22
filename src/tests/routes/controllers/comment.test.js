@@ -71,7 +71,7 @@ describe('CREATE COMMENT', () => {
         '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/thread',
       )
       .send({
-        threadedComment: 'Legit thread comment',
+        comment: 'Legit thread comment',
       })
       .set('Accept', 'application/json')
       .set({
@@ -93,7 +93,7 @@ describe('CREATE COMMENT', () => {
         '/api/v1/articles/cd75c1de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-429e-8af9-41afd3fb3d87/thread',
       )
       .send({
-        threadedComment: 'Legit thread comment',
+        comment: 'Legit thread comment',
       })
       .set('Accept', 'application/json')
       .set({
@@ -113,7 +113,7 @@ describe('CREATE COMMENT', () => {
         '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/18fd662d-ed92-419e-8af9-41afd3fb3d87/thread',
       )
       .send({
-        threadedComment: 'Legit thread comment',
+        comment: 'Legit thread comment',
       })
       .set('Accept', 'application/json')
       .set({
@@ -133,7 +133,7 @@ describe('CREATE COMMENT', () => {
         '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/edit',
       )
       .send({
-        editCommentBody: 'Legit edited comment',
+        comment: 'Legit edited comment',
       })
       .set('Accept', 'application/json')
       .set({
@@ -156,7 +156,7 @@ describe('CREATE COMMENT', () => {
         '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/08fd662d-ed92-419e-8af9-41afd3fb3d87/edit',
       )
       .send({
-        editCommentBody: 'Legit edited comment',
+        comment: 'Legit edited comment',
       })
       .set('Accept', 'application/json')
       .set({

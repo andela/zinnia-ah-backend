@@ -31,7 +31,6 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 let articles;
-
 const rating = 4;
 let jwtToken = '';
 const xAccessToken = generateToken(existingUser);
@@ -61,7 +60,7 @@ describe('Articles', () => {
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body.status).to.equal('error');
-          expect(res.body.message).to.equal('jwt must be provided');
+          expect(res.body.message).to.equal('Please provide a JWT token');
           done();
         });
     });
@@ -88,9 +87,7 @@ describe('Articles', () => {
         .send(loginCredentials)
         .end((err, res) => {
           expect(res.status).to.equal(422);
-          expect(res.body.message).to.equal(
-            'invalid/empty input. all fields must be specified.',
-          );
+          expect(res.body.message).to.equal('validation error');
           done();
         });
     });
@@ -227,10 +224,10 @@ describe('Articles', () => {
         .request(app)
         .delete(`/api/v1/articles/${articleId}ss`)
         .set('Authorization', xAccessToken)
-        .send({})
         .end((err, res) => {
-          expect(res.status).to.equal(404);
-          expect(res.body.message).to.equal('article does not exist');
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('validation error');
+          expect(res.body.errors[0]).to.equal('articleId must be a valid GUID');
           done();
         });
     });
@@ -240,9 +237,10 @@ describe('Articles', () => {
         .request(app)
         .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', falseToken)
-        .send({})
         .end((err, res) => {
+          console.log(res.body);
           expect(res.status).to.equal(401);
+          expect(res.body.status).to.equal('error');
           expect(res.body.message).to.equal(
             'you are not authorized to perform this action',
           );
@@ -321,7 +319,7 @@ describe('Articles', () => {
       expect(response.body.errors).to.eql(true);
     });
 
-    it('should return a 400 response if a report type does not exist', async () => {
+    it('should return a 422 response if a report type does not exist', async () => {
       const report = {
         reportType: 'plagiarismm',
         content: 'wrong reporttype',
@@ -333,14 +331,12 @@ describe('Articles', () => {
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'errors');
-      expect(response.status).to.eql(400);
+      expect(response.status).to.eql(422);
       expect(response.body.status).to.eql('error');
-      expect(response.body.message).to.eql(
-        `${
-          report.reportType
-        } is not a report type, Please kindly choose "Other" if your category is not listed`,
+      expect(response.body.message).to.eql('validation error');
+      expect(response.body.errors[0]).to.eql(
+        'reportType must be one of [PLAGIARISM, PROFANITY, DISCRIMINATORY, ADULT_CONTENT, TERRORISM, OTHER]',
       );
-      expect(response.body.errors).to.eql(true);
     });
   });
 

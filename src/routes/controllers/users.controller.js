@@ -90,13 +90,12 @@ export async function getAuthorProfile(req, res) {
  */
 export const updateUserProfile = async (req, res) => {
   const { id } = req.user;
-  const { firstName, lastName, username, bio, image } = req.body;
+  const { firstName, lastName, bio, image } = req.body;
   try {
     const profileUpdate = await User.update(
       {
         firstName: firstName || user.firstName,
         lastName: lastName || user.lastName,
-        username: username || user.username,
         bio: bio || user.bio,
         image: image || user.image,
       },

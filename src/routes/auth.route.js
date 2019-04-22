@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
-import { validateNewUser } from './middlewares/validate-input.middleware';
+import { signupSchema, loginSchema } from '../utils/validation-schema.utils';
+import { validateReqBody } from './middlewares/validate-input.middleware';
 import passport from './services/passport-strategies.services';
 import {
   signup,
@@ -8,6 +9,7 @@ import {
   socialController,
   login,
 } from './controllers/auth.controller';
+import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const authRouter = Router();
 
@@ -38,8 +40,36 @@ const authRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.post('/signup', validateNewUser, signup);
-authRouter.get('/users/confirmation/:token', confirmUser);
+authRouter.post('/signup', validateReqBody(signupSchema), signup);
+
+/**
+ * @swagger
+ *
+ * /api/v1/users:
+ *   post:
+ *     description: User Account Confirmation
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: Account confirmed
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+authRouter.get('/users/confirmation/:token', checkAuthorizedUser, confirmUser);
 
 /**
  * @swagger
@@ -125,6 +155,6 @@ authRouter.get(
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.post('/login', login);
+authRouter.post('/login', validateReqBody(loginSchema), login);
 
 export default authRouter;

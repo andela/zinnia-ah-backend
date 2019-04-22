@@ -15,7 +15,10 @@ import { errorResponse, verifyToken } from '../../utils/helpers.utils';
 dotenv.config();
 
 const checkAuthorizedUser = async (req, res, next) => {
-  const token = req.headers.authorization || req.headers['x-access-token'];
+  const token =
+    req.headers.authorization ||
+    req.headers['x-access-token'] ||
+    req.params.token;
 
   if (!token) {
     return errorResponse(res, 401, 'Please provide a JWT token');
