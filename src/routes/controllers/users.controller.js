@@ -108,7 +108,7 @@ export const updateUserProfile = async (req, res) => {
     return successResponse(
       res,
       200,
-      'Your profile has been updated succesfully',
+      'Your profile has been updated successfully',
       dataValues,
     );
   } catch (err) {
