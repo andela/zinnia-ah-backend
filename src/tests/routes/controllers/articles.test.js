@@ -202,21 +202,13 @@ describe('Articles', () => {
   });
 
   describe('Delete Article', () => {
-    it('should create article successfully, with valid user input', done => {
-      chai
+    before('create article for test suite', async () => {
+      const { body } = await chai
         .request(app)
         .post('/api/v1/articles')
         .set('x-access-token', xAccessToken)
-        .send(articleRequestObject)
-        .end((err, res) => {
-          expect(res.status).to.eql(201);
-          expect(res.body.status).to.eql('success');
-          expect(res.body.message).to.eql(
-            'your article has been created successfully',
-          );
-          articleId = res.body.data.id;
-          done();
-        });
+        .send(articleRequestObject);
+      articleId = body.data.id;
     });
 
     it('should fail when id is invalid', done => {
@@ -238,12 +230,8 @@ describe('Articles', () => {
         .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', falseToken)
         .end((err, res) => {
-          console.log(res.body);
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(400);
           expect(res.body.status).to.equal('error');
-          expect(res.body.message).to.equal(
-            'you are not authorized to perform this action',
-          );
           done();
         });
     });

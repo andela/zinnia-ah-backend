@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import models from '../../db/models';
 import {
   errorResponse,
@@ -90,6 +88,8 @@ export async function getAuthorProfile(req, res) {
  */
 export const updateUserProfile = async (req, res) => {
   const { id } = req.user;
+  const user = await getUserbyId(id);
+
   const { firstName, lastName, bio, image } = req.body;
   try {
     const profileUpdate = await User.update(

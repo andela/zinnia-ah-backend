@@ -63,7 +63,7 @@ userRouter.get('/', getAllAuthors);
  */
 userRouter.put(
   '/profiles',
-  validateReqBody(userProfile),
+  // validateReqBody(userProfile),
   checkAuthorizedUser,
   updateUserProfile,
 );

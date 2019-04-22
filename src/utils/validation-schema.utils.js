@@ -31,13 +31,17 @@ const options = {
   convert: true,
 };
 
-export const uuidSchema = Joi.string().guid({
-  version: ['uuidv4', 'uuidv5'],
-});
+export const uuidSchema = Joi.string().guid();
 
 export const articleId = Joi.object({
   articleId: uuidSchema.required(),
 }).options({ ...options });
+
+export const tokenId = Joi.object()
+  .keys({
+    id: uuidSchema.required(),
+  })
+  .options({ ...options });
 
 export const highlightAndArticle = articleId
   .keys({

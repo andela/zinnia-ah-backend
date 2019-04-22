@@ -58,7 +58,6 @@ describe('Roles and Access control', () => {
         .request(app)
         .get(rolesEndpoint)
         .set('x-access-token', adminToken);
-
       expect(status).to.be.eql(200);
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');
