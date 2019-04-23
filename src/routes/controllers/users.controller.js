@@ -112,20 +112,7 @@ export async function getReadingStats(req, res) {
       order: [['createdAt', 'DESC']],
     });
 
-    const mappedStats = readingStats.rows.map(item => {
-      return `You read ${item.article.title} ${moment(
-        item.createdAt,
-      ).fromNow()}`;
-    });
-
-    return successResponse(
-      res,
-      200,
-      `You have a read count of ${readingStats.count}`,
-      {
-        articlesRead: mappedStats,
-      },
-    );
+    return successResponse(res, 200, 'reading stats', readingStats);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }

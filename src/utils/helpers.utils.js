@@ -165,33 +165,3 @@ export const verifyToken = async token => {
     return data;
   });
 };
-
-export const checkUser = async (req, res, email) => {
-  const user = await User.findOne({ where: { email } });
-  if (!user) {
-    return res.status(404).json({
-      error: `User with this ${email} does not exist`,
-    });
-  }
-  return user;
-};
-
-export const isValidUser = async (req, res, next) => {
-  try {
-    const decodedToken = await verifyToken(
-      req.headers['x-access-token'] || req.headers.authorization,
-    );
-    req.userid = decodedToken.id;
-    return next();
-  } catch (err) {
-    return errorResponse(res, 401, 'unauthorized users');
-  }
-};
-
-export const isArticleExist = async articleId => {
-  const getArticle = await Article.findOne({
-    where: { articleId },
-  });
-  if (getArticle) return getArticle;
-  return 'article does not exist';
-};
