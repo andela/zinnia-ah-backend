@@ -1,14 +1,21 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
+import rewire from 'rewire';
 
 import app from '../../../server';
+import models from '../../../db/models';
 import { transporter } from '../../../config/mail-config';
 import { loginCredentials, existingUser } from '../../db/mockdata/userdata';
 import { generateToken } from '../../../utils/helpers.utils';
+
+const { User, Article } = models;
+
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
+
+let articles;
 
 const articleRequestObject = {
   title: 'the hope of life',
@@ -29,10 +36,8 @@ const removeBookmarkUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
 const rateArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/rate';
-const rateFakeArticleUrl =
+const rateNotFoundArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c208e5f/rate';
-const rateBadUUIDUrl = '/api/v1/articles/4ea984b7-c44e3e8c208e5f/rate';
-const unlikeBadUUIDUrl = '/api/v1/articles/4ea984b7-c44e3e8c208e5f/unlike';
 const loginUrl = '/api/v1/auth/login';
 
 const rating = 4;
@@ -174,19 +179,6 @@ describe('Articles', () => {
         expect(res.body.data.userData.likes)
           .to.be.an('array')
           .to.have.lengthOf(0);
-      });
-    });
-
-    context('Server failure', () => {
-      it('should return a 500 when the server does not process the request', async () => {
-        const res = await chai
-          .request(app)
-          .post(unlikeBadUUIDUrl)
-          .set('x-access-token', jwtToken);
-        expect(res.status).to.equal(500);
-        expect(res.body.message)
-          .to.be.a('String')
-          .to.eql('An error occurred');
       });
     });
   });
@@ -351,7 +343,7 @@ describe('Articles', () => {
         expect(res.body.data.averageRating).to.eql(4);
       });
 
-      it('should update rating when the record already exists and but is different', async () => {
+      it('should update rating when the record already exists but is different', async () => {
         const res = await chai
           .request(app)
           .post(rateArticleUrl)
@@ -374,7 +366,7 @@ describe('Articles', () => {
       it('should throw an error that article is not found', async () => {
         const res = await chai
           .request(app)
-          .post(rateFakeArticleUrl)
+          .post(rateNotFoundArticleUrl)
           .set('x-access-token', jwtToken)
           .send({
             rating,
@@ -386,11 +378,115 @@ describe('Articles', () => {
       });
     });
 
-    context('Server failure', () => {
+    context('Private function calculate average rating', () => {
+      const numberArray = [
+        { rating: 2, extra: 4, colour: 5, engage: 2, toppings: 1 },
+        { toppings: 4, rating: 6 },
+      ];
+      let calcAverageRating;
+
+      beforeEach(() => {
+        articles = rewire('../../../routes/controllers/articles.controller');
+        calcAverageRating = articles.__get__('calcAverageRating');
+      });
+
+      it('should calculate the average rating', async () => {
+        let result = calcAverageRating(numberArray);
+        expect(result).to.eql(4);
+
+        articles = rewire('../../../routes/controllers/articles.controller');
+      });
+    });
+  });
+
+  describe('Bookmark and un-bookmark Articles', () => {
+    context('User can bookmark an article', () => {
+      it('should allow authenticated users bookmark an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(bookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Article successfully bookmarked');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.bookmarks).to.deep.include({
+          title: 'Test Article for likes and unlikes',
+          id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+          slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+        });
+      });
+    });
+
+    context('User can remove bookmark', () => {
+      it('should allow authenticated users to remove bookmark', async () => {
+        const res = await chai
+          .request(app)
+          .post(removeBookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Bookmark successfully removed');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.bookmarks)
+          .to.be.an('array')
+          .to.have.lengthOf(0);
+      });
+    });
+  });
+
+  describe('Server failure', () => {
+    const serverError = new Error('An error occurred');
+    let serverStub;
+    let articleStub;
+    beforeEach(() => {
+      serverStub = sinon.stub(User, 'findByPk');
+      serverStub.throws(serverError);
+    });
+
+    afterEach(() => {
+      serverStub.restore();
+    });
+
+    context('likeAnArticle server failure', () => {
       it('should return a 500 when the server does not process the request', async () => {
         const res = await chai
           .request(app)
-          .post(rateBadUUIDUrl)
+          .post(likeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.errors)
+          .to.be.a('String')
+          .to.eql('An error occurred');
+      });
+    });
+
+    context('unlikeArticle server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(unlikeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.errors)
+          .to.be.a('String')
+          .to.eql('An error occurred');
+      });
+    });
+
+    context('rate server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        articleStub = sinon.stub(Article, 'findByPk');
+        articleStub.throws(serverError);
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
           .set('x-access-token', jwtToken)
           .send({
             rating,
@@ -399,49 +495,34 @@ describe('Articles', () => {
         expect(res.body.message)
           .to.be.a('String')
           .to.eql('An error occurred');
+        articleStub.restore();
       });
     });
-  });
-});
 
-describe('Bookmark and un-bookmark Articles', () => {
-  context('User can bookmark an article', () => {
-    it('should allow authenticated users bookmark an article', async () => {
-      const res = await chai
-        .request(app)
-        .post(bookmarkUrl)
-        .set('x-access-token', jwtToken);
-      expect(res.status).to.equal(200);
-      expect(res.body.message)
-        .to.be.a('String')
-        .to.eql('Article successfully bookmarked');
-      expect(res.body.data)
-        .to.be.an('object')
-        .to.have.property('userData');
-      expect(res.body.data.userData.bookmarks).to.deep.include({
-        title: 'Test Article for likes and unlikes',
-        id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
-        slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+    context('bookmark server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(bookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.errors)
+          .to.be.a('String')
+          .to.eql('An error occurred');
       });
     });
-  });
 
-  context('User can remove bookmark', () => {
-    it('should allow authenticated users to remove bookmark', async () => {
-      const res = await chai
-        .request(app)
-        .post(removeBookmarkUrl)
-        .set('x-access-token', jwtToken);
-      expect(res.status).to.equal(200);
-      expect(res.body.message)
-        .to.be.a('String')
-        .to.eql('Bookmark successfully removed');
-      expect(res.body.data)
-        .to.be.an('object')
-        .to.have.property('userData');
-      expect(res.body.data.userData.bookmarks)
-        .to.be.an('array')
-        .to.have.lengthOf(0);
+    context('remove bookmark server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(removeBookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.errors)
+          .to.be.a('String')
+          .to.eql('An error occurred');
+      });
     });
   });
 });

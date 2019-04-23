@@ -7,7 +7,6 @@ import {
   errorResponse,
   verifyToken,
   getArticlebyId,
-  calcAverageRating,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
@@ -188,7 +187,7 @@ export async function likeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.toString());
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -304,7 +303,7 @@ export async function bookmarkArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -438,19 +437,37 @@ export const rateArticle = async (req, res) => {
       ],
     });
 
-    const jsonRatedArticle = ratedArticle.toJSON();
-    jsonRatedArticle.averageRating = calcAverageRating(
-      jsonRatedArticle.ratings,
+    const ratedArticleJSON = ratedArticle.toJSON();
+    ratedArticleJSON.averageRating = calcAverageRating(
+      ratedArticleJSON.ratings,
     );
-    delete jsonRatedArticle.ratings;
+    delete ratedArticleJSON.ratings;
 
     return successResponse(
       res,
       200,
       'Your rating has been recorded',
-      jsonRatedArticle,
+      ratedArticleJSON,
     );
   } catch (error) {
     return errorResponse(res, 500, 'An error occurred', error.message);
   }
 };
+
+/**
+ *
+ *
+ * @param {array} ratings
+ * @returns {number} averageRating
+ */
+function calcAverageRating(ratings) {
+  // get an array of only the ratings
+  const allRatings = ratings.map(item => {
+    return item.rating;
+  });
+
+  const averageRating =
+    allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;
+
+  return averageRating;
+}
