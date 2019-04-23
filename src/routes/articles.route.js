@@ -30,7 +30,7 @@ const articleRouter = Router();
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles:
  *   delete:
  *     tags:
  *       - article
@@ -254,7 +254,7 @@ articleRouter.get('/', getAllArticles);
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -287,49 +287,17 @@ articleRouter.get('/', getAllArticles);
  *       500:
  *         description: Server did not process request
  */
-articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
-
-/**
- * @swagger
- *
- * /api/v1/article/:articleId/rate:
- *   post:
- *     tags:
- *       - article
- *     description: users can rate a single article.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: articleId
- *         description: the id of the article.
- *         in: params
- *         required: true
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article rated
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
 articleRouter.post(
-  '/:articleId/rate',
+  '/:articleId/like',
+  validateUuid,
   checkAuthorizedUser,
-  validateRating,
-  rateArticle,
+  likeAnArticle,
 );
 
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/unlike:
  *   post:
  *     tags:
  *       - article
@@ -362,12 +330,17 @@ articleRouter.post(
  *       500:
  *         description: Server did not process request
  */
-articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+articleRouter.post(
+  '/:articleId/unlike',
+  validateUuid,
+  checkAuthorizedUser,
+  unlikeAnArticle,
+);
 
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/bookmark:
+ * /api/v1/articles/:articleId/bookmark:
  *   post:
  *     tags:
  *       - article
@@ -402,6 +375,7 @@ articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
  */
 articleRouter.post(
   '/:articleId/bookmark',
+  validateUuid,
   checkAuthorizedUser,
   bookmarkArticle,
 );
@@ -409,7 +383,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/removebookmark:
+ * /api/v1/articles/:articleId/removebookmark:
  *   post:
  *     tags:
  *       - article
@@ -444,6 +418,7 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/removebookmark',
+  validateUuid,
   checkAuthorizedUser,
   removeBookmark,
 );
@@ -492,7 +467,7 @@ articleRouter.post(
  *   post:
  *     tags:
  *       - article
- *     description: users can unlike an article.
+ *     description: users can like a comment.
  *     produces:
  *       - application/json
  *     parameters:
@@ -513,7 +488,7 @@ articleRouter.post(
  *         $ref: '#/definitions/users'
  *     responses:
  *       200:
- *         description: article unliked
+ *         description: comment liked
  *       400:
  *         description: Bad request.
  *       401:
@@ -530,7 +505,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles/:articleId/share:
  *   post:
  *     tags:
  *       - article
@@ -629,11 +604,11 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/comments/:commentId/edit:
  *   post:
  *     tags:
  *       - article
- *     description: users can unlike an article.
+ *     description: users can edit a comment.
  *     produces:
  *       - application/json
  *     parameters:
@@ -669,7 +644,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/rate:
+ * /api/v1/articles/:articleId/rate:
  *   post:
  *     tags:
  *       - article
@@ -698,15 +673,16 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/rate',
-  checkAuthorizedUser,
+  validateUuid,
   validateRating,
+  checkAuthorizedUser,
   rateArticle,
 );
 
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/report:
  *   post:
  *     tags:
  *       - article

@@ -196,7 +196,7 @@ export async function likeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.toString());
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -489,3 +489,21 @@ export const rateArticle = async (req, res) => {
     return errorResponse(res, 500, 'An error occurred', error.message);
   }
 };
+
+/**
+ *
+ *
+ * @param {array} ratings
+ * @returns {number} averageRating
+ */
+function calcAverageRating(ratings) {
+  // get an array of only the ratings
+  const allRatings = ratings.map(item => {
+    return item.rating;
+  });
+
+  const averageRating =
+    allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;
+
+  return averageRating;
+}
