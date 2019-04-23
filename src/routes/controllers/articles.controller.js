@@ -199,7 +199,7 @@ export async function likeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.toString());
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -417,3 +417,78 @@ export const recordARead = async (articleId, user = null) => {
   }
   return await ReadingStat.create({ articleId, userId });
 };
+
+/**
+ *
+ *
+ * @export
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} rateArticle success/error message and article data
+ */
+export const rateArticle = async (req, res) => {
+  const { rating } = req.body;
+  const { articleId } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const article = await Article.findByPk(articleId);
+    if (!article) {
+      return errorResponse(res, 404, 'This article was not found');
+    }
+
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
+      where: { articleId, userId },
+      defaults: { rating },
+    });
+
+    if (!isNewRecord && createdRating.rating !== rating) {
+      await createdRating.update({
+        rating,
+      });
+    }
+
+    const ratedArticle = await Article.findByPk(articleId, {
+      include: [
+        {
+          model: Rating,
+          as: 'ratings',
+          attributes: ['rating', 'userId'],
+        },
+      ],
+    });
+
+    const ratedArticleJSON = ratedArticle.toJSON();
+    ratedArticleJSON.averageRating = calcAverageRating(
+      ratedArticleJSON.ratings,
+    );
+    delete ratedArticleJSON.ratings;
+
+    return successResponse(
+      res,
+      200,
+      'Your rating has been recorded',
+      ratedArticleJSON,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, 'An error occurred', error.message);
+  }
+};
+
+/**
+ *
+ *
+ * @param {array} ratings
+ * @returns {number} averageRating
+ */
+function calcAverageRating(ratings) {
+  // get an array of only the ratings
+  const allRatings = ratings.map(item => {
+    return item.rating;
+  });
+
+  const averageRating =
+    allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;
+
+  return averageRating;
+}

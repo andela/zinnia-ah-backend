@@ -14,8 +14,8 @@ export default {
           email: 'igbominadeveloper@ah.com',
           role: AUTHOR,
           password: await hashPassword('password1'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '4c6fab4c-3926-4be5-166c-4a911165cd35',
@@ -23,8 +23,8 @@ export default {
           email: 'admin@ah.com',
           role: ADMIN,
           password: await hashPassword('password1'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '34745e2c-772c-41df-916c-375958882184',
@@ -54,8 +54,8 @@ export default {
           email: 'Dctester@gmail.com',
           role: AUTHOR,
           password: await hashPassword('testseeder'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
