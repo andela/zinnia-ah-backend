@@ -2,6 +2,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import app from '../../../server';
+import { generateToken } from '../../../utils/helpers.utils';
+import { userCredentialsForToken } from '../../db/mockdata/userdata';
+import { SLUGONE } from '../../db/mockdata/articledata';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -9,6 +12,8 @@ const { expect } = chai;
 const usersUrl = '/api/v1/users';
 const profileUrl = '/api/v1/users/profiles/gentlejane';
 const nonExistingProfileUrl = '/api/v1/users/profiles/teddybear';
+const { email, id, username } = userCredentialsForToken;
+const userToken = generateToken({ email, id });
 
 describe('List Users functionality', () => {
   context('GET all users', () => {
@@ -111,6 +116,78 @@ describe('USER PROFILE', () => {
       const response = await chai.request(app).put(url);
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Please provide a JWT token');
+    });
+  });
+});
+
+describe('User stats', () => {
+  const statsEndpoint = `/api/v1/users/profiles/${username}/stats`;
+  const articleEndpoint = `/api/v1/articles/${SLUGONE}`;
+
+  context('authentication', () => {
+    it('is only accessible to an authenticated user', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set(
+          'x-access-token',
+          '$2a$10$KZ2MJ8oNY/q8oF8rWt0QruJ6T2ioArE2LnV8R36jzMgW5J0iTlG.S',
+        );
+
+      expect(status).to.be.eql(400);
+      expect(body).to.have.keys('status', 'message');
+      expect(body.status).to.eql('error');
+      expect(body.message).to.eql(
+        'Token is invalid, please provide a valid token',
+      );
+    });
+  });
+
+  context('User stats', () => {
+    afterEach('trigger article read', async () => {
+      await chai
+        .request(app)
+        .get(articleEndpoint)
+        .set('x-access-token', userToken);
+    });
+
+    it('initializes the number of articles a user has read to 0', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('reading stats');
+      expect(body.data.count).to.be.eql(0);
+    });
+
+    it('records the articles a user reads', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('reading stats');
+      expect(body.data.count).to.be.eql(1);
+    });
+
+    it('correctly increases the reads of a user by 1', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get(statsEndpoint)
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.data).to.be.an('object');
+      expect(body.message).to.be.eql('reading stats');
+      expect(body.data.count).to.be.eql(2);
     });
   });
 });

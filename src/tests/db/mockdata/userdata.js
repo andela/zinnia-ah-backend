@@ -138,3 +138,12 @@ export const anotherHighlight = {
   stopIndex: '105',
   comment: 'I love how it was well put',
 };
+
+export const userCredentialsForToken = {
+  username: 'igbominadeveloper',
+  id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+  email: 'igbominadeveloper@ah.com',
+};
+
+export const articleSlug =
+  'Hello-Article-9-5a6fab9c-5849-4be5-973c-5a371165cd5';

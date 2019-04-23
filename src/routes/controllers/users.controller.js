@@ -1,8 +1,9 @@
-import models from '../../db/models';
+import moment from 'moment';
 
+import models from '../../db/models';
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
-const { User } = models;
+const { User, ReadingStat, Article } = models;
 
 /**
  *
@@ -86,3 +87,33 @@ export const updateUserProfile = async (req, res) => {
     return errorResponse(res, 500, err.message);
   }
 };
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user reading statistics
+ */
+export async function getReadingStats(req, res) {
+  const { id } = req.user;
+
+  try {
+    const readingStats = await ReadingStat.findAndCountAll({
+      where: {
+        userId: id,
+      },
+      include: {
+        model: Article,
+        as: 'article',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      order: [['createdAt', 'DESC']],
+    });
+
+    return successResponse(res, 200, 'reading stats', readingStats);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}

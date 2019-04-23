@@ -28,6 +28,7 @@ export default {
       },
       slug: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
       },
       title: {

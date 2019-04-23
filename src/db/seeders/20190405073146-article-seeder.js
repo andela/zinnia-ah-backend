@@ -65,10 +65,10 @@ export default {
         updated_at: new Date().toLocaleString(),
       },
       {
-        id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
-        user_id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
-        title: 'The life and times of Mahattma Ghandi',
-        slug: slug(`The life and times of Mahattma Ghandi-${uuidv4()}`),
+        id: uuidv4(),
+        user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+        title: 'Hello Article 9',
+        slug: 'Hello-Article-9-5a6fab9c-5849-4be5-973c-5a371165cd5',
         description: 'Description goes here',
         body: 'Another Body',
         created_at: new Date().toLocaleString(),
@@ -175,7 +175,7 @@ export default {
         updated_at: new Date().toLocaleString(),
       },
       {
-        id: uuidv4(),
+        id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 19',
         slug: slug(`Hello Article 19-${uuidv4()}`),
