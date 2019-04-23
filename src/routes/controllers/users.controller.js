@@ -218,3 +218,26 @@ export async function getUsersComments(req, res) {
     return errorResponse(res, 500, error.message);
   }
 }
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user likes
+ */
+export async function getAllArticlesLikedByUser(req, res) {
+  const { user } = req;
+
+  try {
+    const currentUser = await getUserbyId(user.id);
+    const allArticlesLikedByUser = await currentUser.getLikes();
+    return successResponse(
+      res,
+      200,
+      'Successfully retrieved all articles liked by user',
+      allArticlesLikedByUser,
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}

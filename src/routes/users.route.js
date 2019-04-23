@@ -8,6 +8,7 @@ import {
   getUsersReports,
   getUsersBookmarks,
   getUsersComments,
+  getAllArticlesLikedByUser,
 } from './controllers/users.controller';
 
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
@@ -192,5 +193,34 @@ userRouter.get('/bookmarks', checkAuthorizedUser, getUsersBookmarks);
  *        description: Unexpected error.
  */
 userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
+
+/**
+ * @swagger
+ *
+ * /api/v1/users/profiles/:username/stats:
+ *   get:
+ *     description: Get all articles liked by a user
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all articles liked by user
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the username was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+userRouter.get('/likes', checkAuthorizedUser, getAllArticlesLikedByUser);
 
 export default userRouter;
