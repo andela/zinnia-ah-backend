@@ -36,15 +36,11 @@ let articleId = '';
 
 describe('Articles', () => {
   before(async () => {
-    try {
-      const res = await chai
-        .request(app)
-        .post(loginUrl)
-        .send(loginCredentials);
-      jwtToken = res.body.data.token;
-    } catch (error) {
-      return error.message;
-    }
+    const res = await chai
+      .request(app)
+      .post(loginUrl)
+      .send(loginCredentials);
+    jwtToken = res.body.data.token;
   });
 
   describe('CREATE ARTICLE', () => {

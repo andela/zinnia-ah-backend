@@ -23,6 +23,11 @@ describe('READ TIME FUNCTIONS', () => {
     expect(textTime).to.eql(459);
   });
 
+  it('should return 0 if number of words passed argument is not an integer', () => {
+    const textTime = calcTextTime('words');
+    expect(textTime).to.eql(0);
+  });
+
   it('should return time it takes to read images in seconds', () => {
     const images = [];
     for (let i = 0; i < 10; i++) {
