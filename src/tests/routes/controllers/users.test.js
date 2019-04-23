@@ -204,4 +204,18 @@ describe('User stats', () => {
       expect(body.data).to.have.property('articles');
     });
   });
+
+  context('User stats', () => {
+    it('returns a 200 and retrieves all bookmarks', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/bookmarks')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql('Successfully retrieved all bookmarks');
+      expect(body.data).to.have.property('bookmarks');
+    });
+  });
 });
