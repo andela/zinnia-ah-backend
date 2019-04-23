@@ -46,7 +46,6 @@ describe('Mail Configuration', () => {
     try {
       info = await sendMailer(body);
     } catch (e) {
-      error = e;
     } finally {
       expect(info.rejected).to.eql([]);
       expect(info.response).to.eql('250 2.0.0 Ok: queued');

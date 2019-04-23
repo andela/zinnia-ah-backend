@@ -36,7 +36,7 @@ const swaggerSpec = swaggerJSDoc({
 app.use(cors());
 
 // enable morgan logs only in development environment
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 

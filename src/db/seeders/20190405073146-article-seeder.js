@@ -48,7 +48,7 @@ export default {
         id: '0aedc83d-5172-4874-bc43-7826e955fccb',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'DC owns this article',
-        slug: slug('Hello-Article-5-3b8ab5fa-c594-4d5a-be6c-0b56888bb299'),
+        slug: 'Hello-Article-5-3b8ab5fa-c594-4d5a-be6c-0b56888bb299',
         description: 'Dimkpa Opara uses this article to run his tests',
         body: 'Another Body',
         created_at: new Date().toLocaleString(),

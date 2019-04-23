@@ -47,7 +47,7 @@ export const getUserbyUsername = async username => {
  * @returns {Boolean} false if username does not exist
  */
 export const getUserbyId = async id => {
-  return await User.findByPk({ where: { id } });
+  return await User.findByPk(id);
 };
 
 /**
@@ -86,7 +86,6 @@ export const getArticlebySlug = async slug => {
  * @returns {Boolean} true if record exists
  * @returns {Boolean} false if record does not exist
  */
-
 export const checkDuplicateUser = async (email, username) => {
   const existingUser = await User.findOne({
     where: {

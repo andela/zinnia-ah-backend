@@ -25,21 +25,17 @@ const urlWithFalseArticleId = `/api/v1/articles/${falseArticleId}/highlights`;
 
 describe('TEST SUITE FOR HIGHLIGHTS', () => {
   before(async () => {
-    try {
-      const res = await chai
-        .request(app)
-        .post(loginUrl)
-        .send(loginCredentials);
-      jwtToken = res.body.data.token;
+    const res = await chai
+      .request(app)
+      .post(loginUrl)
+      .send(loginCredentials);
+    jwtToken = res.body.data.token;
 
-      const secondlogin = await chai
-        .request(app)
-        .post(loginUrl)
-        .send(highlightLogin);
-      secondjwtToken = secondlogin.body.data.token;
-    } catch (error) {
-      return error.message;
-    }
+    const secondlogin = await chai
+      .request(app)
+      .post(loginUrl)
+      .send(highlightLogin);
+    secondjwtToken = secondlogin.body.data.token;
   });
 
   describe('Highlight Text', () => {
