@@ -257,7 +257,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -328,16 +328,16 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.post(
-  '/:articleId/rate',
+  '/:articleId/like',
+  validateUuid,
   checkAuthorizedUser,
-  validateRating,
-  rateArticle,
+  likeAnArticle,
 );
 
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/unlike:
  *   post:
  *     tags:
  *       - article
@@ -380,7 +380,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/bookmark:
+ * /api/v1/articles/:articleId/bookmark:
  *   post:
  *     tags:
  *       - article
@@ -423,7 +423,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/removebookmark:
+ * /api/v1/articles/:articleId/removebookmark:
  *   post:
  *     tags:
  *       - article
@@ -503,7 +503,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/comments/:commentId/like:
  *   post:
  *     tags:
  *       - article
@@ -718,7 +718,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/comments/:commentId/edit:
  *   post:
  *     tags:
  *       - article
@@ -758,7 +758,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/rate:
+ * /api/v1/articles/:articleId/rate:
  *   post:
  *     tags:
  *       - article
