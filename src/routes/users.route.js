@@ -10,6 +10,7 @@ import {
 } from './controllers/users.controller';
 
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { usernameChecker } from './middlewares/duplicate-user.middleware';
 
 const userRouter = Router();
 
@@ -55,7 +56,12 @@ userRouter.get('/', getAllAuthors);
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.put('/profile/:userId', checkAuthorizedUser, updateUserProfile);
+userRouter.put(
+  '/profile/',
+  checkAuthorizedUser,
+  usernameChecker,
+  updateUserProfile,
+);
 
 /**
  * @swagger
