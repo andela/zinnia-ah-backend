@@ -1,7 +1,11 @@
 import moment from 'moment';
 
 import models from '../../db/models';
-import { errorResponse, successResponse } from '../../utils/helpers.utils';
+import {
+  errorResponse,
+  successResponse,
+  getUserbyId,
+} from '../../utils/helpers.utils';
 
 const { User, ReadingStat, Article, Report } = models;
 
@@ -163,6 +167,26 @@ export async function getUsersReports(req, res) {
     });
     return successResponse(res, 200, 'Successfully retrieved all reports', {
       articles: usersReportedArticle,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user bookmarks
+ */
+export async function getUsersBookmarks(req, res) {
+  const { user } = req;
+
+  try {
+    const currentUser = await getUserbyId(user.id);
+    const usersBookmarks = await currentUser.getBookmarks();
+    return successResponse(res, 200, 'Successfully retrieved all bookmarks', {
+      bookmarks: usersBookmarks,
     });
   } catch (error) {
     return errorResponse(res, 500, error.message);
