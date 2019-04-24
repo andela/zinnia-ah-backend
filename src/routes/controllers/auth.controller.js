@@ -102,7 +102,9 @@ export async function confirmUser(req, res) {
  * @returns {object} response object
  */
 export async function socialController(req, res) {
-  const [user, isCreated] = req.user;
+  // console.log('=====>>>> GOTCHA!', req.user);
+  const { isNewRecord } = req.user._options;
+  const user = req.user.dataValues;
 
   try {
     const tokenPayload = {
@@ -110,23 +112,20 @@ export async function socialController(req, res) {
       email: user.email,
     };
     const token = await generateToken(tokenPayload);
-    if (isCreated) {
+    if (isNewRecord) {
       return successResponse(
         res,
         201,
         'You have successfully registered however you would need to check your mail to verify your account',
-        [
-          {
-            token,
-          },
-        ],
+        {
+          token,
+        },
       );
     }
-    return successResponse(res, 200, 'You are now logged in', [
-      {
-        token,
-      },
-    ]);
+    return successResponse(res, 200, 'You have successfully logged in', {
+      user,
+      token,
+    });
   } catch (err) {
     return errorResponse(res, 500, err.message);
   }
