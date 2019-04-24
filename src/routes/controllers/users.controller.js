@@ -93,6 +93,7 @@ export async function getAuthorProfile(req, res) {
 export const updateUserProfile = async (req, res) => {
   const { id } = req.user;
   const { firstName, lastName, username, bio, image } = req.body;
+  const user = await getUserbyId(id);
   try {
     const profileUpdate = await User.update(
       {
