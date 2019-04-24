@@ -3,7 +3,7 @@ import moment from 'moment';
 import models from '../../db/models';
 import { errorResponse, successResponse } from '../../utils/helpers.utils';
 
-const { User, ReadingStat, Article } = models;
+const { User, ReadingStat, Article, Report } = models;
 
 /**
  *
@@ -141,6 +141,29 @@ export async function getReadingStats(req, res) {
     });
 
     return successResponse(res, 200, 'reading stats', readingStats);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user reports
+ */
+export async function getUsersReports(req, res) {
+  const { user } = req;
+
+  try {
+    const usersReportedArticle = await Report.findAll({
+      where: { userId: user.id },
+    });
+    return successResponse(res, 200, 'Successfully retrieved all reports', {
+      articles: usersReportedArticle,
+    });
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
