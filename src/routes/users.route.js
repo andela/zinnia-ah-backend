@@ -197,7 +197,7 @@ userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
 /**
  * @swagger
  *
- * /api/v1/users/profiles/:username/stats:
+ * /api/v1/users/likes:
  *   get:
  *     description: Get all articles liked by a user
  *     produces:
