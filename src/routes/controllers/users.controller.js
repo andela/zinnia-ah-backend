@@ -7,7 +7,7 @@ import {
   getUserbyId,
 } from '../../utils/helpers.utils';
 
-const { User, ReadingStat, Article } = models;
+const { User, ReadingStat, Article, Report } = models;
 
 /**
  *
@@ -44,13 +44,41 @@ export async function getAuthorProfile(req, res) {
       where: {
         username,
       },
+      include: {
+        model: Article,
+        as: 'publications',
+      },
     });
     if (!authorProfile) {
       return errorResponse(res, 404, 'Author not found');
     }
-    return successResponse(res, 200, 'Get profile request successful', {
-      authorProfile,
-    });
+
+    const fullProfile = authorProfile.toJSON();
+    fullProfile.followers = await authorProfile
+      .getFollowers()
+      .map(followee => ({
+        id: followee.id,
+        firstname: followee.firstname,
+        lastname: followee.lastname,
+        username: followee.username,
+        email: followee.email,
+      }));
+    fullProfile.followings = await authorProfile
+      .getFollowings()
+      .map(followee => ({
+        id: followee.id,
+        firstname: followee.firstname,
+        lastname: followee.lastname,
+        username: followee.username,
+        email: followee.email,
+      }));
+    return successResponse(
+      res,
+      200,
+      'Get profile request successful',
+      fullProfile,
+      authorProfile.author,
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -85,7 +113,7 @@ export const updateUserProfile = async (req, res) => {
     return successResponse(
       res,
       200,
-      'Your profile has been updated succesfully',
+      'Your profile has been updated successfully',
       dataValues,
     );
   } catch (err) {
@@ -118,6 +146,49 @@ export async function getReadingStats(req, res) {
     });
 
     return successResponse(res, 200, 'reading stats', readingStats);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user reports
+ */
+export async function getUsersReports(req, res) {
+  const { user } = req;
+
+  try {
+    const usersReportedArticle = await Report.findAll({
+      where: { userId: user.id },
+    });
+    return successResponse(res, 200, 'Successfully retrieved all reports', {
+      articles: usersReportedArticle,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user bookmarks
+ */
+export async function getUsersBookmarks(req, res) {
+  const { user } = req;
+
+  try {
+    const currentUser = await getUserbyId(user.id);
+    const usersBookmarks = await currentUser.getBookmarks();
+    return successResponse(res, 200, 'Successfully retrieved all bookmarks', {
+      bookmarks: usersBookmarks,
+    });
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }

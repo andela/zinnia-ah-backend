@@ -38,10 +38,10 @@ describe('List Users functionality', () => {
       expect(res.body.message)
         .to.be.a('String')
         .to.eql('Get profile request successful');
-      expect(res.body.data.authorProfile)
-        .to.be.an('object')
-        .to.have.property('username')
-        .to.eql('gentlejane');
+      expect(res.body.data).to.be.an('object');
+      expect(res.body.data).to.have.property('publications');
+      expect(res.body.data).to.have.property('followers');
+      expect(res.body.data).to.have.property('followings');
     });
   });
 
@@ -96,7 +96,7 @@ describe('USER PROFILE', () => {
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body.message).to.equal(
-            'Your profile has been updated succesfully',
+            'Your profile has been updated successfully',
           );
           expect(res.body.data).to.be.an('object');
           done();
@@ -188,6 +188,34 @@ describe('User stats', () => {
       expect(body.data).to.be.an('object');
       expect(body.message).to.be.eql('reading stats');
       expect(body.data.count).to.be.eql(2);
+    });
+  });
+
+  context('User Reports', () => {
+    it('should return a 200 and get articles a user has reported', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/reports')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql('Successfully retrieved all reports');
+      expect(body.data).to.have.property('articles');
+    });
+  });
+
+  context('User stats', () => {
+    it('returns a 200 and retrieves all bookmarks', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/bookmarks')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql('Successfully retrieved all bookmarks');
+      expect(body.data).to.have.property('bookmarks');
     });
   });
 });
