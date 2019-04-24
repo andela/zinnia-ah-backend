@@ -122,7 +122,7 @@ describe('USER PROFILE', () => {
 
 describe('User stats', () => {
   const statsEndpoint = `/api/v1/users/profiles/${username}/stats`;
-  const articleEndpoint = `/api/v1/articles/slug/${SLUGONE}`;
+  const articleEndpoint = `/api/v1/articles/${SLUGONE}`;
 
   context('authentication', () => {
     it('is only accessible to an authenticated user', async () => {

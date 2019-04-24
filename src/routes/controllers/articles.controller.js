@@ -7,6 +7,8 @@ import {
   errorResponse,
   verifyToken,
   getArticlebyId,
+  serverError,
+  isValidUuid,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
@@ -130,14 +132,14 @@ export async function removeArticle(req, res) {
  * @returns {Object} res with 404 response if the array is empty
  */
 export async function getSingleArticle(req, res) {
-  const { articleId, articleSlug } = req.params;
+  const { articleId } = req.params;
   let requestUser;
   let articleParam;
 
-  if (articleId) {
+  if (await isValidUuid(articleId)) {
     articleParam = { id: articleId };
-  } else if (articleSlug) {
-    articleParam = { slug: articleSlug };
+  } else {
+    articleParam = { slug: articleId };
   }
 
   const token = req.headers.authorization || req.headers['x-access-token'];
@@ -156,16 +158,11 @@ export async function getSingleArticle(req, res) {
       // record the user reading the article
       await recordARead(article.id, requestUser);
 
-      return successResponse(
-        res,
-        200,
-        'Article successfully retrieved',
-        article,
-      );
+      return successResponse(res, 200, '', article);
     }
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'database error', error);
+    return serverError(res);
   }
 }
 
@@ -444,13 +441,8 @@ export async function getAllArticles(req, res) {
       offset,
     });
 
-    return successResponse(
-      res,
-      200,
-      'Articles successfully retrieved',
-      articles,
-    );
+    return successResponse(res, 200, '', articles);
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return serverError(res);
   }
 }

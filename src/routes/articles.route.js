@@ -184,39 +184,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/articles/slug:
- *   get:
- *     tags:
- *       - article
- *     description: users can fetch a single article using slug.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: articleSlug
- *         description: the slug of the article.
- *         in: params
- *         required: true
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article fetched
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
-articleRouter.get('/slug/:articleSlug', getSingleArticle);
-
-/**
- * @swagger
- *
- * /api/v1/articles:
+ * /api/v1/articles/:articleId:
  *   get:
  *     tags:
  *       - article
@@ -225,7 +193,7 @@ articleRouter.get('/slug/:articleSlug', getSingleArticle);
  *       - application/json
  *     parameters:
  *       - name: articleId
- *         description: the id of the article.
+ *         description: the slug or uuid of the article.
  *         in: params
  *         required: true
  *     request:
@@ -243,7 +211,7 @@ articleRouter.get('/slug/:articleSlug', getSingleArticle);
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:articleId', validateUuid, getSingleArticle);
+articleRouter.get('/:articleId', getSingleArticle);
 
 /**
  * @swagger

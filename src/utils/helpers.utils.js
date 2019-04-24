@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Op } from 'sequelize';
+import Joi from 'joi';
+
 import models from '../db/models';
 
 const { User, Article } = models;
@@ -116,6 +118,13 @@ export const successResponse = (res, statusCode, message, data) =>
     data,
   });
 
+export const serverError = (res, statusCode = 500) =>
+  res.status(statusCode).json({
+    status: 'server error',
+    message:
+      'We tried really hard, but we could not process your request. Please try again',
+  });
+
 /**
  *
  *
@@ -163,4 +172,12 @@ export const verifyToken = async token => {
     }
     return data;
   });
+};
+
+export const isValidUuid = async identifier => {
+  const { error } = Joi.validate(identifier, Joi.string().uuid());
+  if (error) {
+    return false;
+  }
+  return true;
 };
