@@ -19,7 +19,9 @@ const { User } = models;
  */
 export async function signup(req, res) {
   const { email, username } = req.body;
+
   const isDuplicate = await checkDuplicateUser(email, username);
+
   if (isDuplicate) {
     return errorResponse(
       res,

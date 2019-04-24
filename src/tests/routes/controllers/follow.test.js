@@ -13,16 +13,16 @@ const userRequestObject = {
   password: 'hhrtuyhgty5t678',
 };
 let authToken;
+const confirmationUrl = '/api/v1/auth/users/confirmation';
+
 describe('FOLLOW USER', () => {
-  before(done => {
-    chai
+  before(async () => {
+    const res = await chai
       .request(app)
       .post('/api/v1/auth/signup')
-      .send(userRequestObject)
-      .end((err, res) => {
-        authToken = res.body.data.token;
-        done();
-      });
+      .send(userRequestObject);
+    authToken = res.body.data.token;
+    await chai.request(app).get(`${confirmationUrl}/${authToken}`);
   });
 
   it('should follow a user', done => {

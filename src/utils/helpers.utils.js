@@ -53,6 +53,22 @@ export const getUserbyId = async id => {
 };
 
 /**
+ * Check User Account confirmation
+ *
+ * @param {Number} id
+ * @returns {Boolean} true if user is confirmed
+ * @returns {Boolean} false if email does not exist
+ */
+export const getConfirmedUser = async id => {
+  return await User.findOne({
+    where: {
+      id,
+      isEmailVerified: true,
+    },
+  });
+};
+
+/**
  * Check Article existence
  *
  * @param {String} id

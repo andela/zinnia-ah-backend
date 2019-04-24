@@ -12,7 +12,7 @@ import {
 chai.use(chaiHttp);
 const { expect } = chai;
 
-const { email, password } = loginCredentials;
+const { email } = loginCredentials;
 
 const signupUrl = '/api/v1/auth/signup';
 const loginUrl = '/api/v1/auth/login';
@@ -28,6 +28,7 @@ describe('User registration', () => {
         .post(signupUrl)
         .send(signupCredentials);
       userToken = res.body.data.token;
+
       expect(res.status).to.equal(201);
       expect(res.body)
         .to.have.property('message')

@@ -166,6 +166,7 @@ describe('Articles', () => {
           .request(app)
           .post(likeArticleUrl)
           .set('x-access-token', jwtToken);
+
         expect(res.status).to.equal(200);
         expect(res.body.message)
           .to.be.a('String')
@@ -187,6 +188,7 @@ describe('Articles', () => {
           .request(app)
           .post(unlikeArticleUrl)
           .set('x-access-token', jwtToken);
+
         expect(res.status).to.equal(200);
         expect(res.body.message)
           .to.be.a('String')

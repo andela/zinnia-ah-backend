@@ -4,7 +4,7 @@ import Joi from 'joi';
 import {
   errorResponse,
   verifyToken,
-  getUserbyId,
+  getConfirmedUser,
 } from '../../utils/helpers.utils';
 import { tokenId } from '../../utils/validation-schema.utils';
 
@@ -53,13 +53,13 @@ const checkAuthorizedUser = async (req, res, next) => {
     return errorResponse(res, 400, error);
   }
   // check if the user with the token still exists
-  const existingUser = await getUserbyId(decoded.id);
+  const existingUser = await getConfirmedUser(decoded.id);
 
   if (!existingUser) {
     return errorResponse(
       res,
       400,
-      'User with this token does not exist, Please signup',
+      'User account does not exist or is not activated',
     );
   }
   // attach the existing user to the header

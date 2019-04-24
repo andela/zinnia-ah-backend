@@ -69,7 +69,7 @@ authRouter.post('/signup', validateReqBody(signupSchema), signup);
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.get('/users/confirmation/:token', checkAuthorizedUser, confirmUser);
+authRouter.get('/users/confirmation/:token', confirmUser);
 
 /**
  * @swagger
