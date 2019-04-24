@@ -1,4 +1,4 @@
-g/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/prefer-default-export */
 import Joi from 'joi';
 
 export const emailSchema = Joi.string()
