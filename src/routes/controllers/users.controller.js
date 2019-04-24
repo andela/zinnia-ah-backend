@@ -40,13 +40,41 @@ export async function getAuthorProfile(req, res) {
       where: {
         username,
       },
+      include: {
+        model: Article,
+        as: 'publications',
+      },
     });
     if (!authorProfile) {
       return errorResponse(res, 404, 'Author not found');
     }
-    return successResponse(res, 200, 'Get profile request successful', {
-      authorProfile,
-    });
+
+    const fullProfile = authorProfile.toJSON();
+    fullProfile.followers = await authorProfile
+      .getFollowers()
+      .map(followee => ({
+        id: followee.id,
+        firstname: followee.firstname,
+        lastname: followee.lastname,
+        username: followee.username,
+        email: followee.email,
+      }));
+    fullProfile.followings = await authorProfile
+      .getFollowings()
+      .map(followee => ({
+        id: followee.id,
+        firstname: followee.firstname,
+        lastname: followee.lastname,
+        username: followee.username,
+        email: followee.email,
+      }));
+    return successResponse(
+      res,
+      200,
+      'Get profile request successful',
+      fullProfile,
+      authorProfile.author,
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -80,7 +108,7 @@ export const updateUserProfile = async (req, res) => {
     return successResponse(
       res,
       200,
-      'Your profile has been updated succesfully',
+      'Your profile has been updated successfully',
       dataValues,
     );
   } catch (err) {

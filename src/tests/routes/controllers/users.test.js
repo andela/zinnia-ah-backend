@@ -38,10 +38,10 @@ describe('List Users functionality', () => {
       expect(res.body.message)
         .to.be.a('String')
         .to.eql('Get profile request successful');
-      expect(res.body.data.authorProfile)
-        .to.be.an('object')
-        .to.have.property('username')
-        .to.eql('gentlejane');
+      expect(res.body.data).to.be.an('object');
+      expect(res.body.data).to.have.property('publications');
+      expect(res.body.data).to.have.property('followers');
+      expect(res.body.data).to.have.property('followings');
     });
   });
 
@@ -96,7 +96,7 @@ describe('USER PROFILE', () => {
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body.message).to.equal(
-            'Your profile has been updated succesfully',
+            'Your profile has been updated successfully',
           );
           expect(res.body.data).to.be.an('object');
           done();
