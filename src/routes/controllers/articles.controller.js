@@ -76,7 +76,7 @@ export async function createArticle(req, res) {
       createdArticle,
     );
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -120,7 +120,7 @@ export async function removeArticle(req, res) {
     if (err.message.match(/syntax/g)) {
       return errorResponse(res, 404, 'article does not exist', err.message);
     }
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }
 
@@ -196,7 +196,7 @@ export async function likeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.toString());
+    return serverError(res);
   }
 }
 
@@ -230,7 +230,7 @@ export async function unlikeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -312,7 +312,7 @@ export async function bookmarkArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -346,7 +346,7 @@ export async function removeBookmark(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 

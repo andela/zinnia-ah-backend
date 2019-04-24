@@ -4,6 +4,7 @@ import models from '../../db/models';
 import {
   errorResponse,
   successResponse,
+  serverError,
   getUserbyId,
 } from '../../utils/helpers.utils';
 
@@ -22,7 +23,7 @@ export async function getAllAuthors(req, res) {
     const authors = await User.findAll();
     return successResponse(res, 200, 'success', { authors });
   } catch (error) {
-    return errorResponse(res, 501, error.message);
+    return serverError(res);
   }
 }
 
@@ -77,7 +78,7 @@ export async function getAuthorProfile(req, res) {
       authorProfile.author,
     );
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -113,7 +114,7 @@ export const updateUserProfile = async (req, res) => {
       dataValues,
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -143,7 +144,7 @@ export async function getReadingStats(req, res) {
 
     return successResponse(res, 200, 'reading stats', readingStats);
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -166,7 +167,7 @@ export async function getUsersReports(req, res) {
       articles: usersReportedArticle,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -186,6 +187,6 @@ export async function getUsersBookmarks(req, res) {
       bookmarks: usersBookmarks,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }

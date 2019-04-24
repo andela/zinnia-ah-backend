@@ -1,6 +1,10 @@
 import { Op } from 'sequelize';
 
-import { errorResponse, successResponse } from '../../utils/helpers.utils';
+import {
+  errorResponse,
+  successResponse,
+  serverError,
+} from '../../utils/helpers.utils';
 import models from '../../db/models';
 
 const { User, Article, Tag } = models;
@@ -80,6 +84,6 @@ export default async function customSearch(req, res) {
       tags,
     });
   } catch (error) {
-    return errorResponse(res, 500, 'database error', error.message);
+    return serverError(res);
   }
 }
