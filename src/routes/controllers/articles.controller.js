@@ -20,7 +20,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 
-const { Article, User, Report, ReadingStat } = models;
+const { Article, User, Report, ReadingStat, Rating } = models;
 
 /**
  * passes new article to be created to the model
@@ -165,7 +165,7 @@ export async function getArticle(req, res) {
 
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -233,7 +233,7 @@ export async function unlikeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return errorResponse(res, 500, 'An error occurred', error.message);
   }
 }
 
@@ -411,7 +411,7 @@ export async function reportArticle(req, res) {
 export const recordARead = async (articleId, user = null) => {
   let userId;
   if (user) {
-    userId = muser.id;
+    userId = user.id;
   } else {
     userId = null;
   }

@@ -219,43 +219,6 @@ articleRouter.get('/:slug', getArticle);
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/rate:
- *   post:
- *     tags:
- *       - article
- *     description: users can rate a single article.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: articleId
- *         description: the id of the article.
- *         in: params
- *         required: true
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article rated
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
-
-/**
- * @swagger
- *
  * /api/v1/articles/:articleId/like:
  *   post:
  *     tags:
@@ -303,7 +266,7 @@ articleRouter.post(
  *   post:
  *     tags:
  *       - article
- *     description: users can like an article.
+ *     description: users can un-like an article.
  *     produces:
  *       - application/json
  *     parameters:
@@ -324,7 +287,7 @@ articleRouter.post(
  *         $ref: '#/definitions/users'
  *     responses:
  *       200:
- *         description: article liked
+ *         description: article un-liked
  *       400:
  *         description: Bad request.
  *       401:
@@ -428,43 +391,6 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/rate:
- *   post:
- *     tags:
- *       - article
- *     description: users can rate a single article.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: articleId
- *         description: the id of the article.
- *         in: params
- *         required: true
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article rated
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
-
-/**
- * @swagger
- *
  * /api/v1/articles/:articleId/comments/:commentId/like:
  *   post:
  *     tags:
@@ -535,43 +461,6 @@ articleRouter.post(
  *         description: Database error
  */
 articleRouter.post('/:articleId/share', shareArticleViaEmail);
-
-/**
- * @swagger
- *
- * /api/v1/article/:articleId/rate:
- *   post:
- *     tags:
- *       - article
- *     description: users can rate a single article.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: articleId
- *         description: the id of the article.
- *         in: params
- *         required: true
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article rated
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
 
 /**
  * @swagger
@@ -688,12 +577,5 @@ articleRouter.post(
  *         description: Server did not process request
  */
 articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
-
-articleRouter.post(
-  '/:articleId/rate',
-  checkAuthorizedUser,
-  validateRating,
-  rateArticle,
-);
 
 export default articleRouter;
