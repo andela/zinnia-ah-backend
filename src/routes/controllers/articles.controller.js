@@ -7,6 +7,8 @@ import {
   errorResponse,
   verifyToken,
   getArticlebyId,
+  serverError,
+  isValidUuid,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
@@ -129,9 +131,17 @@ export async function removeArticle(req, res) {
  * @returns {Object} res with article object if it exists
  * @returns {Object} res with 404 response if the array is empty
  */
-export async function getArticle(req, res) {
-  const articleSlug = req.params.slug;
+export async function getSingleArticle(req, res) {
+  const { articleId } = req.params;
   let requestUser;
+  let articleParam;
+
+  if (await isValidUuid(articleId)) {
+    articleParam = { id: articleId };
+  } else {
+    articleParam = { slug: articleId };
+  }
+
   const token = req.headers.authorization || req.headers['x-access-token'];
 
   if (token) {
@@ -141,31 +151,18 @@ export async function getArticle(req, res) {
 
   try {
     const article = await Article.findOne({
-      include: [
-        {
-          model: User,
-          as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
-        },
-      ],
-      where: { slug: articleSlug },
+      where: { ...articleParam },
     });
 
     if (article) {
       // record the user reading the article
       await recordARead(article.id, requestUser);
 
-      return successResponse(
-        res,
-        200,
-        'Article successfully retrieved',
-        article,
-      );
+      return successResponse(res, 200, '', article);
     }
-
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    return errorResponse(res, 500, 'An error occured', error.message);
+    return serverError(res);
   }
 }
 
@@ -408,7 +405,8 @@ export async function reportArticle(req, res) {
     );
   }
 }
-export const recordARead = async (articleId, user = null) => {
+
+const recordARead = async (articleId, user = null) => {
   let userId;
   if (user) {
     userId = user.id;
@@ -417,3 +415,34 @@ export const recordARead = async (articleId, user = null) => {
   }
   return await ReadingStat.create({ articleId, userId });
 };
+
+/**
+ * Fetch all articles
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with articles array if it exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function getAllArticles(req, res) {
+  const currentPage = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const offset = limit * (currentPage - 1);
+
+  try {
+    const articles = await Article.findAndCountAll({
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['firstName', 'lastName', 'username'],
+        },
+      ],
+      limit,
+      offset,
+    });
+
+    return successResponse(res, 200, '', articles);
+  } catch (error) {
+    return serverError(res);
+  }
+}

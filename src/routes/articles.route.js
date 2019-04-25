@@ -7,7 +7,8 @@ import {
   likeComment,
 } from './controllers/comments.controller.js';
 import {
-  getArticle,
+  getSingleArticle,
+  getAllArticles,
   createArticle,
   removeArticle,
   likeAnArticle,
@@ -18,6 +19,7 @@ import {
   reportArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { validateUuid } from './middlewares/validate-input.middleware.js';
 
 const articleRouter = Router();
 
@@ -72,7 +74,7 @@ articleRouter.delete('/:article_id', removeArticle);
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles:
  *   post:
  *     tags:
  *       - article
@@ -182,16 +184,16 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article:
- *   post:
+ * /api/v1/articles/:articleId:
+ *   get:
  *     tags:
  *       - article
- *     description: users can fetch a single article.
+ *     description: users can fetch a single article using article Id.
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: articleId
- *         description: the id of the article.
+ *         description: the slug or uuid of the article.
  *         in: params
  *         required: true
  *     request:
@@ -209,7 +211,41 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.get('/:slug', getArticle);
+articleRouter.get('/:articleId', getSingleArticle);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles:
+ *   get:
+ *     tags:
+ *       - article
+ *     description: users can fetch all articles and paginate them.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: limit
+ *         description: the number of articles per page
+ *         in: query
+ *         required: false
+ *       - name: page
+ *         description: the page number to fetch articles from
+ *         in: query
+ *         required: false
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: articles fetched
+ *       500:
+ *         description: Database error
+ */
+articleRouter.get('/', getAllArticles);
 
 /**
  * @swagger
@@ -355,6 +391,36 @@ articleRouter.post(
  *         description: the id of the article.
  *         in: params
  *         required: true
+ *
+ *         $ref: '#/definitions/articles'
+ *     responses:
+ *       200:
+ *         description: articles fetched
+ *       400:
+ *         description: Bad request.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post('/:articleId/share', shareArticleViaEmail);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles:
+ *   get:
+ *     tags:
+ *       - articles
+ *     description: users fetch articles and paginate them.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: page
+ *         description: the page to fetch from
+ *         required: false
+ *       - name: limit
+ *         description: the number of rows to return
+ *         in: params
+ *         required: false
  *     request:
  *         content:
  *         - application/json
@@ -370,7 +436,7 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.post('/:articleId/share', shareArticleViaEmail);
+articleRouter.get('/', getAllArticles);
 
 /**
  * @swagger
