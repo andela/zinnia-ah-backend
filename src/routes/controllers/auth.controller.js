@@ -103,7 +103,6 @@ export async function confirmUser(req, res) {
  * @returns {object} response object
  */
 export async function socialController(req, res) {
-  // console.log('=====>>>> GOTCHA!', req.user);
   const { isNewRecord } = req.user._options;
   const user = req.user.dataValues;
 
