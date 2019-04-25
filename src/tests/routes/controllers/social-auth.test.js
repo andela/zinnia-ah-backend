@@ -7,11 +7,8 @@ import {
   twitterAuth,
   googleAuth,
 } from '../../../routes/services/passport-strategies.services';
-import app from '../../../server';
 
 chai.use(chaiHttp);
-
-const baseUrl = 'http://localhost:3000';
 
 describe('', () => {
   let facebookTestUser;
