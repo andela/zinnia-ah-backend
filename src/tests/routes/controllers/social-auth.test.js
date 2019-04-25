@@ -5,18 +5,13 @@ import { socialController } from '../../../routes/controllers/auth.controller';
 import {
   facebookAuth,
   twitterAuth,
-  googleAuth,
 } from '../../../routes/services/passport-strategies.services';
-import app from '../../../server';
 
 chai.use(chaiHttp);
 
-const baseUrl = 'http://localhost:3000';
-
-describe('', () => {
+describe('Social authentication', () => {
   let facebookTestUser;
   let twitterTestUser;
-  let googleTestUser;
   describe('Passport strategies setup', () => {
     const accessToken = '',
       refreshToken = '',
@@ -32,7 +27,7 @@ describe('', () => {
       givenName: 'Uncle',
       familyName: 'Musonant',
     };
-    it('Facebook Auth should work', async () => {
+    it('Should authenticate user profile from facebook', async () => {
       const profile = {
         id: 'demoFbSocialId',
         name,
@@ -51,7 +46,7 @@ describe('', () => {
       expect(facebookTestUser.dataValues.email).to.eql('testMail.fb.com');
       expect(facebookTestUser.dataValues.username).to.eql('testMail.fb.com');
     });
-    it('Twitter Auth should work', async () => {
+    it('Should authenticate user profile from twitter', async () => {
       const profile = {
         id: 'demoTwSocialId',
         name,
@@ -64,27 +59,8 @@ describe('', () => {
       expect(twitterTestUser.dataValues.email).to.eql('testMail.tw.com');
       expect(twitterTestUser.dataValues.username).to.eql('testMail.tw.com');
     });
-    it('Google Auth should work', async () => {
-      const profile = {
-        id: 'demoGlSocialId',
-        name,
-        emails: [{ value: 'testMail.gl.com' }],
-        username: 'testGlUsername',
-        provider: 'google',
-      };
-      googleTestUser = await googleAuth(
-        accessToken,
-        refreshToken,
-        profile,
-        done,
-      );
-      expect(googleTestUser.dataValues.id).to.be.a('string');
-      expect(googleTestUser.dataValues.lastName).to.eql('Musonant');
-      expect(googleTestUser.dataValues.email).to.eql('testMail.gl.com');
-      expect(googleTestUser.dataValues.username).to.eql('testMail.gl.com');
-    });
   });
-  describe('Social controller', () => {
+  describe('Social authentication controller', () => {
     describe('should process user received from passport authentication', async () => {
       let req = {
         user: {
