@@ -11,6 +11,17 @@ import {
   existingUser,
   articleSlug,
 } from '../../db/mockdata/userdata';
+import { articleRequestObject } from '../../db/mockdata/articledata';
+import {
+  likeArticleUrl,
+  unlikeArticleUrl,
+  bookmarkUrl,
+  removeBookmarkUrl,
+  rateArticleUrl,
+  rateNotFoundArticleUrl,
+  loginUrl,
+  articleEndpoint,
+} from '../../db/mockdata/urldata';
 import { generateToken } from '../../../utils/helpers.utils';
 
 const { User, Article } = models;
@@ -21,30 +32,8 @@ const { expect } = chai;
 
 let articles;
 
-const articleRequestObject = {
-  title: 'the hope of life',
-  description: 'in times of trouble, where do we find hope',
-  body:
-    'when our peace is no more, when friends are no where to be found. we need to do back to our source.',
-  images: 'image1.jpg, image2.png',
-  tags: 'hope, life, source.',
-};
-
-const likeArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
-const unlikeArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
-const bookmarkUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/bookmark';
-const removeBookmarkUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
-const rateArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/rate';
-const rateNotFoundArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c208e5f/rate';
-const loginUrl = '/api/v1/auth/login';
+const rating = 4;
 let jwtToken = '';
-const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
 const falseToken = generateToken({ id: 'fake' });
 let articleId = '';
@@ -111,7 +100,7 @@ describe('Articles', () => {
     it('should return a 200 response when valid article slug is set', async () => {
       const response = await chai
         .request(app)
-        .get(`${endPoint}/${articleSlug}`);
+        .get(`${articleEndpoint}/${articleSlug}`);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -119,7 +108,9 @@ describe('Articles', () => {
 
     it('should return a 200 response when valid uuid articleID is set', async () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
-      const response = await chai.request(app).get(`${endPoint}/${articleID}`);
+      const response = await chai
+        .request(app)
+        .get(`${articleEndpoint}/${articleID}`);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -128,7 +119,7 @@ describe('Articles', () => {
     it('should return a 404 response when article does not exist', async () => {
       const response = await chai
         .request(app)
-        .get(`${endPoint}/${articleSlug}-hhgh6`);
+        .get(`${articleEndpoint}/${articleSlug}-hhgh6`);
 
       expect(response.body).to.include.keys('status', 'message');
       expect(response.status).to.eql(404);
@@ -139,7 +130,7 @@ describe('Articles', () => {
 
   describe('GET /api/v1/articles', () => {
     it('should return a 200 response when articles exist', async () => {
-      const response = await chai.request(app).get(endPoint);
+      const response = await chai.request(app).get(articleEndpoint);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -150,7 +141,7 @@ describe('Articles', () => {
       const limit = 10;
       const response = await chai
         .request(app)
-        .get(endPoint)
+        .get(articleEndpoint)
         .query({ limit });
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
@@ -162,7 +153,7 @@ describe('Articles', () => {
       const limit = 20;
       const response = await chai
         .request(app)
-        .get(endPoint)
+        .get(articleEndpoint)
         .query({ limit });
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
@@ -284,7 +275,7 @@ describe('Articles', () => {
 
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/share`)
+        .post(`${articleEndpoint}/${articleID}/share`)
         .send(body);
       expect(response.status).to.eql(200);
       expect(response.body.message).to.eql(
@@ -303,7 +294,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'data');
@@ -320,7 +311,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006410';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'errors');
@@ -338,7 +329,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'errors');
@@ -472,7 +463,9 @@ describe('Articles', () => {
   });
 
   describe('Server failure', () => {
-    const serverError = new Error('An error occurred');
+    const serverError = new Error(
+      'We tried really hard, but we could not process your request. Please try again',
+    );
     let serverStub;
     let articleStub;
     beforeEach(() => {
@@ -491,9 +484,11 @@ describe('Articles', () => {
           .post(likeArticleUrl)
           .set('x-access-token', jwtToken);
         expect(res.status).to.equal(500);
-        expect(res.body.errors)
+        expect(res.body.message)
           .to.be.a('String')
-          .to.eql('An error occurred');
+          .to.eql(
+            'We tried really hard, but we could not process your request. Please try again',
+          );
       });
     });
 
@@ -504,9 +499,11 @@ describe('Articles', () => {
           .post(unlikeArticleUrl)
           .set('x-access-token', jwtToken);
         expect(res.status).to.equal(500);
-        expect(res.body.errors)
+        expect(res.body.message)
           .to.be.a('String')
-          .to.eql('An error occurred');
+          .to.eql(
+            'We tried really hard, but we could not process your request. Please try again',
+          );
       });
     });
 
@@ -524,7 +521,9 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql('An error occurred');
+          .to.eql(
+            'We tried really hard, but we could not process your request. Please try again',
+          );
         articleStub.restore();
       });
     });
@@ -536,9 +535,11 @@ describe('Articles', () => {
           .post(bookmarkUrl)
           .set('x-access-token', jwtToken);
         expect(res.status).to.equal(500);
-        expect(res.body.errors)
+        expect(res.body.message)
           .to.be.a('String')
-          .to.eql('An error occurred');
+          .to.eql(
+            'We tried really hard, but we could not process your request. Please try again',
+          );
       });
     });
 
@@ -549,9 +550,11 @@ describe('Articles', () => {
           .post(removeBookmarkUrl)
           .set('x-access-token', jwtToken);
         expect(res.status).to.equal(500);
-        expect(res.body.errors)
+        expect(res.body.message)
           .to.be.a('String')
-          .to.eql('An error occurred');
+          .to.eql(
+            'We tried really hard, but we could not process your request. Please try again',
+          );
       });
     });
   });

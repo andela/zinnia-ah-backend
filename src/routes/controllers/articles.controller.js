@@ -22,7 +22,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 
-const { Article, User, Report, ReadingStat } = models;
+const { Article, User, Report, ReadingStat, Rating } = models;
 
 /**
  * passes new article to be created to the model
@@ -196,7 +196,7 @@ export async function likeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, 'An error occurred', error.message);
+    return serverError(res);
   }
 }
 
@@ -230,7 +230,7 @@ export async function unlikeAnArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, 'An error occurred', error.message);
+    return serverError(res);
   }
 }
 
@@ -312,7 +312,7 @@ export async function bookmarkArticle(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, 'An error occurred', error.message);
+    return serverError(res);
   }
 }
 
@@ -346,7 +346,7 @@ export async function removeBookmark(req, res) {
       userData,
     });
   } catch (error) {
-    return errorResponse(res, 500, 'An error occurred', error.message);
+    return serverError(res);
   }
 }
 
@@ -409,7 +409,7 @@ export async function reportArticle(req, res) {
 const recordARead = async (articleId, user = null) => {
   let userId;
   if (user) {
-    userId = muser.id;
+    userId = user.id;
   } else {
     userId = null;
   }
@@ -458,18 +458,26 @@ export async function getAllArticles(req, res) {
 export const rateArticle = async (req, res) => {
   const { rating } = req.body;
   const { articleId } = req.params;
-  const userId = req.user.id;
+  const { id: userId } = req.user;
 
   try {
-    const createdRating = await Rating.findOrCreate({
+    const article = await Article.findByPk(articleId);
+    if (!article) {
+      return errorResponse(res, 404, 'This article was not found');
+    }
+
+    const [createdRating, isNewRecord] = await Rating.findOrCreate({
       where: { articleId, userId },
       defaults: { rating },
     });
 
+    if (!isNewRecord && createdRating.rating !== rating) {
+      await createdRating.update({
+        rating,
+      });
+    }
+
     const ratedArticle = await Article.findByPk(articleId, {
-      attributes: {
-        exclude: ['id', 'userId', 'subscriptionType', 'readTime'],
-      },
       include: [
         {
           model: Rating,
@@ -492,7 +500,7 @@ export const rateArticle = async (req, res) => {
       ratedArticleJSON,
     );
   } catch (error) {
-    return errorResponse(res, 500, 'An error occurred', error.message);
+    return serverError(res);
   }
 };
 
