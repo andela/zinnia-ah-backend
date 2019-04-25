@@ -33,7 +33,12 @@ const credentials = {
   },
 };
 
-const facebookAuth = async (accessToken, refreshToken, profile, done) => {
+export const facebookAuth = async (
+  accessToken,
+  refreshToken,
+  profile,
+  done,
+) => {
   try {
     const [currentUser] = await User.findOrCreate({
       where: { socialId: profile.id, socialProvider: 'facebook' },
@@ -51,7 +56,7 @@ const facebookAuth = async (accessToken, refreshToken, profile, done) => {
   }
 };
 
-const twitterAuth = async (token, tokenSecret, profile, done) => {
+export const twitterAuth = async (token, tokenSecret, profile, done) => {
   try {
     const [user] = await User.findOrCreate({
       where: { socialId: profile.id, socialProvider: 'twitter' },
@@ -69,7 +74,7 @@ const twitterAuth = async (token, tokenSecret, profile, done) => {
   }
 };
 
-const googleAuth = async (token, tokenSecret, profile, done) => {
+export const googleAuth = async (token, tokenSecret, profile, done) => {
   try {
     const [user] = await User.findOrCreate({
       where: { socialId: profile.id, socialProvider: 'google' },
