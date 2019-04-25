@@ -8,7 +8,7 @@ import {
   getUsersReports,
   getUsersBookmarks,
   getUsersComments,
-  getAllArticlesLikedByUser,
+  getAllUserLikes,
 } from './controllers/users.controller';
 
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
@@ -221,6 +221,6 @@ userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
  *       5XX:
  *        description: Unexpected error.
  */
-userRouter.get('/likes', checkAuthorizedUser, getAllArticlesLikedByUser);
+userRouter.get('/likes', checkAuthorizedUser, getAllUserLikes);
 
 export default userRouter;

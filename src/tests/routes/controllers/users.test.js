@@ -247,11 +247,11 @@ describe('User stats', () => {
     });
   });
 
-  context('User stats', () => {
+  context('User likes', () => {
     it('returns a 200 and retrieves all articles like by a user', async () => {
       const { status, body } = await chai
         .request(app)
-        .get('/api/v1/users/likes')
+        .get('/api/v1/users/likes?type=articles')
         .set('x-access-token', userToken);
 
       expect(status).to.eql(200);
@@ -259,6 +259,34 @@ describe('User stats', () => {
       expect(body.message).to.eql(
         'Successfully retrieved all articles liked by user',
       );
+      expect(body.data).to.have.property('articles');
+    });
+
+    it('returns a 200 and retrieves all comments like by a user', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/likes?type=comments')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql(
+        'Successfully retrieved all comments liked by user',
+      );
+      expect(body.data).to.have.property('comments');
+    });
+
+    it('returns a 200 and retrieves all likes by a user', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/likes')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql('Successfully retrieved all likes by user');
+      expect(body.data).to.have.property('articles');
+      expect(body.data).to.have.property('comments');
     });
   });
 });
