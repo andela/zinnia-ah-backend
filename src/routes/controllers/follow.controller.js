@@ -2,6 +2,7 @@ import models from '../../db/models';
 import {
   errorResponse,
   successResponse,
+  serverError,
   getUserbyUsername,
 } from '../../utils/helpers.utils';
 
@@ -48,7 +49,7 @@ export async function follow(req, res) {
       userData,
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }
 
@@ -92,6 +93,6 @@ export async function unfollow(req, res) {
       userData,
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }

@@ -1,4 +1,8 @@
-import { errorResponse, successResponse } from '../../utils/helpers.utils';
+import {
+  errorResponse,
+  successResponse,
+  serverError,
+} from '../../utils/helpers.utils';
 
 import models from '../../db/models';
 
@@ -41,7 +45,7 @@ export const createComment = async (req, res) => {
     };
     return successResponse(res, 201, 'Comment has been created', responseData);
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -74,7 +78,7 @@ export const createThreadedComment = async (req, res) => {
       response,
     ]);
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -127,7 +131,7 @@ export const editComment = async (req, res) => {
       archivedComment,
     });
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -163,6 +167,6 @@ export const likeComment = async (req, res) => {
     });
     return successResponse(res, 200, 'You have liked this post');
   } catch (err) {
-    errorResponse(res, 500, err);
+    return serverError(res);
   }
 };

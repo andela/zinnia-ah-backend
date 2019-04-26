@@ -2,6 +2,7 @@ import models from '../../db/models';
 import {
   errorResponse,
   successResponse,
+  serverError,
   getArticlebyId,
 } from '../../utils/helpers.utils';
 
@@ -46,7 +47,7 @@ export const createHighlight = async (req, res) => {
       highlightedData,
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -78,7 +79,7 @@ export const getHighlights = async (req, res) => {
     }
     return successResponse(res, 200, 'Your highlights', highlights);
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };
 
@@ -110,6 +111,6 @@ export const deleteHighlights = async (req, res) => {
       'You have succesfully removed your highlight',
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 };

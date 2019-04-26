@@ -22,7 +22,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 
-const { Article, User, Report, ReadingStat, Rating } = models;
+const { Article, User, Report, ReadingStat, Rating, Comment } = models;
 
 /**
  * passes new article to be created to the model
@@ -76,7 +76,7 @@ export async function createArticle(req, res) {
       createdArticle,
     );
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
 
@@ -120,7 +120,7 @@ export async function removeArticle(req, res) {
     if (err.message.match(/syntax/g)) {
       return errorResponse(res, 404, 'article does not exist', err.message);
     }
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }
 
@@ -152,6 +152,17 @@ export async function getSingleArticle(req, res) {
   try {
     const article = await Article.findOne({
       where: { ...articleParam },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['firstName', 'lastName', 'username'],
+        },
+        {
+          model: Comment,
+          as: 'comments',
+        },
+      ],
     });
 
     if (article) {

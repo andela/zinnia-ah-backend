@@ -463,9 +463,9 @@ describe('Articles', () => {
   });
 
   describe('Server failure', () => {
-    const serverError = new Error(
-      'We tried really hard, but we could not process your request. Please try again',
-    );
+    const errorMessage =
+      'Your request could not be processed at this time. Kindly try again later.';
+    const serverError = new Error(errorMessage);
     let serverStub;
     let articleStub;
     beforeEach(() => {
@@ -486,9 +486,7 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql(
-            'We tried really hard, but we could not process your request. Please try again',
-          );
+          .to.eql(errorMessage);
       });
     });
 
@@ -501,9 +499,7 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql(
-            'We tried really hard, but we could not process your request. Please try again',
-          );
+          .to.eql(errorMessage);
       });
     });
 
@@ -521,9 +517,7 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql(
-            'We tried really hard, but we could not process your request. Please try again',
-          );
+          .to.eql(errorMessage);
         articleStub.restore();
       });
     });
@@ -537,9 +531,7 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql(
-            'We tried really hard, but we could not process your request. Please try again',
-          );
+          .to.eql(errorMessage);
       });
     });
 
@@ -552,9 +544,7 @@ describe('Articles', () => {
         expect(res.status).to.equal(500);
         expect(res.body.message)
           .to.be.a('String')
-          .to.eql(
-            'We tried really hard, but we could not process your request. Please try again',
-          );
+          .to.eql(errorMessage);
       });
     });
   });
