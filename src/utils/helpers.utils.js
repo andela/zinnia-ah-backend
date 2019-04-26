@@ -118,13 +118,6 @@ export const successResponse = (res, statusCode, message, data) =>
     data,
   });
 
-export const serverError = (res, statusCode = 500) =>
-  res.status(statusCode).json({
-    status: 'server error',
-    message:
-      'We tried really hard, but we could not process your request. Please try again',
-  });
-
 /**
  *
  *
@@ -181,3 +174,9 @@ export const isValidUuid = async identifier => {
   }
   return true;
 };
+export const serverError = (res, statusCode = 500) =>
+  res.status(statusCode).json({
+    status: 'error',
+    message:
+      'Your request could not be processed at this time. Kindly try again later.',
+  });

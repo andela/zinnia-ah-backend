@@ -5,6 +5,7 @@ import {
   verifyToken,
   successResponse,
   checkDuplicateUser,
+  serverError,
 } from '../../utils/helpers.utils';
 import models from '../../db/models';
 import { sendMailer } from '../../config/mail-config';
@@ -54,7 +55,7 @@ export async function signup(req, res) {
       },
     );
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res, 500, message);
   }
 }
 
@@ -91,7 +92,7 @@ export async function confirmUser(req, res) {
       responseData,
     );
   } catch (err) {
-    errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }
 
@@ -128,7 +129,7 @@ export async function socialController(req, res) {
       },
     ]);
   } catch (err) {
-    return errorResponse(res, 500, err.message);
+    return serverError(res);
   }
 }
 
@@ -162,6 +163,6 @@ export async function login(req, res) {
       token,
     });
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
