@@ -7,6 +7,7 @@ import {
   getReadingStats,
   getUsersReports,
   getUsersBookmarks,
+  getUsersComments,
 } from './controllers/users.controller';
 
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
@@ -162,5 +163,34 @@ userRouter.get('/reports', checkAuthorizedUser, getUsersReports);
  *        description: Unexpected error.
  */
 userRouter.get('/bookmarks', checkAuthorizedUser, getUsersBookmarks);
+
+/**
+ * @swagger
+ *
+ * /api/v1/users/comments:
+ *   get:
+ *     description: Get all comments by a user
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: comments fetched successfully
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the username was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
+userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
 
 export default userRouter;

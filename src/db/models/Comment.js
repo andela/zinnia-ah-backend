@@ -40,6 +40,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'commentId',
       as: 'likes',
     });
+    Comment.belongsTo(models.Article, {
+      foreignKey: 'articleId',
+      as: 'article',
+    });
   };
   return Comment;
 };
