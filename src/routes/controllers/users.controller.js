@@ -8,7 +8,7 @@ import {
   getUserbyId,
 } from '../../utils/helpers.utils';
 
-const { User, ReadingStat, Article, Report } = models;
+const { User, ReadingStat, Article, Report, Comment } = models;
 
 /**
  *
@@ -188,5 +188,31 @@ export async function getUsersBookmarks(req, res) {
     });
   } catch (error) {
     return serverError(res);
+  }
+}
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} users comments
+ */
+export async function getUsersComments(req, res) {
+  const { user } = req;
+
+  try {
+    const userComments = await Comment.findAll({
+      where: { userId: user.id },
+      include: {
+        model: Article,
+        as: 'article',
+        attributes: ['title'],
+      },
+    });
+    return successResponse(res, 200, 'Successfully retrieved all comments', {
+      comments: userComments,
+    });
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
   }
 }

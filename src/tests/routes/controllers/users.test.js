@@ -205,7 +205,7 @@ describe('User stats', () => {
     });
   });
 
-  context('User stats', () => {
+  context('User Bookmarks', () => {
     it('returns a 200 and retrieves all bookmarks', async () => {
       const { status, body } = await chai
         .request(app)
@@ -216,6 +216,20 @@ describe('User stats', () => {
       expect(body).to.have.keys('status', 'message', 'data');
       expect(body.message).to.eql('Successfully retrieved all bookmarks');
       expect(body.data).to.have.property('bookmarks');
+    });
+  });
+
+  context('User Comments', () => {
+    it('should return a 200 and get comments by a user', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/comments')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql('Successfully retrieved all comments');
+      expect(body.data).to.have.property('comments');
     });
   });
 });

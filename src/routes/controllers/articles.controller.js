@@ -22,7 +22,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 
-const { Article, User, Report, ReadingStat } = models;
+const { Article, User, Report, ReadingStat, Comment } = models;
 
 /**
  * passes new article to be created to the model
@@ -152,6 +152,17 @@ export async function getSingleArticle(req, res) {
   try {
     const article = await Article.findOne({
       where: { ...articleParam },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['firstName', 'lastName', 'username'],
+        },
+        {
+          model: Comment,
+          as: 'comments',
+        },
+      ],
     });
 
     if (article) {
