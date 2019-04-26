@@ -2,6 +2,7 @@ import models from '../../db/models';
 import {
   successResponse,
   errorResponse,
+  serverError,
   getUserbyUsername,
 } from '../../utils/helpers.utils';
 
@@ -22,7 +23,7 @@ export async function getAllRoles(req, res) {
     });
     return successResponse(res, 200, 'roles fetched successfully', roles);
   } catch (error) {
-    return errorResponse(res, 500, 'database error', error.message);
+    return serverError(res);
   }
 }
 
@@ -53,6 +54,6 @@ export async function updateUserRole(req, res) {
     );
     return successResponse(res, 200, 'role updated successfully', updatedUser);
   } catch (error) {
-    return errorResponse(res, 500, 'database error', error.message);
+    return serverError(res);
   }
 }
