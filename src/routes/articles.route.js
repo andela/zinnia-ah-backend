@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
 import {
+  validateUuid,
+  validateRating,
+} from './middlewares/validate-input.middleware';
+import {
   createComment,
   createThreadedComment,
   editComment,
@@ -17,16 +21,16 @@ import {
   bookmarkArticle,
   removeBookmark,
   reportArticle,
+  rateArticle,
 } from './controllers/articles.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
-import { validateUuid } from './middlewares/validate-input.middleware.js';
 
 const articleRouter = Router();
 
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles:
  *   delete:
  *     tags:
  *       - article
@@ -250,7 +254,7 @@ articleRouter.get('/', getAllArticles);
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/like:
+ * /api/v1/articles/:articleId/like:
  *   post:
  *     tags:
  *       - article
@@ -283,16 +287,21 @@ articleRouter.get('/', getAllArticles);
  *       500:
  *         description: Server did not process request
  */
-articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
+articleRouter.post(
+  '/:articleId/like',
+  validateUuid,
+  checkAuthorizedUser,
+  likeAnArticle,
+);
 
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/articles/:articleId/unlike:
  *   post:
  *     tags:
  *       - article
- *     description: users can like an article.
+ *     description: users can un-like an article.
  *     produces:
  *       - application/json
  *     parameters:
@@ -313,7 +322,7 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *         $ref: '#/definitions/users'
  *     responses:
  *       200:
- *         description: article liked
+ *         description: article un-liked
  *       400:
  *         description: Bad request.
  *       401:
@@ -321,15 +330,95 @@ articleRouter.post('/:articleId/like', checkAuthorizedUser, likeAnArticle);
  *       500:
  *         description: Server did not process request
  */
-articleRouter.post('/:articleId/unlike', checkAuthorizedUser, unlikeAnArticle);
+articleRouter.post(
+  '/:articleId/unlike',
+  validateUuid,
+  checkAuthorizedUser,
+  unlikeAnArticle,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles/:articleId/bookmark:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can bookmark an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article bookmarked
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
 articleRouter.post(
   '/:articleId/bookmark',
+  validateUuid,
   checkAuthorizedUser,
   bookmarkArticle,
 );
 
+/**
+ * @swagger
+ *
+ * /api/v1/articles/:articleId/removebookmark:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can remove a bookmarked article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: the id of the user.
+ *         from: token in Header
+ *         required: true
+ *       - name: article id
+ *         description: the summary of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: article bookmark successfully removed
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
 articleRouter.post(
   '/:articleId/removebookmark',
+  validateUuid,
   checkAuthorizedUser,
   removeBookmark,
 );
@@ -337,11 +426,11 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/articles/:articleId/comments/:commentId/like:
  *   post:
  *     tags:
  *       - article
- *     description: users can unlike an article.
+ *     description: users can like a comment.
  *     produces:
  *       - application/json
  *     parameters:
@@ -362,7 +451,7 @@ articleRouter.post(
  *         $ref: '#/definitions/users'
  *     responses:
  *       200:
- *         description: article unliked
+ *         description: comment liked
  *       400:
  *         description: Bad request.
  *       401:
@@ -379,7 +468,7 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article:
+ * /api/v1/articles/:articleId/share:
  *   post:
  *     tags:
  *       - article
@@ -406,46 +495,11 @@ articleRouter.post('/:articleId/share', shareArticleViaEmail);
 /**
  * @swagger
  *
- * /api/v1/articles:
- *   get:
- *     tags:
- *       - articles
- *     description: users fetch articles and paginate them.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: page
- *         description: the page to fetch from
- *         required: false
- *       - name: limit
- *         description: the number of rows to return
- *         in: params
- *         required: false
- *     request:
- *         content:
- *         - application/json
- *         schema:
- *           type: array
- *           items:
- *         $ref: '#/definitions/article'
- *     responses:
- *       200:
- *         description: article fetched
- *       404:
- *         description: article not found
- *       500:
- *         description: Database error
- */
-articleRouter.get('/', getAllArticles);
-
-/**
- * @swagger
- *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/articles/:articleId/comments/:commentId/edit:
  *   post:
  *     tags:
  *       - article
- *     description: users can unlike an article.
+ *     description: users can edit a comment.
  *     produces:
  *       - application/json
  *     parameters:
@@ -481,7 +535,45 @@ articleRouter.post(
 /**
  * @swagger
  *
- * /api/v1/article/:articleId/unlike:
+ * /api/v1/articles/:articleId/rate:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can rate a single article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: articleId
+ *         description: the id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/article'
+ *     responses:
+ *       200:
+ *         description: article rated
+ *       404:
+ *         description: article not found
+ *       500:
+ *         description: Database error
+ */
+articleRouter.post(
+  '/:articleId/rate',
+  validateUuid,
+  validateRating,
+  checkAuthorizedUser,
+  rateArticle,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles/:articleId/report:
  *   post:
  *     tags:
  *       - article

@@ -1,40 +1,39 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
+import rewire from 'rewire';
 
 import app from '../../../server';
+import models from '../../../db/models';
 import { transporter } from '../../../config/mail-config';
 import {
   loginCredentials,
   existingUser,
   articleSlug,
 } from '../../db/mockdata/userdata';
+import { articleRequestObject } from '../../db/mockdata/articledata';
+import {
+  likeArticleUrl,
+  unlikeArticleUrl,
+  bookmarkUrl,
+  removeBookmarkUrl,
+  rateArticleUrl,
+  rateNotFoundArticleUrl,
+  loginUrl,
+  articleEndpoint,
+} from '../../db/mockdata/urldata';
 import { generateToken } from '../../../utils/helpers.utils';
+
+const { User, Article } = models;
 
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
 
-const articleRequestObject = {
-  title: 'the hope of life',
-  description: 'in times of trouble, where do we find hope',
-  body:
-    'when our peace is no more, when friends are no where to be found. we need to do back to our source.',
-  images: 'image1.jpg, image2.png',
-  tags: 'hope, life, source.',
-};
+let articles;
 
-const likeArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
-const unlikeArticleUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/unlike';
-const bookmarkUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/bookmark';
-const removeBookmarkUrl =
-  '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/removebookmark';
-const loginUrl = '/api/v1/auth/login';
+const rating = 4;
 let jwtToken = '';
-const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
 const falseToken = generateToken({ id: 'fake' });
 let articleId = '';
@@ -101,7 +100,7 @@ describe('Articles', () => {
     it('should return a 200 response when valid article slug is set', async () => {
       const response = await chai
         .request(app)
-        .get(`${endPoint}/${articleSlug}`);
+        .get(`${articleEndpoint}/${articleSlug}`);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -109,7 +108,9 @@ describe('Articles', () => {
 
     it('should return a 200 response when valid uuid articleID is set', async () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
-      const response = await chai.request(app).get(`${endPoint}/${articleID}`);
+      const response = await chai
+        .request(app)
+        .get(`${articleEndpoint}/${articleID}`);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -118,7 +119,7 @@ describe('Articles', () => {
     it('should return a 404 response when article does not exist', async () => {
       const response = await chai
         .request(app)
-        .get(`${endPoint}/${articleSlug}-hhgh6`);
+        .get(`${articleEndpoint}/${articleSlug}-hhgh6`);
 
       expect(response.body).to.include.keys('status', 'message');
       expect(response.status).to.eql(404);
@@ -129,7 +130,7 @@ describe('Articles', () => {
 
   describe('GET /api/v1/articles', () => {
     it('should return a 200 response when articles exist', async () => {
-      const response = await chai.request(app).get(endPoint);
+      const response = await chai.request(app).get(articleEndpoint);
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
       expect(response.body.status).to.eql('success');
@@ -140,7 +141,7 @@ describe('Articles', () => {
       const limit = 10;
       const response = await chai
         .request(app)
-        .get(endPoint)
+        .get(articleEndpoint)
         .query({ limit });
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
@@ -152,7 +153,7 @@ describe('Articles', () => {
       const limit = 20;
       const response = await chai
         .request(app)
-        .get(endPoint)
+        .get(articleEndpoint)
         .query({ limit });
       expect(response.body).to.include.keys('status', 'message', 'data');
       expect(response.status).to.eql(200);
@@ -274,7 +275,7 @@ describe('Articles', () => {
 
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/share`)
+        .post(`${articleEndpoint}/${articleID}/share`)
         .send(body);
       expect(response.status).to.eql(200);
       expect(response.body.message).to.eql(
@@ -293,7 +294,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'data');
@@ -310,7 +311,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006410';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'errors');
@@ -328,7 +329,7 @@ describe('Articles', () => {
       const articleID = '141f4f05-7d81-4593-ab54-e256c1006210';
       const response = await chai
         .request(app)
-        .post(`${endPoint}/${articleID}/report`)
+        .post(`${articleEndpoint}/${articleID}/report`)
         .set('authorization', jwtToken)
         .send(report);
       expect(response.body).to.include.keys('status', 'message', 'errors');
@@ -342,46 +343,209 @@ describe('Articles', () => {
       expect(response.body.errors).to.eql(true);
     });
   });
-});
 
-describe('Bookmark and un-bookmark Articles', () => {
-  context('User can bookmark an article', () => {
-    it('should allow authenticated users bookmark an article', async () => {
-      const res = await chai
-        .request(app)
-        .post(bookmarkUrl)
-        .set('x-access-token', jwtToken);
-      expect(res.status).to.equal(200);
-      expect(res.body.message)
-        .to.be.a('String')
-        .to.eql('Article successfully bookmarked');
-      expect(res.body.data)
-        .to.be.an('object')
-        .to.have.property('userData');
-      expect(res.body.data.userData.bookmarks).to.deep.include({
-        title: 'Test Article for likes and unlikes',
-        id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
-        slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+  describe('Rate Articles', () => {
+    context('User can rate article', () => {
+      it('should allow authenticated users rate an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Your rating has been recorded');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('averageRating');
+        expect(res.body.data.averageRating).to.eql(4);
+      });
+
+      it('should update rating when the record already exists but is different', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating: 2,
+          });
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Your rating has been recorded');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('averageRating');
+        expect(res.body.data.averageRating).to.eql(2);
+      });
+    });
+
+    context('Article not found to be rated', () => {
+      it('should throw an error that article is not found', async () => {
+        const res = await chai
+          .request(app)
+          .post(rateNotFoundArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(404);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('This article was not found');
+      });
+    });
+
+    context('Private function calculate average rating', () => {
+      const numberArray = [
+        { rating: 2, extra: 4, colour: 5, engage: 2, toppings: 1 },
+        { toppings: 4, rating: 6 },
+      ];
+      let calcAverageRating;
+
+      beforeEach(() => {
+        articles = rewire('../../../routes/controllers/articles.controller');
+        calcAverageRating = articles.__get__('calcAverageRating');
+      });
+
+      it('should calculate the average rating', async () => {
+        let result = calcAverageRating(numberArray);
+        expect(result).to.eql(4);
+
+        articles = rewire('../../../routes/controllers/articles.controller');
       });
     });
   });
 
-  context('User can remove bookmark', () => {
-    it('should allow authenticated users to remove bookmark', async () => {
-      const res = await chai
-        .request(app)
-        .post(removeBookmarkUrl)
-        .set('x-access-token', jwtToken);
-      expect(res.status).to.equal(200);
-      expect(res.body.message)
-        .to.be.a('String')
-        .to.eql('Bookmark successfully removed');
-      expect(res.body.data)
-        .to.be.an('object')
-        .to.have.property('userData');
-      expect(res.body.data.userData.bookmarks)
-        .to.be.an('array')
-        .to.have.lengthOf(0);
+  describe('Bookmark and un-bookmark Articles', () => {
+    context('User can bookmark an article', () => {
+      it('should allow authenticated users bookmark an article', async () => {
+        const res = await chai
+          .request(app)
+          .post(bookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Article successfully bookmarked');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.bookmarks).to.deep.include({
+          title: 'Test Article for likes and unlikes',
+          id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+          slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
+        });
+      });
+    });
+
+    context('User can remove bookmark', () => {
+      it('should allow authenticated users to remove bookmark', async () => {
+        const res = await chai
+          .request(app)
+          .post(removeBookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(200);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql('Bookmark successfully removed');
+        expect(res.body.data)
+          .to.be.an('object')
+          .to.have.property('userData');
+        expect(res.body.data.userData.bookmarks)
+          .to.be.an('array')
+          .to.have.lengthOf(0);
+      });
+    });
+  });
+
+  describe('Server failure', () => {
+    const errorMessage =
+      'Your request could not be processed at this time. Kindly try again later.';
+    const serverError = new Error(errorMessage);
+    let serverStub;
+    let articleStub;
+    beforeEach(() => {
+      serverStub = sinon.stub(User, 'findByPk');
+      serverStub.throws(serverError);
+    });
+
+    afterEach(() => {
+      serverStub.restore();
+    });
+
+    context('likeAnArticle server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(likeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql(errorMessage);
+      });
+    });
+
+    context('unlikeArticle server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(unlikeArticleUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql(errorMessage);
+      });
+    });
+
+    context('rate server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        articleStub = sinon.stub(Article, 'findByPk');
+        articleStub.throws(serverError);
+        const res = await chai
+          .request(app)
+          .post(rateArticleUrl)
+          .set('x-access-token', jwtToken)
+          .send({
+            rating,
+          });
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql(errorMessage);
+        articleStub.restore();
+      });
+    });
+
+    context('bookmark server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(bookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql(errorMessage);
+      });
+    });
+
+    context('remove bookmark server failure', () => {
+      it('should return a 500 when the server does not process the request', async () => {
+        const res = await chai
+          .request(app)
+          .post(removeBookmarkUrl)
+          .set('x-access-token', jwtToken);
+        expect(res.status).to.equal(500);
+        expect(res.body.message)
+          .to.be.a('String')
+          .to.eql(errorMessage);
+      });
     });
   });
 });
