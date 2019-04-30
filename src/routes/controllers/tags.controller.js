@@ -6,7 +6,7 @@ import {
   verifyToken,
 } from '../../utils/helpers.utils';
 
-const { ArticleTags, Tags } = models;
+const { ArticleTags, Tag } = models;
 
 /**
  * @description create tag for an article
@@ -51,7 +51,6 @@ export async function updateTag(tags, articleid) {
  * @returns {boolean} response
  */
 export async function removeTag(articleId) {
-  console.log(articleId);
   try {
     const deletedTag = await ArticleTags.destroy({
       where: { articleId },
@@ -85,9 +84,10 @@ export async function viewTags(req, res) {
  */
 const processTags = async (tag, articleId) => {
   try {
-    const createdTag = await Tags.findOrCreate({
+    const createdTag = await Tag.findOrCreate({
       where: { name: tag },
     });
+
     const tagArticle = await ArticleTags.findOrCreate({
       where: { tagId: createdTag[0].id, articleId },
     });

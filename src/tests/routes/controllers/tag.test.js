@@ -63,7 +63,6 @@ describe('TAGS METHODS', () => {
   describe('REMOVE TAGS: functions/methods', () => {
     it('should return removed tags', async () => {
       const tags = await removeTag(articleId);
-      console.log(tags, articleId);
       expect(tags.status).to.equal('deleted');
     });
   });
