@@ -243,11 +243,7 @@ articleRouter.post(
  *       500:
  *         description: Database error
  */
-articleRouter.get(
-  '/:articleId',
-  validateReqParams(articleId),
-  getSingleArticle,
-);
+articleRouter.get('/:articleId', getSingleArticle);
 
 /**
  * @swagger

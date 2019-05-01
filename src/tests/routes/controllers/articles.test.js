@@ -392,7 +392,7 @@ describe('Articles', () => {
       ];
       let calcAverageRating;
 
-      beforeEach(() => {
+      before(() => {
         articles = rewire('../../../routes/controllers/articles.controller');
         calcAverageRating = articles.__get__('calcAverageRating');
       });
