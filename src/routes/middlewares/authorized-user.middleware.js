@@ -31,7 +31,7 @@ const checkAuthorizedUser = async (req, res, next) => {
   }
 
   //Decode token to check if it contains valid user payload;
-  const decoded = await verifyToken(token, process.env.SECRET_KEY);
+  const decoded = await verifyToken(token);
 
   if (!decoded) {
     return errorResponse(

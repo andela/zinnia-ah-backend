@@ -121,9 +121,10 @@ export async function getSingleArticle(req, res) {
   } else {
     articleParam = { slug: articleId };
   }
+  const token = req.headers.authorization || req.headers['x-access-token'];
 
   if (token) {
-    const { id } = await verifyToken();
+    const { id } = await verifyToken(token);
     requestUser = await User.findByPk(id);
   }
 
@@ -484,9 +485,7 @@ export const rateArticle = async (req, res) => {
  */
 function calcAverageRating(ratings) {
   // get an array of only the ratings
-  const allRatings = ratings.map(item => {
-    return item.rating;
-  });
+  const allRatings = ratings.map(item => item.rating);
 
   const averageRating =
     allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;

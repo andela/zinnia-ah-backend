@@ -76,7 +76,3 @@ export const validateReqBody = schema => {
     next();
   };
 };
-
-export const validateRating = (req, res, next) => {
-  return validator(req.body, ratingSchema, res, next);
-};

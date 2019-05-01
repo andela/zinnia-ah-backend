@@ -10,6 +10,7 @@ import {
   commentBody,
   commentAndArticle,
   report,
+  ratingSchema,
 } from '../utils/validation-schema.utils';
 import {
   createComment,
@@ -363,7 +364,7 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/unlike',
-  validateUuid,
+  validateReqParams(articleId),
   checkAuthorizedUser,
   unlikeAnArticle,
 );
@@ -637,8 +638,8 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/rate',
-  validateUuid,
-  validateRating,
+  validateReqParams(articleId),
+  validateReqBody(ratingSchema),
   checkAuthorizedUser,
   rateArticle,
 );
