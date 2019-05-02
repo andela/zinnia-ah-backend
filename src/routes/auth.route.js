@@ -128,60 +128,6 @@ authRouter.get(
 /**
  * @swagger
  *
- * /api/v1/auth/twitter/callback:
- *   get:
- *     description: User Registration Via Twitter
- *     produces:
- *       - application/json
- *     request:
- *         $ref: '#/definitions/auth'
- *     responses:
- *       201:
- *         description: User created
- *       200:
- *         description: Existing user is now logged in
- *       400:
- *         description: Bad request.
- *       5XX:
- *        description: Unexpected error.
- */
-authRouter.get('/twitter', passport.authenticate('twitter'));
-authRouter.get(
-  '/twitter/callback',
-  passport.authenticate('twitter', { session: false }),
-  socialController,
-);
-
-/**
- * @swagger
- *
- * /api/v1/auth/twitter/callback:
- *   get:
- *     description: User Registration Via Twitter
- *     produces:
- *       - application/json
- *     request:
- *         $ref: '#/definitions/auth'
- *     responses:
- *       201:
- *         description: User created
- *       200:
- *         description: Existing user is now logged in
- *       400:
- *         description: Bad request.
- *       5XX:
- *        description: Unexpected error.
- */
-authRouter.get('/twitter', passport.authenticate('twitter'));
-authRouter.get(
-  '/twitter/callback',
-  passport.authenticate('twitter', { session: false }),
-  socialController,
-);
-
-/**
- * @swagger
- *
  * /api/v1/users/login:
  *   post:
  *     description: User login
