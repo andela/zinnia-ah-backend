@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
-import Joi from 'joi';
 
 import {
   errorResponse,
   verifyToken,
   getConfirmedUser,
+  isValidUuid,
 } from '../../utils/helpers.utils';
-import { tokenId } from '../../utils/validation-schema.utils';
 
 /**
  *
@@ -42,15 +41,10 @@ const checkAuthorizedUser = async (req, res, next) => {
   }
 
   //check to ensure the token id is a valid uuid
-  const { error } = Joi.validate(decoded, tokenId, {
-    language: {
-      key: '{{key}} ',
-    },
-    abortEarly: false,
-  });
+  const tokenIdIsValidUuid = await isValidUuid(decoded.id);
 
-  if (error) {
-    return errorResponse(res, 400, error);
+  if (!tokenIdIsValidUuid) {
+    return errorResponse(res, 400, 'Invalid token content');
   }
   // check if the user with the token still exists
   const existingUser = await getConfirmedUser(decoded.id);

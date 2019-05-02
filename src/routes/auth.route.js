@@ -9,16 +9,17 @@ import {
   socialController,
   login,
 } from './controllers/auth.controller';
-import checkAuthorizedUser from './middlewares/authorized-user.middleware';
 
 const authRouter = Router();
 
 /**
  * @swagger
  *
- * /api/v1/users:
- *   post:
- *     description: User Registration Endpoint
+ * /api/v1/auth/signup:
+ *  post:
+ *     tags:
+ *      - auth
+ *     description: User Registration
  *     produces:
  *       - application/json
  *     request:
@@ -27,7 +28,7 @@ const authRouter = Router();
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/users'
+ *         $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -45,8 +46,10 @@ authRouter.post('/signup', validateReqBody(signupSchema), signup);
 /**
  * @swagger
  *
- * /api/v1/users:
+ * /api/v1/auth/confirmation/:token:
  *   post:
+ *     tags:
+ *      - auth
  *     description: User Account Confirmation
  *     produces:
  *       - application/json
@@ -56,7 +59,7 @@ authRouter.post('/signup', validateReqBody(signupSchema), signup);
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/users'
+ *         $ref: '#/definitions/auth'
  *     responses:
  *       200:
  *         description: Account confirmed
@@ -77,12 +80,12 @@ authRouter.get('/users/confirmation/:token', confirmUser);
  * /api/v1/auth/facebook:
  *   get:
  *     tags:
- *        - auth
+ *      - auth
  *     description: User Registration Via Facebook
  *     produces:
  *       - application/json
  *     request:
- *         $ref: '#/definitions/auth'
+ *        $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -105,11 +108,13 @@ authRouter.get(
  *
  * /api/v1/auth/facebook/callback:
  *   get:
+ *     tags:
+ *      - auth
  *     description: User Registration Via Facebook
  *     produces:
  *       - application/json
  *     request:
- *         $ref: '#/definitions/auth'
+ *        $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -131,8 +136,10 @@ authRouter.get(
 /**
  * @swagger
  *
- * /api/v1/users/login:
+ * /api/v1/auth/login:
  *   post:
+ *     tags:
+ *       - auth
  *     description: User login
  *     produces:
  *       - application/json
@@ -142,7 +149,7 @@ authRouter.get(
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/users'
+ *         $ref: '#/definitions/auth'
  *     responses:
  *       200:
  *         description: Login successful
