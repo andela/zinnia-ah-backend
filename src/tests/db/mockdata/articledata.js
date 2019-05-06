@@ -7,5 +7,5 @@ export const articleRequestObject = {
   body:
     'when our peace is no more, when friends are no where to be found. we need to do back to our source.',
   images: 'image1.jpg, image2.png',
-  tags: 'hope, life, source.',
+  tags: 'hope, life, source.'.split(','),
 };
