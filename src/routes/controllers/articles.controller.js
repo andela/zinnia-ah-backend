@@ -21,6 +21,7 @@ import {
   ADULT_CONTENT,
   OTHER,
 } from '../../utils/constants';
+import { createTag } from './tags.controller';
 
 const { Article, User, Report, ReadingStat, Rating, Comment } = models;
 
@@ -49,7 +50,7 @@ export async function createArticle(req, res) {
     }
 
     const timeToReadArticle = calculateTimeToReadArticle({
-      images: images.split(','),
+      images: [],
       videos: [],
       words: body,
     });
@@ -62,13 +63,21 @@ export async function createArticle(req, res) {
       ).toLowerCase(),
       description,
       body,
-      imageList: images,
-      tagList: tags,
       readTime: timeToReadArticle,
       subscriptionType: FREE,
       status: DRAFT,
     });
-
+    if (tags) {
+      console.log(tags);
+      const createdTag = await createTag(tags, createdArticle.id);
+      if (!createdTag) {
+        return errorResponse(
+          res,
+          415,
+          'tags should be an array, string provided',
+        );
+      }
+    }
     return successResponse(
       res,
       201,
