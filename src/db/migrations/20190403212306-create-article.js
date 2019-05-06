@@ -35,6 +35,10 @@ export default {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      tags: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
+      },
       description: {
         type: Sequelize.TEXT,
         allowNull: false,
