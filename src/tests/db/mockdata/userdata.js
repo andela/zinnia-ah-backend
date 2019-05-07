@@ -25,7 +25,7 @@ export const userMissingEmail = {
 };
 
 export const userWithExistingEmail = {
-  username: 'janesmith',
+  username: 'janesmithly',
   email: 'jsmith@gmail.com',
   password: 'hhrtuyhgty5t678',
   fullName: 'Igbomina Developer',
@@ -36,6 +36,13 @@ export const userWithExistingUserName = {
   username: 'janesmith',
   email: 'jsmith@gm.com',
   password: 'hhrtuyhgty5t678',
+  fullName: 'Igbomina Developer',
+  passwordConfirmation: 'password1',
+};
+export const secondUserWithExistingUserName = {
+  username: 'igbominadeveloper',
+  email: 'igbominadeveloper@ah.com',
+  password: 'password1',
   fullName: 'Igbomina Developer',
   passwordConfirmation: 'password1',
 };
