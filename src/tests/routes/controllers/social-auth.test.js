@@ -10,7 +10,7 @@ import {
 
 chai.use(chaiHttp);
 
-describe('', () => {
+describe('Social authentication', () => {
   let facebookTestUser;
   let twitterTestUser;
   let googleTestUser;
