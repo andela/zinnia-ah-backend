@@ -1,48 +1,140 @@
-/* eslint-disable import/prefer-default-export */
 import Joi from 'joi';
 
-export const emailSchema = Joi.string()
-  .lowercase()
-  .trim()
+import {
+  PLAGIARISM,
+  PROFANITY,
+  DISCRIMINATORY,
+  ADULT_CONTENT,
+  TERRORISM,
+  OTHER,
+  ADMIN,
+  AUTHOR,
+} from './constants';
+
+const stringSchema = Joi.string().trim();
+const numberSchema = Joi.number();
+
+const email = stringSchema
   .email({
     minDomainAtoms: 2,
   })
   .required();
 
-export const uuidSchema = Joi.string().guid({
-  version: ['uuidv4', 'uuidv5'],
-});
-
-export const usernameSchema = Joi.string()
+const usernameSchema = stringSchema
   .alphanum()
   .lowercase()
-  .trim()
   .min(4)
   .required();
 
-export const articleIdSchema = Joi.object({
-  articleId: uuidSchema,
-});
+const options = {
+  stripUnknown: true,
+  convert: true,
+};
 
-export const newUserSchema = Joi.object()
+export const uuidSchema = Joi.string().guid();
+
+export const articleId = Joi.object({
+  articleId: uuidSchema.required(),
+}).options({ ...options });
+
+export const tokenId = Joi.object()
   .keys({
-    fullName: Joi.string().trim(),
-    username: Joi.string()
-      .alphanum()
-      .lowercase()
-      .trim()
-      .min(8)
-      .required(),
-    email: Joi.string()
-      .lowercase()
-      .trim()
-      .email({
-        minDomainAtoms: 2,
-      })
-      .required(),
+    id: uuidSchema.required(),
+  })
+  .options({ ...options });
+
+export const highlightAndArticle = articleId
+  .keys({
+    id: uuidSchema.required(),
+    articleId: uuidSchema.required(),
+  })
+  .options({ ...options });
+
+export const highlightBody = Joi.object()
+  .keys({
+    highlightedText: stringSchema.required(),
+    startIndex: numberSchema.required(),
+    stopIndex: numberSchema.required(),
+    comment: stringSchema.required(),
+  })
+  .options({ ...options });
+
+export const userProfile = Joi.object()
+  .keys({
+    firstName: stringSchema.required(),
+    lastName: stringSchema.required(),
+    bio: stringSchema.required(),
+    image: stringSchema.uri({
+      scheme: ['http', 'https'],
+    }),
+  })
+  .options({ ...options });
+
+export const signupSchema = Joi.object()
+  .keys({
+    username: usernameSchema,
+    email,
     password: Joi.string()
       .alphanum()
       .min(8)
+      .required(),
+  })
+  .options({ ...options });
+
+export const loginSchema = Joi.object()
+  .keys({
+    email,
+    password: stringSchema.alphanum().required(),
+  })
+  .options({ ...options });
+
+export const articleBody = Joi.object()
+  .keys({
+    title: stringSchema.required(),
+    body: stringSchema.required(),
+    description: stringSchema.required(),
+    images: stringSchema.required(),
+    tags: stringSchema,
+  })
+  .options({ ...options });
+
+export const commentAndArticle = Joi.object()
+  .keys({
+    articleId: uuidSchema.required(),
+    commentId: uuidSchema.required(),
+  })
+  .options({ ...options });
+
+export const commentBody = Joi.object()
+  .keys({
+    comment: stringSchema.required(),
+  })
+  .options({ ...options });
+
+export const report = Joi.object()
+  .keys({
+    reportType: Joi.string()
+      .trim()
+      .uppercase()
+      .valid([
+        PLAGIARISM,
+        PROFANITY,
+        DISCRIMINATORY,
+        ADULT_CONTENT,
+        TERRORISM,
+        OTHER,
+      ])
+      .required(),
+    content: stringSchema.required(),
+  })
+  .options({ ...options });
+
+export const role = Joi.object()
+  .keys({
+    role: Joi.string()
+      .trim()
+      .uppercase()
+      .valid([ADMIN, AUTHOR])
       .required(),
   })
   .options({ stripUnknown: true });
@@ -55,3 +147,15 @@ export const ratingSchema = Joi.object()
       .required(),
   })
   .options({ stripUnknown: true });
+
+export const usernameOnly = Joi.object()
+  .keys({
+    username: stringSchema.alphanum().required(),
+  })
+  .options({ ...options });
+
+export const keyword = Joi.object()
+  .keys({
+    keyword: stringSchema.required(),
+  })
+  .options({ ...options });

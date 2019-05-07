@@ -40,7 +40,10 @@ describe('TEST SUITE FOR HIGHLIGHTS', () => {
 
   describe('Highlight Text', () => {
     it('Should not highlight an article when token does not exist', async () => {
-      const response = await chai.request(app).post(urlWithValidArticleId);
+      const response = await chai
+        .request(app)
+        .post(urlWithValidArticleId)
+        .send(anotherHighlight);
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Please provide a JWT token');
     });
@@ -49,6 +52,7 @@ describe('TEST SUITE FOR HIGHLIGHTS', () => {
       const response = await chai
         .request(app)
         .post(urlWithFalseArticleId)
+        .send(anotherHighlight)
         .set('Authorization', jwtToken);
       expect(response.status).to.equal(404);
       expect(response.body.message).to.equal('This article does not exist');
@@ -76,7 +80,7 @@ describe('TEST SUITE FOR HIGHLIGHTS', () => {
     it('Should not get highlights of an article when id does not exist', async () => {
       const response = await chai
         .request(app)
-        .post(urlWithFalseArticleId)
+        .get(urlWithFalseArticleId)
         .set('Authorization', jwtToken);
       expect(response.status).to.equal(404);
       expect(response.body.message).to.equal('This article does not exist');
@@ -106,7 +110,7 @@ describe('TEST SUITE FOR HIGHLIGHTS', () => {
     it('Should not remove a highlight when id does not exist', async () => {
       const response = await chai
         .request(app)
-        .post(urlWithFalseArticleId)
+        .delete(`${urlWithFalseArticleId}/${highlightId}`)
         .set('Authorization', jwtToken);
       expect(response.status).to.equal(404);
       expect(response.body.message).to.equal('This article does not exist');

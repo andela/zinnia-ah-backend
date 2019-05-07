@@ -110,12 +110,12 @@ export const signupCredentials = {
 
 export const authorCredentials = {
   email: 'igbominadeveloper@ah.com',
-  password: 'password1',
+  id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
 };
 
 export const adminCredentials = {
   email: 'admin@ah.com',
-  password: 'password1',
+  id: '4c6fab4c-3926-4be5-166c-4a911165cd35',
 };
 
 export const existingUser = {

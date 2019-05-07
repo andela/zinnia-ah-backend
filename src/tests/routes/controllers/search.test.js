@@ -8,16 +8,16 @@ const { expect } = chai;
 const searchUrl = '/api/v1/search';
 
 describe('Custom search', () => {
-  it('returns a 400 response when user sends an empty keyword', async () => {
+  it('returns a 422 response when user sends an empty keyword', async () => {
     const { status, body } = await chai
       .request(app)
       .get(searchUrl)
       .query({ keyword: '' });
 
-    expect(status).to.eql(400);
+    expect(status).to.eql(422);
     expect(body.status).to.be.eql('error');
-    expect(body).to.have.keys('status', 'message');
-    expect(body.message).to.eql('Please input a search parameter');
+    expect(body).to.have.keys('status', 'message', 'errors');
+    expect(body.message).to.eql('validation error');
   });
 
   it('returns matching results from authors table for an author name input', async () => {

@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import customSearch from './controllers/search.controller';
+import { validateReqQuery } from './middlewares/validate-input.middleware';
+import { keyword } from '../utils/validation-schema.utils';
 
 const searchRouter = Router();
 
@@ -36,6 +38,6 @@ const searchRouter = Router();
  *        description: Unexpected error.
  */
 
-searchRouter.get('/', customSearch);
+searchRouter.get('/', validateReqQuery(keyword), customSearch);
 
 export default searchRouter;

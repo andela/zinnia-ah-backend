@@ -6,31 +6,16 @@ import {
   adminCredentials,
   authorCredentials,
 } from '../../db/mockdata/userdata';
+import { generateToken } from '../../../utils/helpers.utils';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 const rolesEndpoint = '/api/v1/users/roles';
-let userToken;
-let adminToken;
+let userToken = generateToken(authorCredentials);
+let adminToken = generateToken(adminCredentials);
 
 describe('Roles and Access control', () => {
   describe('protected routes', () => {
-    before(async () => {
-      const { body } = await chai
-        .request(app)
-        .post('/api/v1/auth/login')
-        .send(authorCredentials);
-      const { token } = body.data;
-      userToken = token;
-
-      const res = await chai
-        .request(app)
-        .post('/api/v1/auth/login')
-        .send(adminCredentials);
-      const { data } = res.body;
-      adminToken = data.token;
-    });
-
     it('should return a 401 when token is not set', async () => {
       const { status, body } = await chai.request(app).get(rolesEndpoint);
 
@@ -73,7 +58,6 @@ describe('Roles and Access control', () => {
         .request(app)
         .get(rolesEndpoint)
         .set('x-access-token', adminToken);
-
       expect(status).to.be.eql(200);
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');
@@ -91,7 +75,6 @@ describe('Roles and Access control', () => {
         .put(`${rolesEndpoint}/gentlejane`)
         .set('x-access-token', adminToken)
         .send(requestBody);
-
       expect(status).to.be.eql(200);
       expect(body).to.have.key('status', 'message', 'data');
       expect(body.status).to.eql('success');

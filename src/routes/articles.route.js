@@ -1,9 +1,17 @@
 import { Router } from 'express';
 
 import {
-  validateUuid,
-  validateRating,
+  validateReqParams,
+  validateReqBody,
 } from './middlewares/validate-input.middleware';
+import {
+  articleId,
+  articleBody,
+  commentBody,
+  commentAndArticle,
+  report,
+  ratingSchema,
+} from '../utils/validation-schema.utils';
 import {
   createComment,
   createThreadedComment,
@@ -70,10 +78,17 @@ const articleRouter = Router();
  *         description: Bad request.
  *       401:
  *         description: Authorization information is missing or invalid.
+ *       404:
+ *         description: Article not found.
  *       500:
  *         description: ran
  */
-articleRouter.delete('/:article_id', removeArticle);
+articleRouter.delete(
+  '/:articleId',
+  validateReqParams(articleId),
+  checkAuthorizedUser,
+  removeArticle,
+);
 
 /**
  * @swagger
@@ -121,7 +136,12 @@ articleRouter.delete('/:article_id', removeArticle);
  *       500:
  *         description: ran
  */
-articleRouter.post('/', createArticle);
+articleRouter.post(
+  '/',
+  validateReqBody(articleBody),
+  checkAuthorizedUser,
+  createArticle,
+);
 
 /**
  * @swagger
@@ -150,7 +170,13 @@ articleRouter.post('/', createArticle);
  *       5XX:
  *        description: Unexpected error.
  */
-articleRouter.post('/:articleId/comments', checkAuthorizedUser, createComment);
+articleRouter.post(
+  '/:articleId/comments',
+  validateReqParams(articleId),
+  validateReqBody(commentBody),
+  checkAuthorizedUser,
+  createComment,
+);
 
 /**
  * @swagger
@@ -181,6 +207,8 @@ articleRouter.post('/:articleId/comments', checkAuthorizedUser, createComment);
  */
 articleRouter.post(
   '/:articleId/comments/:commentId/thread',
+  validateReqParams(commentAndArticle),
+  validateReqBody(commentBody),
   checkAuthorizedUser,
   createThreadedComment,
 );
@@ -289,7 +317,7 @@ articleRouter.get('/', getAllArticles);
  */
 articleRouter.post(
   '/:articleId/like',
-  validateUuid,
+  validateReqParams(articleId),
   checkAuthorizedUser,
   likeAnArticle,
 );
@@ -332,7 +360,7 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/unlike',
-  validateUuid,
+  validateReqParams(articleId),
   checkAuthorizedUser,
   unlikeAnArticle,
 );
@@ -374,8 +402,47 @@ articleRouter.post(
  *         description: Server did not process request
  */
 articleRouter.post(
+  '/:articleId/unlike',
+  validateReqParams(articleId),
+  checkAuthorizedUser,
+  unlikeAnArticle,
+);
+
+/**
+ * @swagger
+ *
+ * /api/v1/article/:articleId/bookmark:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can bookmark an article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: article id
+ *         description: Id of the article.
+ *         in: params
+ *         required: true
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       201:
+ *         description: bookmark created
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.post(
   '/:articleId/bookmark',
-  validateUuid,
+  validateReqParams(articleId),
   checkAuthorizedUser,
   bookmarkArticle,
 );
@@ -418,7 +485,7 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/removebookmark',
-  validateUuid,
+  validateReqParams(articleId),
   checkAuthorizedUser,
   removeBookmark,
 );
@@ -461,6 +528,7 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/comments/:commentId/like',
+  validateReqParams(commentAndArticle),
   checkAuthorizedUser,
   likeComment,
 );
@@ -528,6 +596,8 @@ articleRouter.post('/:articleId/share', shareArticleViaEmail);
  */
 articleRouter.post(
   '/:articleId/comments/:commentId/edit',
+  validateReqParams(commentAndArticle),
+  validateReqBody(commentBody),
   checkAuthorizedUser,
   editComment,
 );
@@ -564,8 +634,8 @@ articleRouter.post(
  */
 articleRouter.post(
   '/:articleId/rate',
-  validateUuid,
-  validateRating,
+  validateReqParams(articleId),
+  validateReqBody(ratingSchema),
   checkAuthorizedUser,
   rateArticle,
 );
@@ -606,6 +676,12 @@ articleRouter.post(
  *       500:
  *         description: Server did not process request
  */
-articleRouter.post('/:articleId/report', checkAuthorizedUser, reportArticle);
+articleRouter.post(
+  '/:articleId/report',
+  validateReqParams(articleId),
+  validateReqBody(report),
+  checkAuthorizedUser,
+  reportArticle,
+);
 
 export default articleRouter;

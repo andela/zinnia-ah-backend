@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
-import { validateNewUser } from './middlewares/validate-input.middleware';
+import { signupSchema, loginSchema } from '../utils/validation-schema.utils';
+import { validateReqBody } from './middlewares/validate-input.middleware';
 import passport from './services/passport-strategies.services';
 import {
   signup,
@@ -15,9 +16,11 @@ const authRouter = Router();
 /**
  * @swagger
  *
- * /api/v1/users:
- *   post:
- *     description: User Registration Endpoint
+ * /api/v1/auth/signup:
+ *  post:
+ *     tags:
+ *      - auth
+ *     description: User Registration
  *     produces:
  *       - application/json
  *     request:
@@ -26,7 +29,7 @@ const authRouter = Router();
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/users'
+ *         $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -39,7 +42,38 @@ const authRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.post('/signup', validateNewUser, userCredentialsChecker, signup);
+
+authRouter.post('/signup', validateReqBody(signupSchema), signup);
+
+/**
+ * @swagger
+ *
+ * /api/v1/auth/confirmation/:token:
+ *   post:
+ *     tags:
+ *      - auth
+ *     description: User Account Confirmation
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/auth'
+ *     responses:
+ *       200:
+ *         description: Account confirmed
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: Authorization information is missing or invalid.
+ *       404:
+ *        description: A user with the specified ID was not found.
+ *       5XX:
+ *        description: Unexpected error.
+ */
 authRouter.get('/users/confirmation/:token', confirmUser);
 
 /**
@@ -48,12 +82,12 @@ authRouter.get('/users/confirmation/:token', confirmUser);
  * /api/v1/auth/facebook:
  *   get:
  *     tags:
- *        - auth
+ *      - auth
  *     description: User Registration Via Facebook
  *     produces:
  *       - application/json
  *     request:
- *         $ref: '#/definitions/auth'
+ *        $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -76,11 +110,13 @@ authRouter.get(
  *
  * /api/v1/auth/facebook/callback:
  *   get:
+ *     tags:
+ *      - auth
  *     description: User Registration Via Facebook
  *     produces:
  *       - application/json
  *     request:
- *         $ref: '#/definitions/auth'
+ *        $ref: '#/definitions/auth'
  *     responses:
  *       201:
  *         description: User created
@@ -102,8 +138,10 @@ authRouter.get(
 /**
  * @swagger
  *
- * /api/v1/users/login:
+ * /api/v1/auth/login:
  *   post:
+ *     tags:
+ *       - auth
  *     description: User login
  *     produces:
  *       - application/json
@@ -113,7 +151,7 @@ authRouter.get(
  *         schema:
  *           type: array
  *           items:
- *         $ref: '#/definitions/users'
+ *         $ref: '#/definitions/auth'
  *     responses:
  *       200:
  *         description: Login successful
@@ -126,6 +164,6 @@ authRouter.get(
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.post('/login', login);
+authRouter.post('/login', validateReqBody(loginSchema), login);
 
 export default authRouter;

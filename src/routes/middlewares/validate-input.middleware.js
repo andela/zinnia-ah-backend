@@ -1,24 +1,78 @@
-import validator from '../../utils/validator.utils';
-import {
-  newUserSchema,
-  articleIdSchema,
-  ratingSchema,
-} from '../../utils/validation-schema.utils';
+import Joi from 'joi';
+
+import { errorResponse } from '../../utils/helpers.utils';
+
 /**
- * Input validator for a new user account
- * @param {Object} req - request body
- * @param {Object} res - response object
+ * validator for request Query
+ * @param {Object} schema - validation schema
+ * @param {Object} res - Express response object
  * @param {Object} next - pass control to the next handler
- * @returns {Object} Validator helper function
+ * @returns {Object} Error Response if validation fails
  */
-export const validateNewUser = (req, res, next) => {
-  validator(req.body, newUserSchema, res, next);
+export const validateReqQuery = schema => {
+  return (req, res, next) => {
+    const { error } = Joi.validate(req.query, schema, {
+      abortEarly: false,
+      language: {
+        key: '{{key}} ',
+      },
+    });
+
+    if (error) {
+      const validationError = error.details.map(errorItem => errorItem.message);
+      return errorResponse(res, 422, 'validation error', validationError);
+    }
+
+    next();
+  };
 };
 
-export const validateUuid = (req, res, next) => {
-  return validator(req.params, articleIdSchema, res, next);
+/**
+ * validator for request Params
+ * @param {Object} schema - validation schema
+ * @param {Object} res - Express response object
+ * @param {Object} next - pass control to the next handler
+ * @returns {Object} Error Response if validation fails
+ */
+export const validateReqParams = schema => {
+  return (req, res, next) => {
+    const { error } = Joi.validate(req.params, schema, {
+      abortEarly: false,
+      language: {
+        key: '{{key}} ',
+      },
+    });
+
+    if (error) {
+      const validationError = error.details.map(errorItem => errorItem.message);
+      return errorResponse(res, 422, 'validation error', validationError);
+    }
+
+    next();
+  };
 };
 
-export const validateRating = (req, res, next) => {
-  return validator(req.body, ratingSchema, res, next);
+/**
+ * validator for request Body
+ * @param {Object} schema - validation schema
+ * @param {Object} res - Express response object
+ * @param {Object} next - pass control to the next handler
+ * @returns {Object} Error Response if validation fails
+ */
+export const validateReqBody = schema => {
+  return (req, res, next) => {
+    const { error } = Joi.validate(req.body, schema, {
+      abortEarly: false,
+      language: {
+        key: '{{key}} ',
+      },
+    });
+
+    if (error) {
+      const validationError = error.details.map(errorItem => errorItem.message);
+      return errorResponse(res, 422, 'validation error', validationError);
+    }
+
+    next();
+  };
 };

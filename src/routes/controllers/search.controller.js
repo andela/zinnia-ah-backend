@@ -19,10 +19,6 @@ const { User, Article, Tag } = models;
 export default async function customSearch(req, res) {
   const { keyword } = req.query;
 
-  if (!keyword) {
-    return errorResponse(res, 400, 'Please input a search parameter');
-  }
-
   try {
     const articleAttributes = [
       'title',

@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { follow, unfollow } from './controllers/follow.controller';
 import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { validateReqParams } from './middlewares/validate-input.middleware';
+import { usernameOnly } from '../utils/validation-schema.utils';
 
 const followRouter = Router();
 
@@ -37,7 +39,12 @@ const followRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
-followRouter.post('/:username/follow', checkAuthorizedUser, follow);
+followRouter.post(
+  '/:username/follow',
+  validateReqParams(usernameOnly),
+  checkAuthorizedUser,
+  follow,
+);
 
 /**
  * @swagger
@@ -66,6 +73,11 @@ followRouter.post('/:username/follow', checkAuthorizedUser, follow);
  *       5XX:
  *        description: Unexpected error.
  */
-followRouter.delete('/:username/unfollow/', checkAuthorizedUser, unfollow);
+followRouter.delete(
+  '/:username/unfollow/',
+  validateReqParams(usernameOnly),
+  checkAuthorizedUser,
+  unfollow,
+);
 
 export default followRouter;

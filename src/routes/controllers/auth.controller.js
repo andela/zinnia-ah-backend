@@ -19,7 +19,9 @@ const { User } = models;
  */
 export async function signup(req, res) {
   const { email, username } = req.body;
+
   const isDuplicate = await checkDuplicateUser(email, username);
+
   if (isDuplicate) {
     return errorResponse(
       res,
@@ -69,8 +71,7 @@ export async function signup(req, res) {
  */
 export async function confirmUser(req, res) {
   try {
-    const decoded = await verifyToken(req.params.token);
-    const { id } = decoded;
+    const { id } = await verifyToken(req.params.token);
     const response = await User.update(
       {
         isEmailVerified: true,
