@@ -62,7 +62,7 @@ userRouter.get('/', getAllAuthors);
  *        description: Unexpected error.
  */
 userRouter.put(
-  '/profiles',
+ '/profiles',
   validateReqBody(userProfile),
   checkAuthorizedUser,
   updateUserProfile,

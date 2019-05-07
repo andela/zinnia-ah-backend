@@ -4,6 +4,7 @@ import {
   successResponse,
   serverError,
   getUserbyId,
+  getUserbyUsername,
 } from '../../utils/helpers.utils';
 
 const { User, ReadingStat, Article, Report, Comment } = models;
@@ -88,9 +89,9 @@ export async function getAuthorProfile(req, res) {
  */
 export const updateUserProfile = async (req, res) => {
   const { id } = req.user;
+  const { firstName, lastName, username, bio, image } = req.body;
   const user = await getUserbyId(id);
 
-  const { firstName, lastName, bio, image } = req.body;
   try {
     const profileUpdate = await User.update(
       {

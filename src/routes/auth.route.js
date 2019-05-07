@@ -9,6 +9,7 @@ import {
   socialController,
   login,
 } from './controllers/auth.controller';
+import { userCredentialsChecker } from './middlewares/duplicate-user.middleware';
 
 const authRouter = Router();
 
@@ -41,6 +42,7 @@ const authRouter = Router();
  *       5XX:
  *        description: Unexpected error.
  */
+
 authRouter.post('/signup', validateReqBody(signupSchema), signup);
 
 /**

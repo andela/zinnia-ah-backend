@@ -1,14 +1,17 @@
-export default {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('ArticleTags', {
+export default (Sequelize, DataTypes) => {
+  const Tags = Sequelize.define(
+    'ArticleTags',
+    {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
       },
       tagId: {
-        type: Sequelize.UUID,
+        allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         field: 'tag_id',
         references: {
@@ -18,8 +21,10 @@ export default {
         onDelete: 'CASCADE',
       },
       articleId: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
+        unique: true,
         field: 'article_id',
         references: {
           model: 'Articles',
@@ -29,16 +34,19 @@ export default {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         field: 'created_at',
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         field: 'updated_at',
       },
-    });
-  },
-
-  down: queryInterface => queryInterface.dropTable('ArticleTags'),
+    },
+    {},
+  );
+  Tags.associate = () => {
+    // associations can be defined here
+  };
+  return Tags;
 };

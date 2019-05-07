@@ -117,7 +117,7 @@ export const checkDuplicateUser = async (email, username) => {
       ],
     },
   });
-  return existingUser !== null;
+  return existingUser;
 };
 
 export const errorResponse = (res, statusCode, message, errors) =>

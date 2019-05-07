@@ -32,10 +32,12 @@ const { expect } = chai;
 
 let articles;
 const rating = 4;
-let jwtToken = '';
+
+let jwtToken = generateToken(existingUser);
+const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
 const falseToken = generateToken({ id: 'fake' });
-let articleId = '';
+let articleId = '4ec884b7-c450-4fe3-9db2-4e3e8c308e5f';
 
 describe('Articles', () => {
   before(async () => {
@@ -75,6 +77,22 @@ describe('Articles', () => {
           expect(res.status).to.eql(201);
           expect(res.body.status).to.eql('success');
           expect(res.body.data).to.be.an('object');
+          done();
+        });
+    });
+
+    it('should respond with 415 when tags is not created', done => {
+      articleRequestObject.tags = 'string tagged';
+      chai
+        .request(app)
+        .post('/api/v1/articles')
+        .set('x-access-token', jwtToken)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.eql(415);
+          expect(res.body.message).to.eql(
+            'tags should be an array, string provided',
+          );
           done();
         });
     });
@@ -212,7 +230,6 @@ describe('Articles', () => {
         .send(articleRequestObject);
       articleId = body.data.id;
     });
-
     it('should fail when id is invalid', done => {
       chai
         .request(app)
@@ -234,6 +251,10 @@ describe('Articles', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.status).to.equal('error');
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal(
+            'you are not authorized to perform this action',
+          );
           done();
         });
     });
@@ -244,6 +265,7 @@ describe('Articles', () => {
         .delete(`/api/v1/articles/${articleId}`)
         .set('Authorization', xAccessToken)
         .end((err, res) => {
+          console.log(res.body);
           expect(res.status).to.eql(200);
           expect(res.body.status).to.equal('success');
           expect(res.body.message).to.equal(

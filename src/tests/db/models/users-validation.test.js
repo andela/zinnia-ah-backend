@@ -112,9 +112,11 @@ describe('User', () => {
         .request(app)
         .post(endPoint)
         .send(userWithExistingEmail);
-      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.body).to.have.key('status', 'message');
       expect(response.status).to.be.eql(409);
-      expect(response.body.errors.length).to.be.greaterThan(0);
+      expect(response.body.message).to.equal(
+        'Sorry, this email has already been taken',
+      );
     });
 
     it('does not allow for username duplication', async () => {
@@ -123,9 +125,11 @@ describe('User', () => {
         .post(endPoint)
         .send(userWithExistingUserName);
 
-      expect(response.body).to.have.key('errors', 'status', 'message');
+      expect(response.body).to.have.key('status', 'message');
       expect(response.status).to.be.eql(409);
-      expect(response.body.errors.length).to.be.greaterThan(0);
+      expect(response.body.message).to.equal(
+        'Sorry, this username has already been taken',
+      );
     });
   });
 });

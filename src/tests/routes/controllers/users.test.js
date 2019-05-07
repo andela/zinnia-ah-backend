@@ -3,7 +3,10 @@ import chaiHttp from 'chai-http';
 
 import app from '../../../server';
 import { generateToken } from '../../../utils/helpers.utils';
-import { userCredentialsForToken } from '../../db/mockdata/userdata';
+import {
+  userCredentialsForToken,
+  secondUserWithExistingUserName,
+} from '../../db/mockdata/userdata';
 import { SLUGONE } from '../../db/mockdata/articledata';
 
 chai.use(chaiHttp);
@@ -125,6 +128,17 @@ describe('USER PROFILE', () => {
 
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Please provide a JWT token');
+    });
+    it('Should not allow update if username is already taken', async () => {
+      const response = await chai
+        .request(app)
+        .put(url)
+        .send(secondUserWithExistingUserName)
+        .set('Authorization', xAccessToken);
+      expect(response.status).to.equal(409);
+      expect(response.body.message).to.equal(
+        'Sorry, this username has already been taken',
+      );
     });
   });
 });
