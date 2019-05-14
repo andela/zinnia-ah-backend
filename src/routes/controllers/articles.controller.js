@@ -32,7 +32,7 @@ const { Article, User, Report, ReadingStat, Rating, Comment } = models;
  * @returns {object} article creation error/success message.
  */
 export async function createArticle(req, res) {
-  const { title, description, body, images, tags } = req.body;
+  const { title, description, body, imageThumbnail, tags } = req.body;
   if (!title || !description || !body) {
     return errorResponse(
       res,
@@ -63,6 +63,7 @@ export async function createArticle(req, res) {
       ).toLowerCase(),
       description,
       body,
+      imageThumbnail,
       readTime: timeToReadArticle,
       subscriptionType: FREE,
       status: DRAFT,

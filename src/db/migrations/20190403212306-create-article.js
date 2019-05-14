@@ -47,6 +47,11 @@ export default {
         type: Sequelize.TEXT,
         allowNull: false,
       },
+      imageThumbnail: {
+        type: Sequelize.TEXT,
+        field: 'image_thumbnail',
+        allowNull: true,
+      },
       subscriptionType: {
         type: Sequelize.ENUM(FREE, PREMIUM),
         field: 'subscription_type',
