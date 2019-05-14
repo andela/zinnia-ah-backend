@@ -11,6 +11,8 @@ export default {
         slug: slug(`Hello Article 1-${uuidv4()}`),
         description: 'Emmanuel Daniel uses this article',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -21,6 +23,8 @@ export default {
         slug: slug(`Messi: the GOAT-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -31,6 +35,8 @@ export default {
         slug: slug(`How to live long-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1531499267/zfzagvwapebjvr5tzxbt.svg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -41,6 +47,8 @@ export default {
         slug: slug(`Giving back to the community-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1531498302/w5pxscssyqtgft2lhuny.svg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -51,6 +59,8 @@ export default {
         slug: 'Hello-Article-5-3b8ab5fa-c594-4d5a-be6c-0b56888bb299',
         description: 'Dimkpa Opara uses this article to run his tests',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1531497285/wlki6g8nykxdodyd4ixq.svg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -61,6 +71,8 @@ export default {
         slug: slug(`Hello Article 8-${uuidv4()}`),
         description: 'Dimkpa Opara uses this article to run his tests',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1523911955/brainstorm_l87u78.png',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -71,6 +83,8 @@ export default {
         slug: 'Hello-Article-9-5a6fab9c-5849-4be5-973c-5a371165cd5',
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1514128720/mike_vobxlw.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -81,6 +95,8 @@ export default {
         slug: slug(`Owning your learning in life-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1509347819/stay_connected_iru4aq.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -91,6 +107,8 @@ export default {
         slug: slug(`Hello Article 10-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1504929549/sample.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -101,6 +119,8 @@ export default {
         slug: slug(`Hello Article 11-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1550365575/demo/an38yitvd6gluvvhisim.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -111,6 +131,8 @@ export default {
         slug: slug(`Hello Article 12-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1550758125/demo/hmbbdx0w5zpqujppfgvp.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -121,6 +143,8 @@ export default {
         slug: slug(`Hello Article 13-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1531497285/wlki6g8nykxdodyd4ixq.svg',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -131,6 +155,8 @@ export default {
         slug: slug(`Hello Article 14-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
         created_at: new Date(),
         updated_at: new Date(),
       },
