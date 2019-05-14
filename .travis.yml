@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-  - "stable"
+  - 'lts/*'
 
 install:
- - npm install
+  - npm install
 
 services:
   - postgresql
@@ -13,7 +13,5 @@ scripts: npm run test
 before_script:
   - psql -c 'create database ah_zinnia;' -U postgres
 
-
 after_success:
   - npm run coveralls
-
