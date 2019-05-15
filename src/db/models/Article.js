@@ -28,10 +28,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -39,6 +35,11 @@ export default (sequelize, DataTypes) => {
     body: {
       type: DataTypes.TEXT,
       allowNull: false,
+    },
+    imageThumbnail: {
+      type: DataTypes.TEXT,
+      field: 'image_thumbnail',
+      allowNull: true,
     },
     subscriptionType: {
       type: DataTypes.ENUM(FREE, PREMIUM),

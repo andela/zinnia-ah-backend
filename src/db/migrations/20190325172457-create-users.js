@@ -29,7 +29,7 @@ export default {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       bio: Sequelize.TEXT,
       interests: {

@@ -35,6 +35,10 @@ export default {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      tags: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
+      },
       description: {
         type: Sequelize.TEXT,
         allowNull: false,
@@ -42,6 +46,11 @@ export default {
       body: {
         type: Sequelize.TEXT,
         allowNull: false,
+      },
+      imageThumbnail: {
+        type: Sequelize.TEXT,
+        field: 'image_thumbnail',
+        allowNull: true,
       },
       subscriptionType: {
         type: Sequelize.ENUM(FREE, PREMIUM),

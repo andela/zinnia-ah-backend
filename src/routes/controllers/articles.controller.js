@@ -21,6 +21,7 @@ import {
   ADULT_CONTENT,
   OTHER,
 } from '../../utils/constants';
+import { createTag } from './tags.controller';
 
 const { Article, User, Report, ReadingStat, Rating, Comment } = models;
 
@@ -31,7 +32,7 @@ const { Article, User, Report, ReadingStat, Rating, Comment } = models;
  * @returns {object} article creation error/success message.
  */
 export async function createArticle(req, res) {
-  const { title, description, body, images, tags } = req.body;
+  const { title, description, body, imageThumbnail, tags } = req.body;
   if (!title || !description || !body) {
     return errorResponse(
       res,
@@ -49,7 +50,7 @@ export async function createArticle(req, res) {
     }
 
     const timeToReadArticle = calculateTimeToReadArticle({
-      images: images.split(','),
+      images: [],
       videos: [],
       words: body,
     });
@@ -62,13 +63,22 @@ export async function createArticle(req, res) {
       ).toLowerCase(),
       description,
       body,
-      imageList: images,
-      tagList: tags,
+      imageThumbnail,
       readTime: timeToReadArticle,
       subscriptionType: FREE,
       status: DRAFT,
     });
-
+    if (tags) {
+      console.log(tags);
+      const createdTag = await createTag(tags, createdArticle.id);
+      if (!createdTag) {
+        return errorResponse(
+          res,
+          415,
+          'tags should be an array, string provided',
+        );
+      }
+    }
     return successResponse(
       res,
       201,
