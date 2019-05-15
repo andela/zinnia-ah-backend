@@ -35,8 +35,8 @@ export async function forgotPassword(req, res) {
   );
   const url =
     process.env.NODE_ENV === 'development'
-      ? `${process.env.LOCAL_URL}/users/reset-password/${token}`
-      : `${process.env.PRODUCTION_URL}/users/reset-password/${token}`;
+      ? `${process.env.LOCAL_URL}/users/reset-password?token=${token}`
+      : `${process.env.PRODUCTION_URL}/users/reset-password?token=${token}`;
   const body = {
     receivers: [`${email}`],
     subject: 'Reset Password ',
