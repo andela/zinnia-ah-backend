@@ -97,7 +97,7 @@ describe('Social authentication', () => {
           interests: null,
           role: 'AUTHOR',
           image: null,
-          isEmailVerified: false,
+          isEmailVerified: true,
           createdAt: '2019-04-24T13:02:34.828Z',
           updatedAt: '2019-04-24T13:02:34.828Z',
         },
@@ -119,7 +119,7 @@ describe('Social authentication', () => {
     it('and return the appropriate response for a new user', async () => {
       req.user._options.isNewRecord = true;
       const response = await socialController(req, res);
-
+      console.log(response);
       expect(response.status).to.eql(201);
       expect(response.body.data.token).to.be.a('string');
     });

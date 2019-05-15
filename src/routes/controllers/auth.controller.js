@@ -121,16 +121,33 @@ export async function socialController(req, res) {
       },
     };
     const token = await generateToken(tokenPayload);
-
+    console.log(isNewRecord);
     if (isNewRecord) {
-      return res.redirect(
-        `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=true`,
-      );
+      // return successResponse(
+      //   res,
+      //   201,
+      //   'You have successfully registered however you would need to check your mail to verify your account',
+      //   {
+      //     user,
+      //     token,
+      //   },
+      // );
+      return res
+        .status(201)
+        .redirect(
+          `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=true`,
+        );
     }
 
-    res.redirect(
-      `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=false`,
-    );
+    // return successResponse(res, 201, 'Welcome back', {
+    //   user,
+    //   token,
+    // });
+    return res
+      .status(200)
+      .redirect(
+        `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=false`,
+      );
   } catch (err) {
     return serverError(res);
   }
