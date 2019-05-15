@@ -48,6 +48,7 @@ export const facebookAuth = async (
         username: profile.emails[0].value,
         email: profile.emails[0].value,
         socialProvider: profile.provider,
+        isEmailVerified: true,
       },
     });
     return done(null, currentUser);
@@ -65,6 +66,7 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
         username: profile.emails[0].value,
         email: profile.emails[0].value,
         socialProvider: profile.provider,
+        isEmailVerified: true,
       },
     });
 
@@ -84,6 +86,7 @@ export const googleAuth = async (token, tokenSecret, profile, done) => {
         username: profile.emails[0].value,
         email: profile.emails[0].value,
         socialProvider: profile.provider,
+        isEmailVerified: true,
       },
     });
     return done(null, user);

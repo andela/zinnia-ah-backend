@@ -114,24 +114,23 @@ export async function socialController(req, res) {
 
   try {
     const tokenPayload = {
-      id: user.id,
-      email: user.email,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
     };
     const token = await generateToken(tokenPayload);
+
     if (isNewRecord) {
-      return successResponse(
-        res,
-        201,
-        'You have successfully registered however you would need to check your mail to verify your account',
-        {
-          token,
-        },
+      return res.redirect(
+        `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=true`,
       );
     }
-    return successResponse(res, 200, 'You have successfully logged in', {
-      user,
-      token,
-    });
+
+    res.redirect(
+      `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=false`,
+    );
   } catch (err) {
     return serverError(res);
   }
