@@ -12,6 +12,8 @@ import session from 'express-session';
 // Create global app object
 const app = express();
 
+app.use(cors());
+
 // Define Static folder for public assets
 app.use(express.static(path.join(__dirname, '../doc')));
 
@@ -34,8 +36,6 @@ const swaggerSpec = swaggerJSDoc({
   swaggerDefinition,
   apis: ['./**/routes/*.js'], // pass all in array
 });
-
-app.use(cors());
 
 app.use(
   session({
