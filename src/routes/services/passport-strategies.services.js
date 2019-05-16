@@ -14,14 +14,12 @@ const credentials = {
   facebook: {
     clientID: process.env.FACEBOOK_APP_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: process.env.FACEBOOK_APP_CALLBACK,
     profileFields: ['id', 'email', 'name'],
   },
 
   twitter: {
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: process.env.TWITTER_APP_CALLBACK,
     includeEmail: true,
     profileFields: ['id', 'email', 'name'],
   },
@@ -29,7 +27,6 @@ const credentials = {
   google: {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_APP_CALLBACK,
   },
 };
 
@@ -56,7 +53,7 @@ export const facebookAuth = async (
   }
 };
 
-export const twitterAuth = async (token, tokenSecret, profile, done) => {
+export const twitterAuth = async (token, tokenSecret, profile, callback) => {
   try {
     const [user] = await User.findOrCreate({
       where: { socialId: profile.id, socialProvider: 'twitter' },
@@ -68,7 +65,7 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
       },
     });
 
-    return done(null, user);
+    return callback(null, user);
   } catch (err) {
     return done(err);
   }

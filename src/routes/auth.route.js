@@ -119,7 +119,19 @@ authRouter.get(
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.get('/twitter', passport.authenticate('twitter'));
+
+authRouter.get('/twitter', (req, res, next) => {
+  const { redirectTo } = req.query;
+  const callbackURL = `${
+    process.env.TWITTER_APP_CALLBACK
+  }?redirectTo=${redirectTo}`;
+
+  const authenticator = passport.authenticate('twitter', {
+    callbackURL,
+  });
+  authenticator(req, res, next);
+});
+
 authRouter.get(
   '/twitter/callback',
   passport.authenticate('twitter', { session: false }),

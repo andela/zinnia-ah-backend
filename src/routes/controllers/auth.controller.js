@@ -112,20 +112,23 @@ export async function socialController(req, res) {
       email: user.email,
     };
     const token = await generateToken(tokenPayload);
-    if (isNewRecord) {
-      return successResponse(
-        res,
-        201,
-        'You have successfully registered however you would need to check your mail to verify your account',
-        {
-          token,
-        },
-      );
-    }
-    return successResponse(res, 200, 'You have successfully logged in', {
-      user,
-      token,
-    });
+    // if (isNewRecord) {
+    //   return successResponse(
+    //     res,
+    //     201,
+    //     'You have successfully registered however you would need to check your mail to verify your account',
+    //     {
+    //       token,
+    //     },
+    //   );
+    // }
+    // return successResponse(res, 200, 'You have successfully logged in', {
+    //   user,
+    //   token,
+    // });
+
+    const { redirectTo } = req.query;
+    res.redirect(301, redirectTo);
   } catch (err) {
     return serverError(res);
   }

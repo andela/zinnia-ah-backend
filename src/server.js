@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'path';
 import morgan from 'morgan';
+import Joi from 'joi';
 
 import router from './routes';
 import passport from './routes/services/passport-strategies.services';
@@ -30,10 +31,10 @@ const swaggerDefinition = {
 };
 
 // initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc({
-  swaggerDefinition,
-  apis: ['./**/routes/*.js'], // pass all in array
-});
+// const swaggerSpec = swaggerJSDoc({
+//   swaggerDefinition,
+//   apis: ['./**/routes/*.js'], // pass all in array
+// });
 
 app.use(cors());
 
