@@ -111,6 +111,7 @@ export async function confirmUser(req, res) {
 export async function socialController(req, res) {
   const { isNewRecord } = req.user._options;
   const user = req.user.dataValues;
+  const { redirectUrl } = req;
 
   try {
     const tokenPayload = {
@@ -120,12 +121,12 @@ export async function socialController(req, res) {
         username: user.username,
       },
     };
+
     const token = await generateToken(tokenPayload);
 
-    return res.redirect(
-      301,
-      `https://zinnia-ah-frontend-staging.herokuapp.com/social-auth?token=${token}&isNewRecord=${isNewRecord}`,
-    );
+    const url = `${redirectUrl}?token=${token}&isNewRecord=${isNewRecord}`;
+
+    return res.redirect(301, url);
   } catch (err) {
     return serverError(res);
   }

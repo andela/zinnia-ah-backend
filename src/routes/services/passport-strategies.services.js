@@ -5,6 +5,7 @@ import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 import models from '../../db/models';
+import { Op } from 'sequelize';
 
 dotenv.config();
 
@@ -41,7 +42,17 @@ export const facebookAuth = async (
 ) => {
   try {
     const [currentUser] = await User.findOrCreate({
-      where: { socialId: profile.id, socialProvider: 'facebook' },
+      where: {
+        [Op.or]: [
+          {
+            username: profile.emails[0].value,
+          },
+          {
+            socialId: profile.id,
+            socialProvider: 'facebook',
+          },
+        ],
+      },
       defaults: {
         firstName: profile.name.givenName,
         lastName: profile.name.familyName,
@@ -60,7 +71,17 @@ export const facebookAuth = async (
 export const twitterAuth = async (token, tokenSecret, profile, done) => {
   try {
     const [user] = await User.findOrCreate({
-      where: { socialId: profile.id, socialProvider: 'twitter' },
+      where: {
+        [Op.or]: [
+          {
+            username: profile.emails[0].value,
+          },
+          {
+            socialId: profile.id,
+            socialProvider: 'twitter',
+          },
+        ],
+      },
       defaults: {
         firstName: profile.username,
         username: profile.emails[0].value,
@@ -69,7 +90,6 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
         isEmailVerified: true,
       },
     });
-
     return done(null, user);
   } catch (err) {
     return done(err);
@@ -79,7 +99,17 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
 export const googleAuth = async (token, tokenSecret, profile, done) => {
   try {
     const [user] = await User.findOrCreate({
-      where: { socialId: profile.id, socialProvider: 'google' },
+      where: {
+        [Op.or]: [
+          {
+            username: profile.emails[0].value,
+          },
+          {
+            socialId: profile.id,
+            socialProvider: 'google',
+          },
+        ],
+      },
       defaults: {
         firstName: profile.name.givenName,
         lastName: profile.name.familyName,

@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../../server';
+import { generateToken } from '../../../utils/helpers.utils';
 
 // configure chai to use expect
 chai.use(chaiHttp);
@@ -11,7 +12,10 @@ const userRequestObject = {
   email: 'igbominadeveloper@ah.com',
   password: 'password1',
 };
-
+const userToken = generateToken({
+  id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
+  email: 'nedyudombat@ah.com',
+});
 describe('CREATE COMMENT', () => {
   it('login user to get token', done => {
     chai
@@ -160,8 +164,7 @@ describe('CREATE COMMENT', () => {
       })
       .set('Accept', 'application/json')
       .set({
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4NjUxOTg5LTczMmYtNGMwNC05ZGRjLWVhMWY3MzgxOGZkMSIsImVtYWlsIjoibmVkeXVkb21iYXRAYWguY29tIiwiaWF0IjoxNTU1NDI3MTE3LCJleHAiOjE1NTgwMTkxMTd9.WqOZX4UyP08wmOx-wYYfVmxFqWzLnvlK_t8MeRiakno',
+        Authorization: userToken,
       })
       .end((err, res) => {
         expect(res.status).to.equal(401);

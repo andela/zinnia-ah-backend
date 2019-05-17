@@ -82,7 +82,7 @@ describe('Social authentication', () => {
       expect(googleTestUser.dataValues.username).to.eql('testMail.gl.com');
     });
   });
-  describe('Social controller should process user received from passport authentication and return a redirect', async () => {
+  describe('Social controller', async () => {
     let req = {
       user: {
         dataValues: {
@@ -106,6 +106,7 @@ describe('Social authentication', () => {
           isNewRecord: true,
         },
       },
+      redirectUrl: '',
     };
     const res = {
       redirect(statusCode, url) {
@@ -115,10 +116,12 @@ describe('Social authentication', () => {
 
     it('should return a successful redirect after authentication', async () => {
       req.user._options.isNewRecord = true;
+      req.redirectUrl = 'http://authorshaven.com';
       const response = await socialController(req, res);
-      expect(response.statusCode).to.eql(301);
-      expect(response.url.indexOf('social-auth')).to.not.eql(-1);
       expect(response).to.be.an('object');
+      expect(response).to.have.keys('statusCode', 'url');
+      expect(response.statusCode).to.eql(301);
+      expect(response.url.indexOf(req.redirectUrl)).to.not.be.eql(-1);
     });
   });
 });

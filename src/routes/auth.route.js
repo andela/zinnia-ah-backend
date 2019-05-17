@@ -9,6 +9,7 @@ import {
   login,
 } from './controllers/auth.controller';
 import { userCredentialsChecker } from './middlewares/duplicate-user.middleware';
+import { setRedirectUrl, getRedirectUrl } from './middlewares/request-refer';
 
 const authRouter = Router();
 
@@ -66,6 +67,7 @@ authRouter.get('/users/confirmation/:token', confirmUser);
  */
 authRouter.get(
   '/facebook',
+  setRedirectUrl,
   passport.authenticate('facebook', {
     scope: ['email'],
   }),
@@ -93,6 +95,7 @@ authRouter.get(
  */
 authRouter.get(
   '/facebook/callback',
+  getRedirectUrl,
   passport.authenticate('facebook', {
     session: false,
   }),
@@ -119,9 +122,10 @@ authRouter.get(
  *       5XX:
  *        description: Unexpected error.
  */
-authRouter.get('/twitter', passport.authenticate('twitter'));
+authRouter.get('/twitter', setRedirectUrl, passport.authenticate('twitter'));
 authRouter.get(
   '/twitter/callback',
+  getRedirectUrl,
   passport.authenticate('twitter', { session: false }),
   socialController,
 );
@@ -148,12 +152,15 @@ authRouter.get(
  */
 authRouter.get(
   '/google',
+  setRedirectUrl,
   passport.authenticate('google', {
     scope: ['profile', 'email'],
   }),
 );
+
 authRouter.get(
   '/google/callback',
+  getRedirectUrl,
   passport.authenticate('google', { session: false }),
   socialController,
 );
