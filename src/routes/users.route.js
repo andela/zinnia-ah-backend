@@ -199,7 +199,7 @@ userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
  *
  * /api/v1/users/likes:
  *   get:
- *     description: Get all articles liked by a user
+ *     description: Get all likes by a user
  *     produces:
  *       - application/json
  *     request:

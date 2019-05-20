@@ -265,6 +265,6 @@ export async function getAllUserLikes(req, res) {
       },
     );
   } catch (error) {
-    return errorResponse(res, 500, error.message);
+    return serverError(res);
   }
 }
