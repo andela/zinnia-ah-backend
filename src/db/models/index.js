@@ -1,6 +1,6 @@
-import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
+import fs from 'fs';
 import configuration from '../../config/config';
 
 const basename = path.basename(__filename);

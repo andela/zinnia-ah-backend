@@ -7,7 +7,6 @@ import {
   twitterAuth,
   googleAuth,
 } from '../../../routes/services/passport-strategies.services';
-import { stat } from 'fs';
 
 chai.use(chaiHttp);
 
