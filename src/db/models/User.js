@@ -121,6 +121,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'readingStat',
     });
+    User.hasMany(models.Comment, {
+      foreignKey: 'userId',
+      as: 'author',
+    });
   };
 
   User.prototype.hashPassword = async function hashPassword() {

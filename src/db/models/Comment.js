@@ -44,6 +44,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'articleId',
       as: 'article',
     });
+    Comment.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'author',
+    });
   };
   return Comment;
 };

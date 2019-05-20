@@ -43,8 +43,8 @@ export default {
           role: AUTHOR,
           email: 'gentlejane@ah.com',
           password: await hashPassword('gentlejane'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '446fab9c-5849-4bf5-973c-5a371165dd57',
@@ -52,8 +52,8 @@ export default {
           email: 'giant@gmail.com',
           role: AUTHOR,
           password: await hashPassword('smiley007'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '456fab9c-5849-4be5-973c-5a371165cd57',
@@ -61,8 +61,8 @@ export default {
           email: 'emmsdan@gmail.com',
           role: ADMIN,
           password: await hashPassword('emmsdan123'),
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '3231983a-b944-4c53-a549-f561f7474428',

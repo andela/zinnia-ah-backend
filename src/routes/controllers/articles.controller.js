@@ -24,7 +24,15 @@ import {
 import { createTag } from './tags.controller';
 import newArticleNotification from '../../utils/notifications/article-notification.utils';
 
-const { Article, User, Report, ReadingStat, Rating, Comment } = models;
+const {
+  Article,
+  User,
+  Report,
+  ReadingStat,
+  Rating,
+  Comment,
+  CommentLike,
+} = models;
 
 /**
  * passes new article to be created to the model
@@ -160,6 +168,17 @@ export async function getSingleArticle(req, res) {
         {
           model: Comment,
           as: 'comments',
+          include: [
+            {
+              model: User,
+              as: 'author',
+              attributes: ['username', 'image'],
+            },
+            {
+              model: CommentLike,
+              as: 'likes',
+            },
+          ],
         },
       ],
     });
@@ -172,6 +191,7 @@ export async function getSingleArticle(req, res) {
     }
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
+    console.log(error);
     return serverError(res);
   }
 }
