@@ -155,7 +155,7 @@ export async function getSingleArticle(req, res) {
         {
           model: User,
           as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
+          attributes: ['firstName', 'lastName', 'username', 'image'],
         },
         {
           model: Comment,
@@ -444,7 +444,7 @@ export async function getAllArticles(req, res) {
         {
           model: User,
           as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
+          attributes: ['firstName', 'lastName', 'username', 'image'],
         },
       ],
       limit,
