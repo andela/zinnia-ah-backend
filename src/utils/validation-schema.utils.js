@@ -31,7 +31,7 @@ export const newUserSchema = Joi.object()
       .alphanum()
       .lowercase()
       .trim()
-      .min(8)
+      .min(3)
       .required(),
     email: Joi.string()
       .lowercase()

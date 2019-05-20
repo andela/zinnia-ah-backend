@@ -81,7 +81,7 @@ describe('Social authentication', () => {
       expect(googleTestUser.dataValues.username).to.eql('testMail.gl.com');
     });
   });
-  describe('Social controller should process user received from passport authentication', async () => {
+  describe('Social controller', async () => {
     let req = {
       user: {
         dataValues: {
@@ -97,7 +97,7 @@ describe('Social authentication', () => {
           interests: null,
           role: 'AUTHOR',
           image: null,
-          isEmailVerified: false,
+          isEmailVerified: true,
           createdAt: '2019-04-24T13:02:34.828Z',
           updatedAt: '2019-04-24T13:02:34.828Z',
         },
@@ -105,36 +105,22 @@ describe('Social authentication', () => {
           isNewRecord: true,
         },
       },
+      redirectUrl: '',
     };
     const res = {
-      status(code) {
-        res.statusCode = code;
-        return res;
-      },
-      json(data) {
-        return { body: data, status: res.statusCode };
+      redirect(statusCode, url) {
+        return { statusCode, url };
       },
     };
 
-    it('and return the appropriate response for a new user', async () => {
+    it('should return a successful redirect after authentication', async () => {
       req.user._options.isNewRecord = true;
+      req.redirectUrl = 'http://authorshaven.com';
       const response = await socialController(req, res);
-
-      expect(response.status).to.eql(201);
-      expect(response.body.data.token).to.be.a('string');
-    });
-
-    it('and return the appropriate response for an existing user', async () => {
-      req.user._options.isNewRecord = false;
-      const response = await socialController(req, res);
-
-      expect(response.status).to.eql(200);
-      expect(response.body.status).to.eql('success');
-      expect(response.body.data.user).to.be.an('object');
-      expect(response.body.data.user.firstName).to.eql(
-        req.user.dataValues.firstName,
-      );
-      expect(response.body.data.token).to.be.a('string');
+      expect(response).to.be.an('object');
+      expect(response).to.have.keys('statusCode', 'url');
+      expect(response.statusCode).to.eql(301);
+      expect(response.url.indexOf(req.redirectUrl)).to.not.be.eql(-1);
     });
   });
 });

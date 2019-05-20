@@ -111,27 +111,22 @@ export async function confirmUser(req, res) {
 export async function socialController(req, res) {
   const { isNewRecord } = req.user._options;
   const user = req.user.dataValues;
+  const { redirectUrl } = req;
 
   try {
     const tokenPayload = {
-      id: user.id,
-      email: user.email,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
     };
+
     const token = await generateToken(tokenPayload);
-    if (isNewRecord) {
-      return successResponse(
-        res,
-        201,
-        'You have successfully registered however you would need to check your mail to verify your account',
-        {
-          token,
-        },
-      );
-    }
-    return successResponse(res, 200, 'You have successfully logged in', {
-      user,
-      token,
-    });
+
+    const url = `${redirectUrl}?token=${token}&isNewRecord=${isNewRecord}`;
+
+    return res.redirect(301, url);
   } catch (err) {
     return serverError(res);
   }
