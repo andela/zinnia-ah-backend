@@ -55,6 +55,12 @@ export default {
         defaultValue: AUTHOR,
         allowNull: false,
       },
+      subscribedForNotification: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+        field: 'subscribed_for_notification',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

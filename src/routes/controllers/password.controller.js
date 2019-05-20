@@ -10,6 +10,7 @@ import {
   verifyToken,
 } from '../../utils/helpers.utils';
 import { sendMailer } from '../../config/mail-config';
+import mailTemplate from '../../utils/mail-template/mail-template.utils';
 
 const { User } = models;
 
@@ -37,11 +38,15 @@ export async function forgotPassword(req, res) {
     process.env.NODE_ENV === 'development'
       ? `${process.env.LOCAL_URL}/users/reset-password?token=${token}`
       : `${process.env.PRODUCTION_URL}/users/reset-password?token=${token}`;
+  const emailBody = {
+    content: `This mail is sent to you because you requested a password reset. <a href="${url}">Go here</a>  to reset your password.`,
+    title: 'Reset Password',
+  };
   const body = {
     receivers: [`${email}`],
-    subject: 'Reset Password ',
+    subject: emailBody.content,
     text: '',
-    html: `<p>This mail is sent to you because you requested a password reset. <a href="${url}">Go here</a>  to reset your password.</p> `,
+    html: mailTemplate(emailBody),
   };
 
   try {

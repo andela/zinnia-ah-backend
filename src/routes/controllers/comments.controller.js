@@ -2,8 +2,9 @@ import {
   errorResponse,
   successResponse,
   serverError,
+  getUserbyId,
 } from '../../utils/helpers.utils';
-
+import newCommentNotification from '../../utils/notifications/comment-notification.utils';
 import models from '../../db/models';
 
 const { Comment, User, Article, CommentHistory, CommentLike } = models;
@@ -18,7 +19,7 @@ export const createComment = async (req, res) => {
     if (!checkIfArticleExists) {
       return errorResponse(res, 404, 'This article does not exist');
     }
-    const getUser = await User.findByPk(id);
+    const getUser = await getUserbyId(id);
     if (!getUser) {
       return errorResponse(res, 404, 'User does not exist');
     }
@@ -43,6 +44,7 @@ export const createComment = async (req, res) => {
         },
       },
     };
+    await newCommentNotification(articleId, id);
     return successResponse(res, 201, 'Comment has been created', responseData);
   } catch (err) {
     return serverError(res);

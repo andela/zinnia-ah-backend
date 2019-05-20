@@ -22,6 +22,7 @@ import {
   OTHER,
 } from '../../utils/constants';
 import { createTag } from './tags.controller';
+import newArticleNotification from '../../utils/notifications/article-notification.utils';
 
 const { Article, User, Report, ReadingStat, Rating, Comment } = models;
 
@@ -69,7 +70,6 @@ export async function createArticle(req, res) {
       status: DRAFT,
     });
     if (tags) {
-      console.log(tags);
       const createdTag = await createTag(tags, createdArticle.id);
       if (!createdTag) {
         return errorResponse(
@@ -79,6 +79,8 @@ export async function createArticle(req, res) {
         );
       }
     }
+
+    await newArticleNotification(userInfo.id, createArticle);
     return successResponse(
       res,
       201,

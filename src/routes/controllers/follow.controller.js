@@ -5,6 +5,7 @@ import {
   serverError,
   getUserbyUsername,
 } from '../../utils/helpers.utils';
+import newFollowerNotification from '../../utils/notifications/follow-notification.utils';
 
 const { User } = models;
 
@@ -42,6 +43,8 @@ export async function follow(req, res) {
       firstname: followee.firstname,
       lastname: followee.lastname,
     }));
+
+    await newFollowerNotification(userToBeFollowed.id, follower.id);
     return successResponse(
       res,
       200,
