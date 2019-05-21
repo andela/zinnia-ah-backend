@@ -1,5 +1,6 @@
 import uuidv4 from 'uuidv4';
 import slug from 'slug';
+import faker from 'faker';
 
 export default {
   up: async queryInterface =>
@@ -65,7 +66,7 @@ export default {
         updated_at: new Date(),
       },
       {
-        id: 'cd75c9de-324e-4b7e-be68-64c0ce09bd4d',
+        id: 'cd75c9de-324e-4b7e-be68-64c0ce09bc4d',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'DC property',
         slug: slug(`Hello Article 8-${uuidv4()}`),
@@ -87,6 +88,16 @@ export default {
           'https://res.cloudinary.com/nedy123/image/upload/v1514128720/mike_vobxlw.jpg',
         created_at: new Date(),
         updated_at: new Date(),
+      },
+      {
+        id: 'cc75f9de-324e-4b7e-be68-64c0ce09bc4d',
+        user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
+        title: 'used for delete article',
+        slug: slug(`used for delete article-${uuidv4()}`),
+        description: 'DO am currently using this post for delete article',
+        body: 'While I am testing, this post will be deleted',
+        created_at: new Date().toLocaleString(),
+        updated_at: new Date().toLocaleString(),
       },
       {
         id: '5d385a55-5089-4ae4-83af-767dbe106f4c',
@@ -211,10 +222,10 @@ export default {
         updated_at: new Date().toLocaleString(),
       },
       {
-        id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
+        id: 'cd75c9de-324e-4b7e-be68-64c0ce09bd4d',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 6',
-        slug: slug(`Hello Article 6-${uuidv4()}`),
+        slug: slug(`Hello Article 6-5a371165cd57`),
         description: 'Description goes here',
         body: 'Another Body',
         created_at: new Date().toLocaleString(),
@@ -241,20 +252,10 @@ export default {
         updated_at: new Date(),
       },
       {
-        id: uuidv4(),
+        id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 21',
         slug: slug(`Hello Article 21-${uuidv4()}`),
-        description: 'Description goes here',
-        body: 'Another Body',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: uuidv4(),
-        user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
-        title: 'Hello Article 22',
-        slug: slug(`Hello Article 22-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
         created_at: new Date(),
@@ -349,6 +350,16 @@ export default {
         body: 'Another Body',
         created_at: new Date(),
         updated_at: new Date(),
+      },
+      {
+        id: 'fde67992-75c1-44b6-a60a-007837c52006',
+        user_id: '34745e2c-772c-41df-916c-375958882184',
+        title: faker.lorem.sentence(1),
+        slug: slug('why i kill the bird - fde6799275c1'),
+        description: faker.lorem.paragraphs(1),
+        body: faker.lorem.paragraphs(30),
+        created_at: new Date().toLocaleString(),
+        updated_at: new Date().toLocaleString(),
       },
       {
         id: '8ebdfc3c-ffd7-440a-80f3-ab4ebeeb9cae',

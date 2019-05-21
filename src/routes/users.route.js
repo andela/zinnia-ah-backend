@@ -11,7 +11,7 @@ import {
   getAllUserLikes,
 } from './controllers/users.controller';
 
-import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
 import { usernameChecker } from './middlewares/duplicate-user.middleware';
 
 const userRouter = Router();

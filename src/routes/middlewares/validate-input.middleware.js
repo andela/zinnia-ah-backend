@@ -3,6 +3,7 @@ import {
   newUserSchema,
   articleIdSchema,
   ratingSchema,
+  articleSchema,
 } from '../../utils/validation-schema.utils';
 /**
  * Input validator for a new user account
@@ -21,4 +22,8 @@ export const validateUuid = (req, res, next) => {
 
 export const validateRating = (req, res, next) => {
   return validator(req.body, ratingSchema, res, next);
+};
+
+export const validateArticle = (req, res, next) => {
+  return validator(req.body, articleSchema, res, next);
 };

@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
 import rewire from 'rewire';
+import slug from 'slug';
 
 import app from '../../../server';
 import models from '../../../db/models';
@@ -33,22 +34,14 @@ const { expect } = chai;
 let articles;
 
 const rating = 4;
-
-let jwtToken = generateToken(existingUser);
-const endPoint = '/api/v1/articles';
 const xAccessToken = generateToken(existingUser);
 const falseToken = generateToken({ id: 'fake' });
-let articleId = '4ec884b7-c450-4fe3-9db2-4e3e8c308e5f';
+const articleId = 'cc75f9de-324e-4b7e-be68-64c0ce09bc4d';
+const signupUrl = '/api/v1/auth/signup';
+let jwtToken = generateToken(existingUser);
+const endPoint = '/api/v1/articles';
 
 describe('Articles', () => {
-  before(async () => {
-    const res = await chai
-      .request(app)
-      .post(loginUrl)
-      .send(loginCredentials);
-    jwtToken = res.body.data.token;
-  });
-
   describe('CREATE ARTICLE', () => {
     before(() => {
       // mocking sendMail
@@ -58,12 +51,12 @@ describe('Articles', () => {
     it('should fail when token is invalid or not supplied', done => {
       chai
         .request(app)
-        .post('/api/v1/articles')
+        .post(endPoint)
         .send(articleRequestObject)
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body.status).to.equal('error');
-          expect(res.body.message).to.equal('jwt must be provided');
+          expect(res.body.message).to.equal('Please provide a JWT token');
           done();
         });
     });
@@ -71,7 +64,7 @@ describe('Articles', () => {
     it('should create article successfully, with valid user input', done => {
       chai
         .request(app)
-        .post('/api/v1/articles')
+        .post(endPoint)
         .set('x-access-token', jwtToken)
         .send(articleRequestObject)
         .end((err, res) => {
@@ -90,25 +83,36 @@ describe('Articles', () => {
         .set('x-access-token', jwtToken)
         .send(articleRequestObject)
         .end((err, res) => {
-          expect(res.status).to.eql(415);
-          expect(res.body.message).to.eql(
-            'tags should be an array, string provided',
-          );
+          expect(res.status).to.eql(422);
+          expect(res.body.errors[0]).to.eql('tags must be an array');
           done();
         });
     });
 
     it('should fail when all fields are not supplied', done => {
+      articleRequestObject.tags = ['string', 'tagged'];
       chai
         .request(app)
-        .post('/api/v1/articles')
+        .post(endPoint)
         .set('x-access-token', jwtToken)
         .send(loginCredentials)
         .end((err, res) => {
           expect(res.status).to.equal(422);
-          expect(res.body.message).to.equal(
-            'invalid/empty input. all fields must be specified.',
-          );
+          expect(res.body.message).to.equal('validation error');
+          expect(res.body.errors).to.be.an('array');
+          done();
+        });
+    });
+
+    it('should fail when token is invalid or not supplied', done => {
+      chai
+        .request(app)
+        .post(endPoint)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.status).to.equal('error');
+          expect(res.body.message).to.equal('Please provide a JWT token');
           done();
         });
     });
@@ -223,44 +227,75 @@ describe('Articles', () => {
   });
 
   describe('Delete Article', () => {
-    it('should fail when id is invalid', done => {
+    it('should delete article successfully, with valid user input', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleId}ss`)
+        .delete(`/api/v1/articles/cc75f9de-324e-4b7e-be68-64c0ce09bc4d`)
         .set('Authorization', xAccessToken)
-        .send({})
+        .end((err, res) => {
+          expect(res.status).to.eql(200);
+          expect(res.body.status).to.equal('success');
+          expect(res.body.message).to.equal(
+            'article has been deleted successfully',
+          );
+          done();
+        });
+    });
+    it('should return 404 responses when article does not exist', done => {
+      chai
+        .request(app)
+        .put(`${endPoint}/cc75f9de-324e-4b7e-be68-64c0ce09bc4d`)
+        .set('x-access-token', jwtToken)
+        .send(articleRequestObject)
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('article does not exist');
           done();
         });
     });
+  });
 
-    it('should fail when userid does not match articles users id', done => {
+  describe('UPDATE ARTICLE', () => {
+    const articlesSlug = slug('why i kill the bird - fde6799275c1');
+    const articleSlugOther = slug('Hello Article 6-5a371165cd57');
+    it('should return 422 responses when there is validation error', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleId}`)
-        .set('Authorization', falseToken)
+        .put(`${endPoint}/${articlesSlug}`)
+        .set('x-access-token', jwtToken)
         .send({})
         .end((err, res) => {
-          expect(res.status).to.equal(401);
-          expect(res.body.message).to.equal(
-            'you are not authorized to perform this action',
-          );
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('validation error');
           done();
         });
     });
 
-    it('should delete article successfully, with valid user input', done => {
+    it('should return 200 responses when article is updated', done => {
       chai
         .request(app)
-        .delete(`/api/v1/articles/${articleId}`)
-        .set('Authorization', xAccessToken)
+        .put(`${endPoint}/${articleSlugOther}`)
+        .set('x-access-token', jwtToken)
+        .send(articleRequestObject)
         .end((err, res) => {
-          expect(res.status).to.eql(200);
-          expect(res.body.status).to.equal('success');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('article update successful');
+          expect(res.body.data).to.be.an('object');
+          expect(res.body.data).to.include.keys('title', 'body');
+          done();
+        });
+    });
+
+    it('should return 401 responses when user is not authorized', done => {
+      chai
+        .request(app)
+        .put(`${endPoint}/${articlesSlug}`)
+        .set('x-access-token', jwtToken)
+        .send(articleRequestObject)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
           expect(res.body.message).to.equal(
-            'article as been deleted successfully',
+            'You are not authorized to make this action',
           );
           done();
         });

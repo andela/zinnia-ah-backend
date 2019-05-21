@@ -33,42 +33,29 @@ const { Article, User, Report, ReadingStat, Rating, Comment } = models;
  * @returns {object} article creation error/success message.
  */
 export async function createArticle(req, res) {
-  const { title, description, body, imageThumbnail, tags } = req.body;
-  if (!title || !description || !body) {
-    return errorResponse(
-      res,
-      422,
-      'invalid/empty input. all fields must be specified.',
-    );
-  }
+  const { description, body, images, imageThumbnail, tags, status } = req.body;
   try {
-    const userInfo = await verifyToken(
-      req.headers['x-access-token'] || req.headers.authorization,
-    );
-
-    if (!userInfo) {
-      return errorResponse(res, 401, 'jwt must be provided');
-    }
-
     const timeToReadArticle = calculateTimeToReadArticle({
-      images: [],
+      images: images || [],
       videos: [],
       words: body,
     });
 
     const createdArticle = await Article.create({
-      userId: userInfo.id,
-      title,
+      ...req.body,
+      userId: req.user.id,
+      readTime: timeToReadArticle.toString(),
       slug: slug(
-        `${title}-${crypto.randomBytes(12).toString('base64')}`,
+        `${req.body.title}-${crypto.randomBytes(12).toString('base64')}`,
       ).toLowerCase(),
       description,
       body,
       imageThumbnail,
       readTime: timeToReadArticle,
       subscriptionType: FREE,
-      status: DRAFT,
+      status: status || DRAFT,
     });
+
     if (tags) {
       const createdTag = await createTag(tags, createdArticle.id);
       if (!createdTag) {
@@ -80,7 +67,7 @@ export async function createArticle(req, res) {
       }
     }
 
-    await newArticleNotification(userInfo.id, createArticle);
+    await newArticleNotification(req.user.id, createArticle);
     return successResponse(
       res,
       201,
@@ -116,7 +103,7 @@ export async function removeArticle(req, res) {
           return successResponse(
             res,
             200,
-            'article as been deleted successfully',
+            'article has been deleted successfully',
           );
         }
         return errorResponse(res, 404, 'article does not exist');
@@ -168,7 +155,7 @@ export async function getSingleArticle(req, res) {
         {
           model: User,
           as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
+          attributes: ['firstName', 'lastName', 'username', 'image'],
         },
         {
           model: Comment,
@@ -457,7 +444,7 @@ export async function getAllArticles(req, res) {
         {
           model: User,
           as: 'author',
-          attributes: ['firstName', 'lastName', 'username'],
+          attributes: ['firstName', 'lastName', 'username', 'image'],
         },
       ],
       limit,
@@ -543,4 +530,41 @@ function calcAverageRating(ratings) {
     allRatings.reduce((sum, rating) => sum + rating, 0) / allRatings.length;
 
   return averageRating;
+}
+
+/**
+ * updates articles
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} article update error/success message.
+ */
+export async function updateArticle(req, res) {
+  try {
+    const article = await Article.findOne({ where: { slug: req.params.slug } });
+    if (!article) {
+      return errorResponse(res, 404, 'article does not exist', article);
+    }
+    if (article.userId !== req.user.id) {
+      return errorResponse(
+        res,
+        401,
+        'You are not authorized to make this action',
+      );
+    }
+    const updatedArticle = await Article.update(req.body, {
+      where: {
+        slug: req.params.slug,
+        userId: req.user.id,
+      },
+      returning: true,
+    });
+    return successResponse(
+      res,
+      200,
+      'article update successful',
+      updatedArticle[1][0],
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
 }

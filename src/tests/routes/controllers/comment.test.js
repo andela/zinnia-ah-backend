@@ -3,11 +3,17 @@ import chaiHttp from 'chai-http';
 import app from '../../../server';
 import { generateToken } from '../../../utils/helpers.utils';
 
+import { existingUser } from '../../db/mockdata/userdata';
 // configure chai to use expect
 chai.use(chaiHttp);
 const { expect } = chai;
 
 let token = '';
+const jwtToken = generateToken(existingUser);
+const falseToken = generateToken({
+  id: '4c6fab4c-3926-4be5-166c-4a911165cd35',
+});
+
 const userRequestObject = {
   email: 'igbominadeveloper@ah.com',
   password: 'password1',
@@ -144,6 +150,7 @@ describe('CREATE COMMENT', () => {
         Authorization: token,
       })
       .end((err, res) => {
+        console.log(res.body);
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('You edited this comment');
         expect(res.body.data.updatedComment[1][0].body).to.equal(
