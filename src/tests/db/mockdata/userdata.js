@@ -123,8 +123,8 @@ export const existingUser = {
   username: 'igbominadeveloper',
   email: 'igbominadeveloper@ah.com',
   password: hashPassword('favourafolayan'),
-  created_at: new Date().toLocaleString(),
-  updated_at: new Date().toLocaleString(),
+  created_at: new Date(),
+  updated_at: new Date(),
 };
 
 export const highlightLogin = {
