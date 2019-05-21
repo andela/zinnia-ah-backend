@@ -18,6 +18,15 @@ export default {
           updated_at: new Date(),
         },
         {
+          id: '5a6fab9c-5849-4be5-973f-5b371165cd57',
+          username: 'favourafolayan',
+          email: 'favourafolayan@ah.com',
+          role: AUTHOR,
+          password: await hashPassword('favourafolayan'),
+          created_at: new Date().toLocaleString(),
+          updated_at: new Date().toLocaleString(),
+        },
+        {
           id: '4c6fab4c-3926-4be5-166c-4a911165cd35',
           username: 'superadmin',
           email: 'admin@ah.com',
@@ -47,7 +56,7 @@ export default {
           updated_at: new Date().toLocaleString(),
         },
         {
-          id: '34745e2c-772c-41df-916c-375958882184',
+          id: '456fab9c-5849-4be5-973c-5a371165cd57',
           username: 'emmsdance',
           email: 'emmsdan@gmail.com',
           role: ADMIN,
@@ -97,11 +106,32 @@ export default {
           created_at: new Date(),
           updated_at: new Date(),
         },
+        {
+          id: '6d1cdd96-c3b0-43d7-8446-a0db534a2c57',
+          username: 'pleasedont',
+          first_name: 'pleasedont',
+          last_name: 'delete',
+          email: 'dontdelete@ah.com',
+          role: AUTHOR,
+          password: await hashPassword('deletenot'),
+          created_at: new Date().toLocaleString(),
+          updated_at: new Date().toLocaleString(),
+        },
+        {
+          id: '34745e2c-772c-41df-916c-375958882184',
+          username: 'evendont',
+          first_name: 'pleasedont',
+          last_name: 'delete',
+          email: 'donttouch@ah.com',
+          role: AUTHOR,
+          password: await hashPassword('deletenot'),
+          created_at: new Date().toLocaleString(),
+          updated_at: new Date().toLocaleString(),
+        },
       ],
       {},
     );
   },
-
   down: queryInterface => {
     return queryInterface.bulkDelete('Users', null, {});
   },

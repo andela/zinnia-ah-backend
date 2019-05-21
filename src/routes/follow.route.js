@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { follow, unfollow } from './controllers/follow.controller';
-import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
 
 const followRouter = Router();
 

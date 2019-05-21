@@ -5,7 +5,7 @@ import {
   getHighlights,
   deleteHighlights,
 } from '../routes/controllers/highlights.controller';
-import checkAuthorizedUser from './middlewares/authorized-user.middleware';
+import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
 
 const highlightRouter = Router();
 
