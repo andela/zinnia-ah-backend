@@ -1,12 +1,12 @@
-import sequelize from '../../../.sequelizerc';
+import { Op } from 'sequelize';
 import models from '../../db/models';
 import {
   successResponse,
   errorResponse,
-  verifyToken,
+  serverError,
 } from '../../utils/helpers.utils';
 
-const { ArticleTags, Tag } = models;
+const { ArticleTags, Tag, Article } = models;
 
 /**
  * @description create tag for an article
@@ -73,6 +73,34 @@ export async function viewTags(req, res) {
     return { status: 'success', message: tagArticle };
   } catch (error) {
     return { status: 'error', error };
+  }
+}
+
+/**
+ * @description find tag
+ * @param {object} req
+ * @param {object} res
+ * @returns {Object} tag and articles
+ */
+export async function getArticleTag(req, res) {
+  const { tag } = req.params;
+
+  try {
+    const tagAndArticles = await Tag.findOne({
+      where: { name: tag },
+      include: {
+        model: Article,
+        as: 'articles',
+        attributes: ['title', 'description', 'imageThumbnail', 'slug'],
+      },
+    });
+
+    if (tagAndArticles) {
+      return successResponse(res, 200, '', tagAndArticles);
+    }
+    return errorResponse(res, 404, 'Tag not found');
+  } catch (error) {
+    return serverError(res);
   }
 }
 
