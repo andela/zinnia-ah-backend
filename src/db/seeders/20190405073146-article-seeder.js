@@ -96,8 +96,8 @@ export default {
         slug: slug(`used for delete article-${uuidv4()}`),
         description: 'DO am currently using this post for delete article',
         body: 'While I am testing, this post will be deleted',
-        created_at: new Date().toLocaleString(),
-        updated_at: new Date().toLocaleString(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         id: '5d385a55-5089-4ae4-83af-767dbe106f4c',
@@ -358,8 +358,8 @@ export default {
         slug: slug('why i kill the bird - fde6799275c1'),
         description: faker.lorem.paragraphs(1),
         body: faker.lorem.paragraphs(30),
-        created_at: new Date().toLocaleString(),
-        updated_at: new Date().toLocaleString(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         id: '8ebdfc3c-ffd7-440a-80f3-ab4ebeeb9cae',

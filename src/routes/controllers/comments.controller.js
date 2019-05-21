@@ -31,7 +31,7 @@ export const createComment = async (req, res) => {
     });
 
     const { createdAt, updatedAt } = newComment;
-    const { username, email } = getUser;
+    const { username, image } = getUser;
     const responseData = {
       comment: {
         id: newComment.id,
@@ -40,7 +40,7 @@ export const createComment = async (req, res) => {
         body: comment,
         author: {
           username,
-          email,
+          image,
         },
       },
     };

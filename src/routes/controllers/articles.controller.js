@@ -185,13 +185,14 @@ export async function getSingleArticle(req, res) {
 
     if (article) {
       // record the user reading the article
-      await recordARead(article.id, requestUser);
+      const currentArticle = article.toJSON();
+      currentArticle.likes = await article.getLikes();
 
-      return successResponse(res, 200, '', article);
+      await recordARead(article.id, requestUser);
+      return successResponse(res, 200, '', currentArticle);
     }
     return errorResponse(res, 404, 'Article does not exist');
   } catch (error) {
-    console.log(error);
     return serverError(res);
   }
 }
