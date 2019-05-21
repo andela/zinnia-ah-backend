@@ -32,6 +32,7 @@ const {
   Rating,
   Comment,
   CommentLike,
+  Tag,
 } = models;
 
 /**
@@ -179,6 +180,11 @@ export async function getSingleArticle(req, res) {
               as: 'likes',
             },
           ],
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: ['name'],
         },
       ],
     });

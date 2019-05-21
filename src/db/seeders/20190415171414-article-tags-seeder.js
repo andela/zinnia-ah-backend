@@ -29,7 +29,7 @@ export default {
         {
           id: uuidv4(),
           tag_id: 'a76b51db-f45e-43c1-abe1-65f28037a7fd',
-          article_id: '49b55c18-a23f-4a2f-a5de-30fd7a095599',
+          article_id: '48d6899d-a49a-4a36-9573-9f04961989f6',
           created_at: new Date(),
           updated_at: new Date(),
         },

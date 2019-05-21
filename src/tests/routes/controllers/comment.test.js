@@ -150,7 +150,6 @@ describe('CREATE COMMENT', () => {
         Authorization: token,
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('You edited this comment');
         expect(res.body.data.updatedComment[1][0].body).to.equal(
