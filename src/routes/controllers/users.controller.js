@@ -9,7 +9,7 @@ import {
   getUserbyUsername,
 } from '../../utils/helpers.utils';
 
-const { User, ReadingStat, Article, Report, Comment } = models;
+const { User, ReadingStat, Article, Report, Comment, CommentLike } = models;
 
 /**
  *
@@ -216,5 +216,55 @@ export async function getUsersComments(req, res) {
     });
   } catch (error) {
     return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} user likes
+ */
+export async function getAllUserLikes(req, res) {
+  const { user } = req;
+  const { type } = req.query;
+
+  try {
+    const currentUser = await getUserbyId(user.id);
+
+    if (type === 'articles' || type === 'article') {
+      const allArticlesLikedByUser = await currentUser.getLikes();
+      return successResponse(
+        res,
+        200,
+        'Successfully retrieved all articles liked by user',
+        { articles: allArticlesLikedByUser },
+      );
+    } else if (type === 'comments' || type === 'comment') {
+      const allCommentsLikedByUser = await CommentLike.findAll({
+        where: { userId: user.id },
+      });
+      return successResponse(
+        res,
+        200,
+        'Successfully retrieved all comments liked by user',
+        { comments: allCommentsLikedByUser },
+      );
+    }
+    const allArticlesLikedByUser = await currentUser.getLikes();
+    const allCommentsLikedByUser = await CommentLike.findAll({
+      where: { userId: user.id },
+    });
+    return successResponse(
+      res,
+      200,
+      'Successfully retrieved all likes by user',
+      {
+        articles: allArticlesLikedByUser,
+        comments: allCommentsLikedByUser,
+      },
+    );
+  } catch (error) {
+    return serverError(res);
   }
 }
