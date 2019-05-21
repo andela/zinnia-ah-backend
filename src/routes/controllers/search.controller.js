@@ -27,9 +27,11 @@ export default async function customSearch(req, res) {
     const articleAttributes = [
       'title',
       'description',
-      'body',
+      'slug',
       'status',
       'readTime',
+      'imageThumbnail',
+      'createdAt',
     ];
 
     const userAttributes = ['username', 'firstName', 'lastName', 'image'];
