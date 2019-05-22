@@ -63,12 +63,12 @@ describe('User Login Feature', () => {
       expect(res.body)
         .to.have.property('message')
         .to.be.a('string');
-      expect(res.body.data).to.include.deep.keys('user', 'token');
+      expect(res.body.data).to.include.deep.keys('authenticatedUser', 'token');
       expect(res.body.data)
         .to.have.property('token')
         .to.not.eql('');
       expect(res.body.data).to.nested.include({
-        'user.email': email,
+        'authenticatedUser.email': email,
       });
     });
   });
