@@ -34,14 +34,14 @@ describe('Article Notification', () => {
       .post('/api/v1/auth/login')
       .send(userWithFollower)
       .end((err, res) => {
-        userIdWithFollower = res.body.data.user.id;
+        userIdWithFollower = res.body.data.authenticatedUser.id;
       });
     chai
       .request(app)
       .post('/api/v1/auth/login')
       .send(userWithoutFollower)
       .end((err, res) => {
-        userIdWithoutFollower = res.body.data.user.id;
+        userIdWithoutFollower = res.body.data.authenticatedUser.id;
         done();
       });
   });

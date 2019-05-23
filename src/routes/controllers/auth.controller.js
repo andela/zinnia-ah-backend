@@ -6,6 +6,7 @@ import {
   successResponse,
   checkDuplicateUser,
   serverError,
+  excludeProperty,
 } from '../../utils/helpers.utils';
 import models from '../../db/models';
 import { sendMailer } from '../../config/mail-config';
@@ -157,8 +158,11 @@ export async function login(req, res) {
       id,
       email,
     });
+
+    const userJSON = user.toJSON();
+    const authenticatedUser = excludeProperty(userJSON, ['password']);
     return successResponse(res, 200, 'You have successfully logged in', {
-      user,
+      authenticatedUser,
       token,
     });
   } catch (error) {

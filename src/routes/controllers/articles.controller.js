@@ -9,6 +9,7 @@ import {
   getArticlebyId,
   serverError,
   isValidUuid,
+  excludeProperty,
 } from '../../utils/helpers.utils';
 import { FREE, DRAFT } from '../../utils/constants';
 import { calculateTimeToReadArticle } from '../../utils/readtime.utils';
@@ -222,7 +223,8 @@ export async function likeAnArticle(req, res) {
     if (!article) return errorResponse(res, 404, 'Article does not exist');
 
     await user.addLike(article);
-    const userData = user.toJSON();
+    const userDetails = user.toJSON();
+    const userData = excludeProperty(userDetails, ['password']);
     const likes = await user.getLikes();
 
     userData.likes = likes.map(item => {
@@ -256,7 +258,8 @@ export async function unlikeAnArticle(req, res) {
     if (!article) return errorResponse(res, 404, 'Article does not exist');
 
     await user.removeLike(article);
-    const userData = user.toJSON();
+    const userDetails = user.toJSON();
+    const userData = excludeProperty(userDetails, ['password']);
     const likes = await user.getLikes();
 
     userData.likes = likes.map(item => {
@@ -338,7 +341,8 @@ export async function bookmarkArticle(req, res) {
     if (!article) return errorResponse(res, 404, 'Article does not exist');
 
     await user.addBookmarks(article);
-    const userData = user.toJSON();
+    const userDetails = user.toJSON();
+    const userData = excludeProperty(userDetails, ['password']);
     const bookmarks = await user.getBookmarks();
 
     userData.bookmarks = bookmarks.map(item => {
@@ -372,7 +376,8 @@ export async function removeBookmark(req, res) {
     if (!article) return errorResponse(res, 404, 'Article does not exist');
 
     await user.removeBookmarks(article);
-    const userData = user.toJSON();
+    const userDetails = user.toJSON();
+    const userData = excludeProperty(userDetails, ['password']);
     const bookmarks = await user.getBookmarks();
 
     userData.bookmarks = bookmarks.map(item => {

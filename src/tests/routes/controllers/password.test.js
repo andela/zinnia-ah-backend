@@ -10,6 +10,10 @@ let resetToken;
 const userEmail = {
   email: 'jsmith@gmail.com',
 };
+const newPassword = {
+  password: '123password',
+};
+
 const fpUrl = '/api/v1/auth/users/forgot-password';
 const resetUrl = '/api/v1/auth/users/reset-password';
 describe('Forgot Password', () => {
@@ -46,7 +50,7 @@ describe('Reset Password', () => {
     chai
       .request(app)
       .patch(`${resetUrl}/${resetToken}`)
-      .send('password')
+      .send(newPassword)
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Password successfully reset');
@@ -69,18 +73,6 @@ describe('Reset Password', () => {
   });
 
   describe('Reset Password', () => {
-    it('should return a success and status of 200 if password has been reset', done => {
-      chai
-        .request(app)
-        .patch(`${resetUrl}/${resetToken}`)
-        .send('password')
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body.message).to.equal('Password successfully reset');
-          done();
-        });
-    });
-
     it('should fail if no token is provided in the request', done => {
       chai
         .request(app)
