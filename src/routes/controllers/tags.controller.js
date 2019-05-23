@@ -130,3 +130,22 @@ const processTags = async (tag, articleId) => {
     return { status: 'error', message: error };
   }
 };
+
+/**
+ * @description list tag
+ * @param {object} req
+ * @param {object} res
+ * @returns {boolean} tags array
+ */
+export async function getAllTags(req, res) {
+  try {
+    const tags = await Tag.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+    });
+    return successResponse(res, 200, 'Successful', tags);
+  } catch (error) {
+    return serverError(res);
+  }
+}

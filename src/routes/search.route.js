@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import customSearch from './controllers/search.controller';
-import { getArticleTag } from './controllers/tags.controller';
+import { getArticleTag, getAllTags } from './controllers/tags.controller';
 
 const searchRouter = Router();
 
@@ -72,5 +72,33 @@ searchRouter.get('/', customSearch);
  */
 
 searchRouter.get('/tags/:tag', getArticleTag);
+
+/**
+ * @swagger
+ *
+ * /api/v1/tags:
+ *   get:
+ *     description: get all tags
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/search'
+ *     responses:
+ *       200:
+ *         description: successfully retrieved all tags
+ *       400:
+ *         description: Bad request
+ *       404:
+ *        description: No tags found
+ *       5XX:
+ *        description: Unexpected error.
+ */
+
+searchRouter.get('/tags', getAllTags);
 
 export default searchRouter;
