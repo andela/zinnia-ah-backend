@@ -24,6 +24,7 @@ import {
   removeBookmark,
   reportArticle,
   rateArticle,
+  trendingArticles,
 } from './controllers/articles.controller';
 import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
 
@@ -239,6 +240,38 @@ articleRouter.post(
   checkAuthorizedUser,
   createThreadedComment,
 );
+
+/**
+ * @swagger
+ *
+ * /api/v1/articles/trending:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: users can get trending article.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: none.
+ *         from: token in Header
+ *         required: false
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/articles'
+ *     responses:
+ *       200:
+ *         description: trending articles array
+ *       400:
+ *         description: Bad request.
+ *       500:
+ *         description: Server did not process request
+ */
+articleRouter.get('/trending', trendingArticles);
 
 /**
  * @swagger
