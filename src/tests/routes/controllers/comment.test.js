@@ -120,7 +120,7 @@ describe('CREATE COMMENT', () => {
     chai
       .request(app)
       .post(
-        '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/18fd662d-ed92-419e-8af9-41afd3fb3d87/thread',
+        '/api/v1/articles/cd75c9de-324e-4b7e-be68-64c0ce09bd4d/comments/00fd662d-ed92-419e-8af9-41afd3fb3d87/thread',
       )
       .send({
         threadedComment: 'Legit thread comment',

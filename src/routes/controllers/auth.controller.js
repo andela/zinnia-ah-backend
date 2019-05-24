@@ -34,13 +34,14 @@ export async function signup(req, res) {
     const user = await User.create(req.body);
     const tokenPayload = {
       id: user.id,
+      username: user.username,
       email: user.email,
     };
     const token = await generateToken(tokenPayload);
     const url =
       process.env.NODE_ENV === 'development' || 'test'
-        ? `${process.env.LOCAL_URL}/${token}`
-        : `${process.env.PRODUCTION_URL}/${token}`;
+        ? `${process.env.LOCAL_URL}/auth/users/confirmation/${token}`
+        : `${process.env.PRODUCTION_URL}/auth/users/confirmation/${token}`;
     const body = {
       title: 'Verification Email',
       content: `Please click this <a href="${url}"> link</a> to confirm your email`,
@@ -77,7 +78,7 @@ export async function signup(req, res) {
 export async function confirmUser(req, res) {
   try {
     const decoded = await verifyToken(req.params.token);
-    const { id } = decoded;
+    const { id, username } = decoded;
     const response = await User.update(
       {
         isEmailVerified: true,
@@ -92,12 +93,7 @@ export async function confirmUser(req, res) {
     const responseData = {
       confirmed: response[1][0].isEmailVerified,
     };
-    return successResponse(
-      res,
-      200,
-      'Your account has been verified',
-      responseData,
-    );
+    return res.redirect(`https://zinnia-ah-frontend-staging.herokuapp.com/`);
   } catch (err) {
     return serverError(res);
   }

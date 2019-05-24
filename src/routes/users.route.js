@@ -9,6 +9,7 @@ import {
   getUsersBookmarks,
   getUsersComments,
   getAllUserLikes,
+  popularAuthors,
 } from './controllers/users.controller';
 
 import { checkAuthorizedUser } from './middlewares/authorized-user.middleware';
@@ -222,5 +223,32 @@ userRouter.get('/comments', checkAuthorizedUser, getUsersComments);
  *        description: Unexpected error.
  */
 userRouter.get('/likes', checkAuthorizedUser, getAllUserLikes);
+
+/**
+ * @swagger
+ *
+ * /api/v1/users/likes:
+ *   get:
+ *     description: Get popular authors
+ *     produces:
+ *       - application/json
+ *     request:
+ *         content:
+ *         - application/json
+ *         schema:
+ *           type: array
+ *           items:
+ *         $ref: '#/definitions/users'
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all popular authors
+ *       400:
+ *         description: Bad request.
+ *       404:
+ *        description: No popular authors
+ *       5XX:
+ *        description: Unexpected error.
+ */
+userRouter.get('/popular-authors', popularAuthors);
 
 export default userRouter;
