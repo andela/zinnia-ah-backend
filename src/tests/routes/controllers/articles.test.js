@@ -22,6 +22,7 @@ import {
   rateNotFoundArticleUrl,
   loginUrl,
   articleEndpoint,
+  trendingArticlesUrl,
 } from '../../db/mockdata/urldata';
 import { generateToken } from '../../../utils/helpers.utils';
 
@@ -582,6 +583,18 @@ describe('Articles', () => {
           .to.be.a('String')
           .to.eql(errorMessage);
       });
+    });
+  });
+
+  context('trending articles', () => {
+    it('should return a 200 on success', async () => {
+      const res = await chai
+        .request(app)
+        .get(trendingArticlesUrl)
+        .set('x-access-token', jwtToken);
+      expect(res.status).to.equal(200);
+      expect(res.body).to.have.property('status', 'success', '');
+      expect(res.body.data).to.have.property('rows');
     });
   });
 });

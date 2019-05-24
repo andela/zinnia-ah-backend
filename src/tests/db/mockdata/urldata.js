@@ -1,3 +1,4 @@
+export const trendingArticlesUrl = '/api/v1/articles/trending';
 export const likeArticleUrl =
   '/api/v1/articles/4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f/like';
 export const unlikeArticleUrl =
