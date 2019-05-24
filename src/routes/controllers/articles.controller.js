@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import slug from 'slug';
+import { Op } from 'sequelize';
 
 import models from '../../db/models';
 import {
@@ -609,5 +610,37 @@ export async function updateArticle(req, res) {
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
+  }
+}
+
+/**
+ * Fetch all trending articles
+ * @param {Object} req Express Request Object
+ * @param {Object} res Express Response Object
+ * @returns {Object} res with articles array if it exists
+ * @returns {Object} res with 404 response if the array is empty
+ */
+export async function trendingArticles(req, res) {
+  try {
+    const articles = await Article.findAndCountAll({
+      include: [
+        {
+          model: Comment,
+          as: 'comments',
+          where: { comments: { [Op.not]: [] } },
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'author',
+          attributes: ['id', 'firstName', 'lastName', 'username', 'image'],
+        },
+      ],
+      limit: 6,
+    });
+
+    return successResponse(res, 200, '', articles);
+  } catch (error) {
+    return serverError(res);
   }
 }
