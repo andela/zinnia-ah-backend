@@ -6,7 +6,7 @@ import {
   serverError,
 } from '../../utils/helpers.utils';
 
-const { ArticleTags, Tag, Article } = models;
+const { ArticleTags, Tag, Article, User } = models;
 
 /**
  * @description create tag for an article
@@ -91,7 +91,12 @@ export async function getArticleTag(req, res) {
       include: {
         model: Article,
         as: 'articles',
-        attributes: ['title', 'description', 'imageThumbnail', 'slug'],
+        attributes: ['id', 'title', 'description', 'imageThumbnail', 'slug'],
+        include: {
+          model: User,
+          as: 'author',
+          attributes: ['id', 'username', 'firstName', 'lastName', 'image'],
+        },
       },
     });
 
