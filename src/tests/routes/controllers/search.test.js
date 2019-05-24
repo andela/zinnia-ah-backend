@@ -83,4 +83,13 @@ describe('Custom search', () => {
     expect(body.data.articles.length).to.be.eql(0);
     expect(body.data.authors.length).to.be.eql(0);
   });
+
+  it('returns all tags', async () => {
+    const { status, body } = await chai.request(app).get(`${searchUrl}/tags`);
+
+    expect(status).to.be.eql(200);
+    expect(body.status).to.be.eql('success');
+    expect(body).to.have.keys('status', 'message', 'data');
+    expect(body.data).be.an('array');
+  });
 });
