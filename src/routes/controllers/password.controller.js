@@ -5,6 +5,7 @@ import models from '../../db/models';
 import {
   generateToken,
   getUserbyEmail,
+  serverError,
   errorResponse,
   successResponse,
   verifyToken,
@@ -55,7 +56,7 @@ export async function forgotPassword(req, res) {
       token,
     });
   } catch (err) {
-    return errorResponse(res, 500, 'Email could not be sent, please try again');
+    return serverError(res);
   }
 }
 
@@ -68,7 +69,7 @@ export async function forgotPassword(req, res) {
 export async function resetPassword(req, res) {
   const { token } = req.params;
   const { password } = req.body;
-  const hashedPassword = bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const user = await verifyToken(token);
   if (user === null) {
     return errorResponse(res, 400, 'Token Malformed', true);
@@ -77,7 +78,7 @@ export async function resetPassword(req, res) {
   try {
     await User.update(
       {
-        passwords: hashedPassword,
+        password: hashedPassword,
       },
       {
         where: {
@@ -87,10 +88,6 @@ export async function resetPassword(req, res) {
     );
     return successResponse(res, 200, 'Password successfully reset');
   } catch (err) {
-    return errorResponse(
-      res,
-      500,
-      'Password could not be reset, please try again',
-    );
+    return serverError(res);
   }
 }

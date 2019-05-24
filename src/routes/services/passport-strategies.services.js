@@ -48,6 +48,9 @@ export const facebookAuth = async (
             username: profile.emails[0].value,
           },
           {
+            email: profile.emails[0].value,
+          },
+          {
             socialId: profile.id,
             socialProvider: 'facebook',
           },
@@ -77,6 +80,9 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
             username: profile.emails[0].value,
           },
           {
+            email: profile.emails[0].value,
+          },
+          {
             socialId: profile.id,
             socialProvider: 'twitter',
           },
@@ -103,6 +109,9 @@ export const googleAuth = async (token, tokenSecret, profile, done) => {
         [Op.or]: [
           {
             username: profile.emails[0].value,
+          },
+          {
+            email: profile.emails[0].value,
           },
           {
             socialId: profile.id,

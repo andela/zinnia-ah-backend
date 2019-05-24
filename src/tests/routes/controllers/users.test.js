@@ -62,7 +62,7 @@ describe('List Users functionality', () => {
 const userRequestObject = {
   username: 'janesmith',
   email: 'jsmith@gmail.com',
-  password: 'hhrtuyhgty5t678',
+  password: '123password',
 };
 
 const signinUrl = '/api/v1/auth/login';
