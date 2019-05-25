@@ -168,6 +168,11 @@ export async function getSingleArticle(req, res) {
           attributes: ['firstName', 'lastName', 'username', 'image'],
         },
         {
+          model: Rating,
+          as: 'ratings',
+          attributes: ['id', 'userId', 'articleId', 'rating'],
+        },
+        {
           model: Comment,
           as: 'comments',
           include: [
@@ -194,6 +199,7 @@ export async function getSingleArticle(req, res) {
       // record the user reading the article
       const currentArticle = article.toJSON();
       currentArticle.likes = await article.getLikes();
+      delete currentArticle.password;
 
       await recordARead(article.id, requestUser);
       return successResponse(res, 200, '', currentArticle);
