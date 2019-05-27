@@ -289,4 +289,20 @@ describe('User stats', () => {
       expect(body.data).to.have.property('comments');
     });
   });
+
+  context('Popular authors', () => {
+    it('returns a 200 and retrieve 4 popular authors', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .get('/api/v1/users/popular-authors')
+        .set('x-access-token', userToken);
+
+      expect(status).to.eql(200);
+      expect(body).to.have.keys('status', 'message', 'data');
+      expect(body.message).to.eql(
+        'Successfully retrieved four popular authors',
+      );
+      expect(body.data).to.be.have.length.within(0, 4);
+    });
+  });
 });

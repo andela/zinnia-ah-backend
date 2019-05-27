@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Op } from 'sequelize';
 
 import models from '../../db/models';
 import {
@@ -263,6 +264,42 @@ export async function getAllUserLikes(req, res) {
         articles: allArticlesLikedByUser,
         comments: allCommentsLikedByUser,
       },
+    );
+  } catch (error) {
+    return serverError(res);
+  }
+}
+
+/**
+ *
+ * @param {Object} req express request
+ * @param {Object} res express response
+ * @returns {Array} popular authors
+ */
+export async function popularAuthors(req, res) {
+  try {
+    const authors = await User.findAll({
+      include: [
+        {
+          model: Article,
+          as: 'publications',
+          where: { publications: { [Op.not]: [] } },
+          include: {
+            model: Comment,
+            as: 'comments',
+            where: { comments: { [Op.not]: [] } },
+            attributes: ['body'],
+          },
+          attributes: ['title'],
+        },
+      ],
+      limit: 4,
+    });
+    return successResponse(
+      res,
+      200,
+      'Successfully retrieved four popular authors',
+      authors,
     );
   } catch (error) {
     return serverError(res);
