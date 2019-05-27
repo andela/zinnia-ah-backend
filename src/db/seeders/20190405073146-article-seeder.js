@@ -11,9 +11,7 @@ export default {
         title: 'EMMSDAN article',
         slug: slug(`Hello Article 1-${uuidv4()}`),
         description: `A girl named Jillian takes her little sisters Katie and Amanda, accompanied by their doll Mary-Ellen,
-          to a puppet show of a teenager named Jimmy O'James, with Slappy the Dummy as his partner. At the show,
-          Slappy spies the twins and Jillian with Mary-Ellen.
-          Slappy then pullsthe twins up on stage with Mary-Ellen and makes fun of them`,
+          to a puppet show of a teenager named Jimmy O'James, with Slappy the Dummy as his partner.`,
         body: `A girl named Jillian takes her little sisters Katie and Amanda, accompanied by their doll Mary-Ellen,
           to a puppet show of a teenager named Jimmy O'James, with Slappy the Dummy as his partner. At the show,
           Slappy spies the twins and Jillian with Mary-Ellen.
@@ -68,7 +66,8 @@ export default {
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Messi: the GOAT',
         slug: slug(`Messi: the GOAT-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
@@ -81,7 +80,8 @@ export default {
         user_id: '34745e2c-772c-41df-916c-375958882184',
         title: 'How to live long',
         slug: slug(`How to live long-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1531499267/zfzagvwapebjvr5tzxbt.svg',
@@ -94,7 +94,8 @@ export default {
         user_id: '3231983a-b944-4c53-a549-f561f7474428',
         title: 'Giving back to the community',
         slug: slug(`Giving back to the community-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1531498302/w5pxscssyqtgft2lhuny.svg',
@@ -107,10 +108,7 @@ export default {
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'DC owns this article',
         slug: 'Hello-Article-5-3b8ab5fa-c594-4d5a-be6c-0b56888bb299',
-        description: `We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery.
-         Nature is our best friend which provides us all the resources to live here. It gives us water to drink, pure air
-         to breathe, food to eat, land to stay, animals, plants for our other uses, etc for our betterment.
-         We should fully enjoy the nature without disturbing its ecological balance. We should care our nature, `,
+        description: `We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. `,
         body: `
          We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery.
          Nature is our best friend which provides us all the resources to live here. It gives us water to drink, pure air
@@ -151,7 +149,8 @@ export default {
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'DC property',
         slug: slug(`Hello Article 8-${uuidv4()}`),
-        description: 'Dimkpa Opara uses this article to run his tests',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1523911955/brainstorm_l87u78.png',
@@ -164,7 +163,8 @@ export default {
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'Hello Article 9',
         slug: 'Hello-Article-9-5a6fab9c-5849-4be5-973c-5a371165cd5',
-        description: 'Description goes here',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1514128720/mike_vobxlw.jpg',
@@ -177,7 +177,8 @@ export default {
         user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
         title: 'used for delete article',
         slug: slug(`used for delete article-${uuidv4()}`),
-        description: 'DO am currently using this post for delete article',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'While I am testing, this post will be deleted',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1509347819/stay_connected_iru4aq.jpg',
@@ -190,7 +191,8 @@ export default {
         user_id: '6d1cdd96-c3b0-43d7-8446-a0db534a1c57',
         title: 'Owning your learning in life',
         slug: slug(`Owning your learning in life-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1509347819/stay_connected_iru4aq.jpg',
@@ -203,7 +205,8 @@ export default {
         user_id: '6d1cdd96-c3b0-43d7-8446-a0db534a1c57',
         title: 'Hello Article 10',
         slug: slug(`Hello Article 10-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1504929549/sample.jpg',
@@ -216,7 +219,8 @@ export default {
         user_id: '6d1cdd96-c3b0-43d7-8446-a0db534a1c57',
         title: 'Hello Article 11',
         slug: slug(`Hello Article 11-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1550365575/demo/an38yitvd6gluvvhisim.jpg',
@@ -229,7 +233,8 @@ export default {
         user_id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
         title: 'Hello Article 12',
         slug: slug(`Hello Article 12-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1550758125/demo/hmbbdx0w5zpqujppfgvp.jpg',
@@ -242,7 +247,8 @@ export default {
         user_id: '18651989-732f-4c04-9ddc-ea1f73818fd1',
         title: 'Hello Article 13',
         slug: slug(`Hello Article 13-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1531497285/wlki6g8nykxdodyd4ixq.svg',
@@ -255,7 +261,8 @@ export default {
         user_id: '3231983a-b944-4c53-a549-f561f7474428',
         title: 'Hello Article 14',
         slug: slug(`Hello Article 14-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
@@ -281,7 +288,8 @@ export default {
         user_id: '34745e2c-772c-41df-916c-375958882184',
         title: 'Hello Article 16',
         slug: slug(`Hello Article 16-${uuidv4()}`),
-        description: 'Description goes here',
+        description:
+          'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
           'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
