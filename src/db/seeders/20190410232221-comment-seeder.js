@@ -157,14 +157,6 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '48fd662d-ed92-419e-8af9-41afd3fb3d87',
-          user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
-          article_id: '0aedc83d-5172-4874-bc43-7826e955fccb',
-          body: 'Description goes here too',
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
           id: '58fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '0aedc83d-5172-4874-bc43-7826e955fccb',
@@ -261,7 +253,7 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '43fd662d-ed92-419e-8af9-41afd3fb3d87',
+          id: '48fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '747d9de5-e272-4201-bcfc-6d703aa5a6a5',
           body: 'Description goes here too',
@@ -269,7 +261,7 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '44fd662d-ed92-419e-8af9-41afd3fb3d87',
+          id: '49fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '795bb49c-1a36-4b55-adf3-865088acb3b6',
           body: 'Description goes here too',
@@ -277,7 +269,7 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '45fd662d-ed92-419e-8af9-41afd3fb3d87',
+          id: '50fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '47d790b9-9995-40df-a1e6-c3ad634253ef',
           body: 'Description goes here too',
@@ -285,7 +277,7 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '46fd662d-ed92-419e-8af9-41afd3fb3d87',
+          id: '51fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '48d6899d-a49a-4a36-9573-9f04961989f6',
           body: 'Description goes here too',
@@ -293,7 +285,7 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '47fd662d-ed92-419e-8af9-41afd3fb3d87',
+          id: '52fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '8d779273-a5d3-4e48-8887-a412cc091353',
           body: 'Description goes here too',

@@ -39,11 +39,12 @@ describe('User registration', () => {
       expect(res.body.data.token).to.not.eql('');
     });
 
-    it('should confirm a user', async () => {
+    it('should confirm a user', async done => {
       const res = await chai
         .request(app)
         .get(`${confirmationUrl}/${userToken}`);
       expect(res.status).to.equal(200);
+      done();
     });
   });
 });

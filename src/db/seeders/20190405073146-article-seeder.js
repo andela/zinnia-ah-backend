@@ -56,7 +56,7 @@ export default {
           to death by a steamroller. However, Slappy then comes alive and grabs Kris as she is going to shut the window.
           Unlike other books, Slappy never causes any trouble despite being alive until the end.`,
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987845/Authors%20Haven/authorshaven/wrtier1.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -70,7 +70,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987845/Authors%20Haven/authorshaven/writer2.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -84,7 +84,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499267/zfzagvwapebjvr5tzxbt.svg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987845/Authors%20Haven/authorshaven/writer3.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -98,7 +98,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531498302/w5pxscssyqtgft2lhuny.svg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/wrtier4.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -139,7 +139,7 @@ export default {
          people used to of yoga and meditation are seen in the early morning in the garden to re-energize their
          body, mind and soul.`,
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531497285/wlki6g8nykxdodyd4ixq.svg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/writer5.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -153,7 +153,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1523911955/brainstorm_l87u78.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/wrtier6.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -167,7 +167,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1514128720/mike_vobxlw.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987848/Authors%20Haven/authorshaven/writer7.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -181,7 +181,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'While I am testing, this post will be deleted',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1509347819/stay_connected_iru4aq.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987844/Authors%20Haven/authorshaven/writer8.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -195,7 +195,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1509347819/stay_connected_iru4aq.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987849/Authors%20Haven/authorshaven/wrtier9.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -209,7 +209,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1504929549/sample.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987853/Authors%20Haven/authorshaven/writer10.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -223,7 +223,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1550365575/demo/an38yitvd6gluvvhisim.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987848/Authors%20Haven/authorshaven/writer11.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -237,7 +237,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1550758125/demo/hmbbdx0w5zpqujppfgvp.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987848/Authors%20Haven/authorshaven/writer12.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -251,7 +251,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531497285/wlki6g8nykxdodyd4ixq.svg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987848/Authors%20Haven/authorshaven/writer13.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -265,7 +265,7 @@ export default {
           'Our nature provides us variety of beautiful flowers, attractive birds, animals, green plants, blue sky, land',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987846/Authors%20Haven/authorshaven/writer14.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -278,7 +278,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987845/Authors%20Haven/authorshaven/writer15.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -292,7 +292,7 @@ export default {
           'We live on the most beautiful planet, Earth which has very clean and attractive nature full of greenery. ',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987847/Authors%20Haven/authorshaven/writer16.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -305,7 +305,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987848/Authors%20Haven/authorshaven/writer17.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -318,7 +318,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/writer18.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -331,7 +331,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/writer18.jpg',
         read_time: '0',
         created_at: new Date().toLocaleString(),
         updated_at: new Date().toLocaleString(),
@@ -343,6 +343,8 @@ export default {
         slug: slug(`Hello Article 6-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer19.jpg',
         read_time: '0',
         created_at: new Date().toLocaleString(),
         updated_at: new Date().toLocaleString(),
@@ -355,7 +357,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987840/Authors%20Haven/authorshaven/writer20.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -367,6 +369,8 @@ export default {
         slug: slug(`Hello Article 20-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987840/Authors%20Haven/authorshaven/writer21.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -379,7 +383,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987839/Authors%20Haven/authorshaven/writer22.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -391,6 +395,8 @@ export default {
         slug: slug(`Hello Article 22-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987840/Authors%20Haven/authorshaven/writer23.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -403,7 +409,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/writer24.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -415,6 +421,8 @@ export default {
         slug: slug(`Hello Article 24-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987843/Authors%20Haven/authorshaven/writer25.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -427,7 +435,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987841/Authors%20Haven/authorshaven/writer26.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -439,6 +447,8 @@ export default {
         slug: slug(`Hello Article 26-${uuidv4()}`),
         description: 'Description goes here',
         body: 'Another Body',
+        image_thumbnail:
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987841/Authors%20Haven/authorshaven/writer27.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -451,7 +461,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1517244412/stil-326695_l0bkmk.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987841/Authors%20Haven/authorshaven/writer28.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -464,7 +474,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987841/Authors%20Haven/authorshaven/writer30.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -477,7 +487,7 @@ export default {
         description: 'Description goes here',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer31.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -490,7 +500,7 @@ export default {
         description: 'UGOJI added this article to run his tests',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer32.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -503,7 +513,7 @@ export default {
         description: 'UGOJI added this article to run his tests',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer33.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -516,7 +526,7 @@ export default {
         description: 'Description goes here, Eben',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1531499318/mbppkzeehprspnbbcym8.png',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer34.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -529,7 +539,7 @@ export default {
         description: faker.lorem.paragraphs(1),
         body: faker.lorem.paragraphs(30),
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer35.jpg',
         read_time: '0',
         created_at: new Date(),
         updated_at: new Date(),
@@ -542,7 +552,7 @@ export default {
         description: 'UGOJI added this article to run his tests',
         body: 'Another Body',
         image_thumbnail:
-          'https://res.cloudinary.com/nedy123/image/upload/v1533036618/mb0zefwbaccwnsuwretb.jpg',
+          'https://res.cloudinary.com/nedy123/image/upload/v1558987842/Authors%20Haven/authorshaven/writer36.jpg',
         read_time: '0',
         created_at: new Date().toLocaleString(),
         updated_at: new Date().toLocaleString(),
