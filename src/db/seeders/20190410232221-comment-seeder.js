@@ -157,14 +157,6 @@ export default {
           updated_at: new Date(),
         },
         {
-          id: '48fd662d-ed92-419e-8af9-41afd3fb3d87',
-          user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
-          article_id: '0aedc83d-5172-4874-bc43-7826e955fccb',
-          body: 'Description goes here too',
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
           id: '58fd662d-ed92-419e-8af9-41afd3fb3d87',
           user_id: '5a6fab9c-5849-4be5-973c-5a371165cd57',
           article_id: '0aedc83d-5172-4874-bc43-7826e955fccb',
