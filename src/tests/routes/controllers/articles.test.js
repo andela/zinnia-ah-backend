@@ -200,7 +200,7 @@ describe('Articles', () => {
           .to.be.an('object')
           .to.have.property('userData');
         expect(res.body.data.userData.likes).to.deep.include({
-          title: 'Test Article for likes and unlikes',
+          title: 'Two-Edged Sword',
           id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
           slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
         });
@@ -472,7 +472,7 @@ describe('Articles', () => {
           .to.be.an('object')
           .to.have.property('userData');
         expect(res.body.data.userData.bookmarks).to.deep.include({
-          title: 'Test Article for likes and unlikes',
+          title: 'Two-Edged Sword',
           id: '4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
           slug: 'Hello-Article-31-4ea984b7-c450-4fe3-8c3e-4e3e8c308e5f',
         });

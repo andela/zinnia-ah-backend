@@ -152,11 +152,13 @@ export async function getSingleArticle(req, res) {
     articleParam = { slug: articleId };
   }
 
-  const token = req.headers.authorization || req.headers['x-access-token'];
+  const token = req.headers.authorization
+    ? req.headers.authorization
+    : req.headers['x-access-token'];
 
-  if (token) {
-    const { id } = await verifyToken(token);
-    requestUser = await User.findByPk(id);
+  if (token && token !== 'null' && token !== null) {
+    const decodedToken = await verifyToken(token);
+    requestUser = await User.findByPk(decodedToken.id);
   }
 
   try {
