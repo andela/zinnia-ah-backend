@@ -112,16 +112,16 @@ export async function socialController(req, res) {
 
   try {
     const tokenPayload = {
-      user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      },
+      id: user.id,
+      email: user.email,
+      username: user.username,
     };
 
     const token = await generateToken(tokenPayload);
 
-    const url = `${redirectUrl}?token=${token}&isNewRecord=${isNewRecord}`;
+    const encodedUser = await generateToken(user);
+
+    const url = `${redirectUrl}?token=${token}&encodedUser=${encodedUser}&isNewRecord=${isNewRecord}`;
 
     return res.redirect(301, url);
   } catch (err) {

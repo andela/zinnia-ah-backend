@@ -16,7 +16,7 @@ const credentials = {
     clientID: process.env.FACEBOOK_APP_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: process.env.FACEBOOK_APP_CALLBACK,
-    profileFields: ['id', 'email', 'name'],
+    profileFields: ['id', 'email', 'name', 'picture.type(large)'],
   },
 
   twitter: {
@@ -63,6 +63,7 @@ export const facebookAuth = async (
         email: profile.emails[0].value,
         socialProvider: profile.provider,
         isEmailVerified: true,
+        image: profile.photos[0].value || null,
       },
     });
     return done(null, currentUser);
@@ -72,6 +73,8 @@ export const facebookAuth = async (
 };
 
 export const twitterAuth = async (token, tokenSecret, profile, done) => {
+  const profilePicture = profile.photos[0].value.replace('_normal', '');
+
   try {
     const [user] = await User.findOrCreate({
       where: {
@@ -94,6 +97,8 @@ export const twitterAuth = async (token, tokenSecret, profile, done) => {
         email: profile.emails[0].value,
         socialProvider: profile.provider,
         isEmailVerified: true,
+        image: profilePicture || null,
+        bio: profile._json.description || null,
       },
     });
     return done(null, user);
@@ -126,6 +131,7 @@ export const googleAuth = async (token, tokenSecret, profile, done) => {
         email: profile.emails[0].value,
         socialProvider: profile.provider,
         isEmailVerified: true,
+        image: profile.photos[0].value || null,
       },
     });
     return done(null, user);
