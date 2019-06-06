@@ -32,10 +32,10 @@ const swaggerDefinition = {
 };
 
 // initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc({
-  swaggerDefinition,
-  apis: ['./**/routes/*.js'], // pass all in array
-});
+// const swaggerSpec = swaggerJSDoc({
+//   swaggerDefinition,
+//   apis: ['./**/routes/*.js'], // pass all in array
+// });
 
 app.use(
   session({
@@ -63,9 +63,9 @@ app.use(
 app.use(express.json());
 
 // serve swagger
-app.get('/doc', (req, res) => {
-  res.send(swaggerSpec);
-});
+// app.get('/doc', (req, res) => {
+//   res.send(swaggerSpec);
+// });
 
 // API routes
 app.use('/api/v1', router);
